@@ -5036,7 +5036,7 @@ local _call15 = _13:CreateWindow({
     KeySystem = true,
     DisableBuildWarnings = true,
     Discord = {
-        Enabled = true,
+        Enabled = false,
         RememberJoins = true,
         Invite = '76Mq5tQWAV',
     },
