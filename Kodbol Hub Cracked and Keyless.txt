@@ -5033,7 +5033,7 @@ local _call15 = _13:CreateWindow({
         FileName = 'Key',
         Subtitle = 'we using key system so that others do not earn money from our script or smth else',
     },
-    KeySystem = true,
+    KeySystem = false,
     DisableBuildWarnings = true,
     Discord = {
         Enabled = false,
