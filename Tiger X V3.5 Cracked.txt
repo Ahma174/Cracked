@@ -1,6 +1,4 @@
--- ts file was generated at discord.gg/25ms
-
-loadstring(game:HttpGet('https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua'))()
+-loadstring(game:HttpGet('https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Module.Lua'))()
 
 local v1 = loadstring(game:HttpGet('https://raw.githubusercontent.com/BocusLuke/UI/main/STX/Client.Lua'))()
 
@@ -214,7 +212,7 @@ _Hub2:NewButton('Butif Hub', 'ButtonInfo', function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/NEWBUTIF/Universal-Script-Hub/main/Butif%20Hub'))()
 end)
 _Hub2:NewButton('Junko Hub V5', 'ButtonInfo', function()
-    loadstring(game:HttpGet('https://raw.githubusercontent.com/Juanko-Scripts/Roblox-scripts/main/Juanko%20Universal%20Hub%20OfuscasteLinkServerFile73829273728288ejfjshsrytdoudt7do'))()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Juanko-Scripts/Roblox-scripts/main/Juanko%20Universal%20Hub%20OfuscasteLinkServerFile738'))()
 end)
 _Hub2:NewButton('SnapDragon Hub', 'Key:SnapDragon', function()
     loadstring(game:HttpGet('https://raw.githubusercontent.com/Ruszelds/Snap/main/Dragon', true))()
