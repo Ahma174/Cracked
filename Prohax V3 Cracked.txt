@@ -1,0 +1,5746 @@
+local v1 = 'https://raw.githubusercontent.com/deividcomsono/Obsidian/main/'
+
+Library = loadstring(game:HttpGet(v1 .. 'Library.lua'))()
+
+Library:Notify('Loading Prohax .. ', 3)
+
+ThemeManager = loadstring(game:HttpGet(v1 .. 'addons/ThemeManager.lua'))()
+SaveManager = loadstring(game:HttpGet(v1 .. 'addons/SaveManager.lua'))()
+Options = Library.Options
+Toggles = Library.Toggles
+ESPLibrary = loadstring(game:HttpGet('https://raw.githubusercontent.com/bocaj111004/ESPLibrary/refs/heads/main/Library.lua'))()
+
+ESPLibrary:SetFadeTime(0.5)
+
+Window = Library:CreateWindow({
+    Title = 'ProHax V3',
+    Center = true,
+    AutoShow = true,
+})
+Tabs = {
+    Player = Window:AddTab('Main'),
+    Anti = Window:AddTab('Exploits'),
+    Auto = Window:AddTab('Visuals'),
+    Floors = Window:AddTab('Floors'),
+    Misc = Window:AddTab('Miscellaneous'),
+    Fun = Window:AddTab('Trolling'),
+    UISettings = Window:AddTab('UI Settings'),
+}
+PlayerBox = Tabs.Player:AddLeftGroupbox('LocalPlayer')
+AntiBox = Tabs.Anti:AddLeftGroupbox('Bypass Entities')
+AutoBox = Tabs.Player:AddRightGroupbox('Automatically')
+ESPBox = Tabs.Auto:AddLeftGroupbox('ESP')
+ESPSettings = Tabs.Auto:AddRightGroupbox('Visuals')
+BypassBox = Tabs.Anti:AddRightGroupbox('Bypass')
+FloorsBox = Tabs.Floors:AddRightGroupbox('Floors Bypass Entities')
+FloorsBx = Tabs.Floors:AddLeftGroupbox('Main Floor')
+SettingsBox = Tabs.UISettings:AddLeftGroupbox('Themes & Keybinds')
+MiscBox = Tabs.Misc:AddRightGroupbox('Remotes')
+MiscBox2 = Tabs.Misc:AddRightGroupbox('Reach')
+MiscBox3 = Tabs.Misc:AddLeftGroupbox('Disable')
+TrollBox = Tabs.Fun:AddLeftGroupbox('Troll')
+Players = game:GetService('Players')
+PathfindingService = game:GetService('PathfindingService')
+RunService = game:GetService('RunService')
+ReplicatedStorage = game:GetService('ReplicatedStorage')
+Workspace = game:GetService('Workspace')
+StarterGui = game:GetService('StarterGui')
+Lighting = game:GetService('Lighting')
+LocalPlayer = Players.LocalPlayer
+Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+Humanoid = Character:WaitForChild('Humanoid')
+HumanoidRootPart = Character:WaitForChild('HumanoidRootPart')
+CurrentRooms = Workspace:WaitForChild('CurrentRooms')
+GameData = ReplicatedStorage:WaitForChild('GameData')
+LocalPlayer = Players.LocalPlayer
+Camera = Workspace.CurrentCamera
+LocalPlayer.Character.HumanoidRootPart.CanCollide = true
+
+if LocalPlayer.Character and (LocalPlayer.Character:FindFirstChild('Collision') and LocalPlayer.Character.Collision:FindFirstChild('CollisionCrouch')) then
+    LocalPlayer.Character.Collision.CollisionCrouch:Destroy()
+end
+
+function ChatNotify(p2)
+    game:GetService('TextChatService'):WaitForChild('TextChannels'):WaitForChild('RBXGeneral'):SendAsync(p2)
+end
+
+pingid = '4590657391'
+
+local function u4()
+    local _Sound = Instance.new('Sound')
+
+    _Sound.Name = ESPLibrary:GenerateRandomString()
+    _Sound.Volume = 1.4
+    _Sound.Parent = game.ReplicatedStorage
+    _Sound.SoundId = 'rbxassetid://' .. pingid
+
+    _Sound:Play()
+    game:GetService('Debris'):AddItem(_Sound, 15)
+end
+
+u4()
+
+Library.NotifySide = 'Right'
+RunService = game:GetService('RunService')
+ReplicatedDS = game:GetService('ReplicatedStorage').GameData
+doorVelTable = {}
+cachedDoorParts = {}
+
+local u5 = nil
+local u6 = nil
+
+INTERVAL = 0.07
+BreakDoorsFE = TrollBox:AddToggle('BreakDoorusFE', {
+    Text = 'Breaks Doors(FE)',
+    Tooltip = 'Bugs the Game Out',
+})
+
+function cleanAll()
+    if u5 then
+        u5:Disconnect()
+
+        u5 = nil
+    end
+    if u6 then
+        u6:Disconnect()
+
+        u6 = nil
+    end
+
+    local v7, v8, v9 = pairs(doorVelTable)
+
+    while true do
+        local v10
+
+        v9, v10 = v7(v8, v9)
+
+        if v9 == nil then
+            break
+        end
+        if v10.bv and v10.bv.Parent then
+            v10.bv:Destroy()
+        end
+        if v9 and v9.Parent then
+            v9.CanCollide = v10.origCollide
+        end
+    end
+
+    table.clear(doorVelTable)
+    table.clear(cachedDoorParts)
+end
+function cacheDoorParts()
+    table.clear(cachedDoorParts)
+
+    local v11 = workspace.CurrentRooms:GetChildren()
+
+    for v12 = 1, #v11 do
+        local v13 = v11[v12]:GetChildren()
+
+        for v14 = 1, #v13 do
+            local v15 = v13[v14]
+
+            if v15:IsA('Model') then
+                local v16 = v15:GetDescendants()
+
+                for v17 = 1, #v16 do
+                    local v18 = v16[v17]
+
+                    if v18:IsA('BasePart') then
+                        table.insert(cachedDoorParts, v18)
+                    end
+                end
+            end
+        end
+    end
+end
+
+BreakDoorsFE:OnChanged(function(p19)
+    cleanAll()
+
+    if p19 then
+        if isnetworkowner then
+            if tonumber(ReplicatedDS.LatestRoom.Value) < 98 then
+                cacheDoorParts()
+
+                u6 = workspace.CurrentRooms.ChildAdded:Connect(function()
+                    cacheDoorParts()
+                end)
+                accumulator = 0
+                u5 = RunService.Heartbeat:Connect(function(p20)
+                    accumulator = accumulator + p20
+
+                    if accumulator >= INTERVAL then
+                        accumulator = 0
+
+                        if tonumber(ReplicatedDS.LatestRoom.Value) < 98 then
+                            for v21 = 1, #cachedDoorParts do
+                                part = cachedDoorParts[v21]
+
+                                if isnetworkowner(part) then
+                                    if not doorVelTable[part] then
+                                        local _BodyPosition = Instance.new('BodyPosition')
+
+                                        doorVelTable[part] = {
+                                            origCollide = part.CanCollide,
+                                            bv = _BodyPosition,
+                                        }
+                                        part.CanCollide = false
+                                        _BodyPosition.Name = 'TeleportDoorsOnYou'
+                                        _BodyPosition.MaxForce = Vector3.new(1000000000, 1000000000, 1000000000)
+                                        _BodyPosition.Position = HumanoidRootPart.Position
+                                        _BodyPosition.Parent = part
+                                    end
+                                elseif doorVelTable[part] then
+                                    local v23 = doorVelTable[part]
+
+                                    if v23.bv and v23.bv.Parent then
+                                        v23.bv:Destroy()
+                                    end
+
+                                    part.CanCollide = v23.origCollide
+                                    doorVelTable[part] = nil
+                                end
+                            end
+                        else
+                            BreakDoorsFE:SetValue(false)
+                        end
+                    else
+                        return
+                    end
+                end)
+            else
+                BreakDoorsFE:SetValue(false)
+            end
+        else
+            Library:Notify('[Break doors]) isnetworkowner is not supported it wont work', 3)
+
+            return
+        end
+    else
+        return
+    end
+end)
+MiscBox3:AddLabel('Sounds', {
+    Text = 'Sounds is Extra Processing in  Device  Disabling them would improve fps on devices',
+    DoesWrap = true,
+})
+
+local u24 = nil
+local u25 = false
+
+MiscBox3:AddToggle('DisableWalkingSound', {
+    Text = 'Disable Walking Sounds',
+    Tooltip = 'Removes the Sound that appears when you walk',
+    Default = false,
+    Callback = function(p26)
+        u25 = p26
+
+        if u24 then
+            u24:Disconnect()
+
+            u24 = nil
+        end
+        if u25 then
+            u24 = LocalPlayer.Character.ChildAdded:Connect(function(p27)
+                if p27:IsA('Sound') then
+                    p27:Destroy()
+                end
+            end)
+        end
+    end,
+})
+MiscBox3:AddToggle('DisableDrawersInteractionsSounds', {
+    Text = 'Disable Drawers Sounds',
+    Tooltip = 'Removes the Sound that appears at Drawers',
+    Default = false,
+    Callback = function(_) end,
+})
+TrollBox:AddToggle('Stunned', {
+    Text = 'Stunned',
+    Tooltip = 'Makes People Think your Died',
+    Default = false,
+    Callback = function(p28)
+        LocalPlayer.Character:SetAttribute('Stunned', p28)
+    end,
+})
+
+RunService = game:GetService('RunService')
+Players = game:GetService('Players')
+LocalPlayer = Players.LocalPlayer
+Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+Humanoid = Character:WaitForChild('Humanoid')
+oldspeed = LocalPlayer.Character:GetAttribute('SpeedBoostExtra')
+lastspeed = 1
+con = nil
+st = false
+SpeedSlider = PlayerBox:AddSlider('WalkSpeed', {
+    Text = 'Speed Boost',
+    Min = 1,
+    Max = 7,
+    Default = 1,
+    Rounding = 1,
+    Callback = function(p29)
+        lastspeed = p29
+    end,
+})
+
+PlayerBox:AddDivider()
+PlayerBox:AddToggle('EnableWalkSpeed', {
+    Text = 'Enable Speed Boost',
+    Default = false,
+})
+Toggles.EnableWalkSpeed:OnChanged(function(p30)
+    st = p30
+
+    if con then
+        con:Disconnect()
+
+        con = nil
+    end
+    if st then
+        if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild('Humanoid') then
+            LocalPlayer.Character:SetAttribute('SpeedBoostExtra', lastspeed)
+        end
+
+        con = RunService.RenderStepped:Connect(function()
+            if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild('Humanoid') then
+                LocalPlayer.Character:SetAttribute('SpeedBoostExtra', lastspeed)
+            end
+        end)
+    elseif LocalPlayer.Character and LocalPlayer.Character:FindFirstChild('Humanoid') then
+        LocalPlayer.Character:SetAttribute('SpeedBoostExtra', oldspeed)
+    end
+end)
+MiscBox:AddButton({
+    Text = 'Reset',
+    DoubleClick = true,
+    Func = function()
+        if replicatedsignal then
+            replicatedsignal(LocalPlayer.Kill)
+        end
+    end,
+})
+MiscBox:AddButton({
+    Text = 'Revive',
+    DoubleClick = true,
+    Func = function()
+        if game.ReplicatedStorage:FindFirstChild('EntityInfo') then
+            game.ReplicatedStorage.EntityInfo.Revive:FireServer()
+        elseif ReplicatedStorage:FindFirstChild('RemotesFolder') then
+            game.ReplicatedStorage.RemotesFolder.Revive:FireServer()
+        else
+            game.ReplicatedStorage.Bricks.Revive:FireServer()
+        end
+    end,
+})
+
+Players = game:GetService('Players')
+RS = game:GetService('ReplicatedStorage')
+player = Players.LocalPlayer
+
+local u31 = nil
+local u32 = nil
+local u33
+
+if RS:FindFirstChild('EntityInfo') then
+    u33 = RS.EntityInfo:WaitForChild('PlayAgain')
+elseif RS:FindFirstChild('RemotesFolder') then
+    u33 = RS.RemotesFolder:WaitForChild('PlayAgain')
+else
+    u33 = RS:FindFirstChild('Bricks'):WaitForChild('PlayAgain')
+end
+
+function onHumanoidDied()
+    if u33 then
+        u33:FireServer()
+    end
+end
+function onCharacterAdded(p34)
+    if u32 then
+        u32:Disconnect()
+
+        u32 = nil
+    end
+
+    humanoid = p34:WaitForChild('Humanoid')
+    u32 = humanoid.Died:Connect(onHumanoidDied)
+end
+
+AutoBox:AddToggle('AutoPlayAgain', {
+    Text = 'Auto Play Again',
+    Tooltip = 'Automatically enters a new game when you die',
+    CurrentValue = false,
+    Callback = function(p35)
+        if p35 then
+            if not u31 then
+                u31 = player.CharacterAdded:Connect(onCharacterAdded)
+            end
+            if player.Character then
+                onCharacterAdded(player.Character)
+            end
+        else
+            if u32 then
+                u32:Disconnect()
+
+                u32 = nil
+            end
+            if u31 then
+                u31:Disconnect()
+
+                u31 = nil
+            end
+        end
+    end,
+})
+MiscBox:AddButton({
+    Text = 'PlayAgain',
+    DoubleClick = true,
+    Func = function()
+        if game.ReplicatedStorage:FindFirstChild('EntityInfo') then
+            game.ReplicatedStorage.EntityInfo.PlayAgain:FireServer()
+        elseif ReplicatedStorage:FindFirstChild('RemotesFolder') then
+            ReplicatedStorage.RemotesFolder.PlayAgain:FireServer()
+        else
+            ReplicatedStorage.Bricks.PlayAgain:FireServer()
+        end
+    end,
+})
+MiscBox:AddButton({
+    Text = 'Lobby',
+    DoubleClick = true,
+    Func = function()
+        if game.ReplicatedStorage:FindFirstChild('EntityInfo') then
+            game.ReplicatedStorage.EntityInfo.Lobby:FireServer()
+        elseif ReplicatedStorage:FindFirstChild('RemotesFolder') then
+            game.ReplicatedStorage.RemotesFolder.Lobby:FireServer()
+        else
+            ReplicatedStorage.Bricks.Lobby:FireServer()
+        end
+    end,
+})
+
+local _ReplicatedStorage = game:GetService('ReplicatedStorage')
+
+if _ReplicatedStorage:FindFirstChild('Bricks') or _ReplicatedStorage:FindFirstChild('EntityInfo') then
+    local _Workspace = game:GetService('Workspace')
+    local _LocalPlayer = game:GetService('Players').LocalPlayer
+    local u39 = false
+    local u40 = nil
+
+    local function u45(p41)
+        local _Humanoid = p41:WaitForChild('Humanoid')
+
+        if u40 then
+            u40:Disconnect()
+        end
+
+        u40 = _Humanoid.Died:Connect(function()
+            local _EntityInfo = _ReplicatedStorage:FindFirstChild('EntityInfo')
+            local _Bricks = _ReplicatedStorage:FindFirstChild('Bricks')
+
+            if _EntityInfo then
+                _EntityInfo.Revive:FireServer()
+            elseif _Bricks then
+                _Bricks:FireServer()
+            end
+            if u39 then
+                u45(_LocalPlayer.Character or _LocalPlayer.CharacterAdded:Wait())
+            end
+        end)
+    end
+
+    _LocalPlayer.CharacterAdded:Connect(function(p46)
+        if u39 then
+            u45(p46)
+        end
+    end)
+    FloorsBx:AddToggle('InfiniteRevive', {
+        Text = 'Infinite Revive',
+        Default = false,
+        Callback = function(p47)
+            u39 = p47
+
+            if p47 then
+                if _LocalPlayer.Character then
+                    u45(_LocalPlayer.Character)
+                end
+            elseif u40 then
+                u40:Disconnect()
+
+                u40 = nil
+            end
+        end,
+    })
+
+    local _ReplicatedStorage2 = game:GetService('ReplicatedStorage')
+    local _LocalPlayer2 = game.Players.LocalPlayer
+    local u50 = _ReplicatedStorage2:FindFirstChild('Bricks') and 5.5 or 9.5
+    local u51 = false
+
+    local function u54(p52)
+        if p52 then
+            p52 = p52:FindFirstChild('Collision')
+        end
+        if p52 then
+            local v53 = Vector3.new(0, u50, 0)
+
+            p52.Position = u51 and p52.Position - v53 or p52.Position + v53
+        end
+    end
+
+    _LocalPlayer2.CharacterAdded:Connect(u54)
+    FloorsBx:AddToggle('FoolsGodmode', {
+        Text = 'God Mode',
+        Default = false,
+        Tooltip = 'Make you Invincible To Entities',
+        Callback = function(p55)
+            u51 = p55
+
+            u54(_LocalPlayer2.Character)
+        end,
+    })
+    FloorsBx:AddToggle('FigureGodmode', {
+        Text = 'Figure Godmode',
+        Default = false,
+        Tooltip = 'Make you Immune to Figure',
+        Callback = function(p56)
+            if p56 and not Toggles.FoolsGodmode.Value then
+                Library:Notify('[Figure Godmode] Enabled God Mode automatically', 4)
+                Toggles.FoolsGodmode:SetValue(true)
+            end
+
+            spawn(function()
+                while Toggles.FigureGodmode.Value do
+                    local _FigureRagdoll = _Workspace:FindFirstChild('FigureRagdoll', true)
+
+                    if _FigureRagdoll then
+                        local v58, v59, v60 = ipairs(_FigureRagdoll:GetChildren())
+
+                        while true do
+                            local v61
+
+                            v60, v61 = v58(v59, v60)
+
+                            if v60 == nil then
+                                break
+                            end
+                            if v61:IsA('BasePart') then
+                                v61.CanTouch = false
+                            end
+                        end
+                    end
+
+                    task.wait(1)
+                end
+
+                local _FigureRagdoll2 = _Workspace:FindFirstChild('FigureRagdoll', true)
+
+                if _FigureRagdoll2 then
+                    local v63, v64, v65 = ipairs(_FigureRagdoll2:GetChildren())
+
+                    while true do
+                        local v66
+
+                        v65, v66 = v63(v64, v65)
+
+                        if v65 == nil then
+                            break
+                        end
+                        if v66:IsA('BasePart') then
+                            v66.CanTouch = true
+                        end
+                    end
+                end
+            end)
+        end,
+    })
+end
+
+runSpam = false
+
+TrollBox:AddToggle('SpamOthersTools', {
+    Text = 'Spam Others Tools (FE)',
+    Default = false,
+    Callback = function(p67)
+        runSpam = p67
+
+        if runSpam then
+            while task.wait(0.4) and runSpam do
+                local v68, v69, v70 = pairs(Players:GetPlayers())
+
+                while true do
+                    local v71
+
+                    v70, v71 = v68(v69, v70)
+
+                    if v70 == nil then
+                        break
+                    end
+                    if v71 ~= LocalPlayer then
+                        local v72, v73, v74 = ipairs(v71:GetDescendants())
+
+                        while true do
+                            local v75
+
+                            v74, v75 = v72(v73, v74)
+
+                            if v74 == nil then
+                                break
+                            end
+                            if v75:IsA('Tool') and v75:FindFirstChild('Remote') then
+                                v75.Remote:FireServer()
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end,
+}):AddKeyPicker('Spam Others Tools Keybind', {
+    Default = 'X',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'Spam Others Tools (FE)',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+PlayerBox:AddDivider()
+
+local _LocalPlayer3 = game.Players.LocalPlayer
+local u77 = false
+
+local function u79(p78)
+    if p78 then
+        p78:SetAttribute('CanJump', u77)
+    end
+end
+
+_LocalPlayer3.CharacterAdded:Connect(u79)
+PlayerBox:AddToggle('EnableJump', {
+    Text = 'Enable Jump',
+    Default = false,
+    Callback = function(p80)
+        u77 = p80
+
+        u79(_LocalPlayer3.Character)
+    end,
+})
+game:GetService('RunService')
+
+local _LocalPlayer4 = game.Players.LocalPlayer
+local u82 = false
+
+local function u89(p83)
+    local v84, v85, v86 = ipairs(p83:GetDescendants())
+
+    while true do
+        local v87
+
+        v86, v87 = v84(v85, v86)
+
+        if v86 == nil then
+            break
+        end
+        if v87:IsA('BasePart') then
+            local _CustomPhysicalProperties = v87.CustomPhysicalProperties
+
+            if u82 then
+                _CustomPhysicalProperties = PhysicalProperties.new(100, _CustomPhysicalProperties, _CustomPhysicalProperties) or _CustomPhysicalProperties
+            end
+
+            v87.CustomPhysicalProperties = _CustomPhysicalProperties
+        end
+    end
+end
+
+_LocalPlayer4.CharacterAdded:Connect(function(p90)
+    p90:WaitForChild('HumanoidRootPart')
+
+    if u82 then
+        u89(p90)
+    end
+end)
+PlayerBox:AddToggle('NoSlowDown', {
+    Text = 'No Acceleration',
+    Default = false,
+    Callback = function(p91)
+        u82 = p91
+
+        local _Character = _LocalPlayer4.Character
+
+        if _Character then
+            u89(_Character)
+        end
+    end,
+})
+
+Players = game:GetService('Players')
+RunService = game:GetService('RunService')
+player = Players.LocalPlayer
+
+local u93 = 0
+local u94 = 0
+local u95 = 0
+local u96 = nil
+local u97 = nil
+
+ESPSettings:AddSlider('ToolOffsetX', {
+    Text = 'Viewmodel X',
+    Min = -10,
+    Max = 10,
+    Default = 0,
+    Rounding = 2,
+    Callback = function(p98)
+        u93 = p98
+    end,
+})
+ESPSettings:AddSlider('ToolOffsetY', {
+    Text = 'Viewmodel Y',
+    Min = -10,
+    Max = 10,
+    Default = 0,
+    Rounding = 2,
+    Callback = function(p99)
+        u94 = p99
+    end,
+})
+ESPSettings:AddSlider('ToolOffsetZ', {
+    Text = 'Viewmodel Z',
+    Min = -10,
+    Max = 10,
+    Default = 0,
+    Rounding = 2,
+    Callback = function(p100)
+        u95 = p100
+    end,
+})
+ESPSettings:AddToggle('ToolOffset', {
+    Text = 'Viewmodel',
+    Default = false,
+    Callback = function(p101)
+        local _PlayerGui = player:FindFirstChild('PlayerGui')
+
+        if _PlayerGui then
+            local _MainUI = _PlayerGui:FindFirstChild('MainUI')
+
+            if _MainUI then
+                local _Initiator = _MainUI:FindFirstChild('Initiator')
+
+                if _Initiator then
+                    local _Main_Game = _Initiator:FindFirstChild('Main_Game')
+
+                    if _Main_Game then
+                        u97 = require(_Main_Game)
+
+                        if p101 then
+                            if u96 then
+                                u96:Disconnect()
+                            end
+
+                            u96 = RunService.Heartbeat:Connect(function()
+                                u97.tooloffset = Vector3.new(u93, u94, u95)
+                            end)
+                        else
+                            if u96 then
+                                u96:Disconnect()
+
+                                u96 = nil
+                            end
+                            if u97 then
+                                u97.tooloffset = Vector3.new(0, 0, 0)
+                            end
+                        end
+                    end
+                else
+                    return
+                end
+            else
+                return
+            end
+        else
+            return
+        end
+    end,
+})
+ESPSettings:AddDivider()
+
+Players = game:GetService('Players')
+RunService = game:GetService('RunService')
+ReplicatedStorage = game:GetService('ReplicatedStorage')
+Workspace = game:GetService('Workspace')
+
+local _LocalPlayer5 = Players.LocalPlayer
+local _CurrentCamera = Workspace.CurrentCamera
+local u108 = nil
+local u109 = nil
+
+AntiBox:AddDivider()
+AntiBox:AddToggle('AntiScreech', {
+    Text = 'Disables Screech',
+    Default = false,
+    Tooltip = 'Prevent Screech From Spawning',
+    Callback = function(p110)
+        if u108 then
+            u108:Disconnect()
+
+            u108 = nil
+        end
+        if p110 then
+            local v111 = _CurrentCamera:GetChildren()
+
+            for v112 = 1, #v111 do
+                if v111[v112].Name == 'GlitchedScreech' then
+                    v111[v112]:Destroy()
+                end
+            end
+
+            u108 = _CurrentCamera.ChildAdded:Connect(function(p113)
+                if p113.Name == 'GlitchedScreech' then
+                    p113:Destroy()
+                end
+            end)
+
+            local _Modules = _LocalPlayer5.PlayerGui:WaitForChild('MainUI'):WaitForChild('Initiator'):WaitForChild('Main_Game'):WaitForChild('RemoteListener'):WaitForChild('Modules')
+            local v115 = _Modules:FindFirstChild('Screech') or _Modules:FindFirstChild('_Screech')
+
+            if v115 then
+                v115.Name = '_Screech'
+            end
+        else
+            local _Modules2 = _LocalPlayer5.PlayerGui:WaitForChild('MainUI'):WaitForChild('Initiator'):WaitForChild('Main_Game'):WaitForChild('RemoteListener'):WaitForChild('Modules')
+            local v117 = _Modules2:FindFirstChild('_Screech') or _Modules2:FindFirstChild('Screech')
+
+            if v117 then
+                v117.Name = 'Screech'
+            end
+        end
+    end,
+})
+AntiBox:AddToggle('AntiDread', {
+    Text = 'Disables Dread',
+    Default = false,
+    Tooltip = 'Prevent Dread From Spawning',
+    Callback = function(p118)
+        local _Modules3 = _LocalPlayer5.PlayerGui:WaitForChild('MainUI'):WaitForChild('Initiator'):WaitForChild('Main_Game'):WaitForChild('RemoteListener'):WaitForChild('Modules')
+        local v120 = _Modules3:FindFirstChild('Dread') or _Modules3:FindFirstChild('_Dread')
+
+        if v120 then
+            v120.Name = p118 and '_Dread' or 'Dread'
+        end
+    end,
+})
+AntiBox:AddDivider()
+
+local u121 = 0.13
+
+AntiBox:AddToggle('AntiFigureHearing', {
+    Text = 'Anti Figure Hearing',
+    Default = false,
+    Callback = function(p122)
+        if u109 then
+            u109:Disconnect()
+
+            u109 = nil
+        end
+        if p122 then
+            local u123 = 0
+
+            u109 = RunService.Heartbeat:Connect(function(p124)
+                u123 = u123 + p124
+
+                if u123 >= u121 then
+                    u123 = 0
+
+                    local _RemotesFolder = ReplicatedStorage:FindFirstChild('RemotesFolder')
+
+                    if _RemotesFolder then
+                        _RemotesFolder = _RemotesFolder:FindFirstChild('Crouch')
+                    end
+                    if _RemotesFolder then
+                        _RemotesFolder:FireServer(true)
+                    end
+                end
+            end)
+        else
+            local _RemotesFolder2 = ReplicatedStorage:FindFirstChild('RemotesFolder')
+
+            if _RemotesFolder2 then
+                _RemotesFolder2 = _RemotesFolder2:FindFirstChild('Crouch')
+            end
+            if _RemotesFolder2 then
+                _RemotesFolder2:FireServer(false)
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiA90', {
+    Text = 'Disables A90',
+    Default = false,
+    Callback = function(p127)
+        local _Modules4 = _LocalPlayer5.PlayerGui:WaitForChild('MainUI'):WaitForChild('Initiator'):WaitForChild('Main_Game'):WaitForChild('RemoteListener'):WaitForChild('Modules')
+        local v129 = _Modules4:FindFirstChild('A90') or _Modules4:FindFirstChild('_A90')
+
+        if v129 then
+            v129.Name = p127 and '_A90' or 'A90'
+        end
+    end,
+})
+FloorsBx:AddDivider()
+
+local _ReplicatedStorage3 = game:GetService('ReplicatedStorage')
+local _Workspace2 = game:GetService('Workspace')
+local _RunService = game:GetService('RunService')
+local u133 = _ReplicatedStorage3:FindFirstChild('EntityInfo') or (_ReplicatedStorage3:FindFirstChild('RemotesFolder') or _ReplicatedStorage3:FindFirstChild('Bricks'))
+
+if u133 then
+    u133 = u133:FindFirstChild('MotorReplication')
+end
+
+local u134 = nil
+local u135 = nil
+
+AntiBox:AddToggle('Anti-Eyes', {
+    Text = 'Anti-Eyes',
+    Default = false,
+    Callback = function(p136)
+        if u134 then
+            u134:Disconnect()
+
+            u134 = nil
+        end
+        if p136 and u133 then
+            u134 = _RunService.Heartbeat:Connect(function()
+                if _Workspace2:FindFirstChild('Eyes') then
+                    if _ReplicatedStorage3:FindFirstChild('EntityInfo') or _ReplicatedStorage3:FindFirstChild('Bricks') then
+                        u133:FireServer(0, -760, 0, false)
+                    else
+                        u133:FireServer(-760)
+                    end
+                end
+            end)
+        end
+    end,
+})
+FloorsBox:AddToggle('Anti-Lookman', {
+    Text = 'Anti-Lookman',
+    Default = false,
+    Callback = function(p137)
+        if u135 then
+            u135:Disconnect()
+
+            u135 = nil
+        end
+        if p137 and u133 then
+            u135 = _RunService.Heartbeat:Connect(function()
+                if _Workspace2:FindFirstChild('BackdoorLookman') then
+                    u133:FireServer(-760)
+                end
+            end)
+        end
+    end,
+})
+
+local _Players = game:GetService('Players')
+local _RunService2 = game:GetService('RunService')
+local _LocalPlayer6 = _Players.LocalPlayer
+
+if not _LocalPlayer6.Character then
+    _LocalPlayer6.CharacterAdded:Wait()
+end
+
+local u141 = {
+    'Collision',
+    'ClonedCollision',
+}
+
+local function u143(p142)
+    return table.find(u141, p142.Name)
+end
+
+local u144 = nil
+
+PlayerBox:AddDivider()
+PlayerBox:AddToggle('Noclip', {
+    Text = 'Noclip',
+    Default = false,
+    Callback = function(p145)
+        if p145 then
+            _LocalPlayer6.Character.HumanoidRootPart.CanCollide = false
+            u144 = _RunService2.Heartbeat:Connect(function()
+                local v146, v147, v148 = ipairs((_LocalPlayer6.Character or _LocalPlayer6.CharacterAdded:Wait()):GetDescendants())
+
+                while true do
+                    local v149
+
+                    v148, v149 = v146(v147, v148)
+
+                    if v148 == nil then
+                        break
+                    end
+                    if v149:IsA('BasePart') then
+                        if u143(v149) or v149.Name == 'CollisionCrouch' then
+                            if v149.Name == 'CollisionCrouch' then
+                                v149.CanCollide = v149.CollisionGroup == 'PlayerCrouching'
+                            end
+                        else
+                            v149.CanCollide = false
+                        end
+                    end
+                end
+            end)
+        else
+            _LocalPlayer6.Character.HumanoidRootPart.CanCollide = true
+
+            if u144 then
+                u144:Disconnect()
+
+                u144 = nil
+            end
+
+            local v150, v151, v152 = ipairs((_LocalPlayer6.Character or _LocalPlayer6.CharacterAdded:Wait()):GetDescendants())
+
+            while true do
+                local v153
+
+                v152, v153 = v150(v151, v152)
+
+                if v152 == nil then
+                    break
+                end
+                if v153:IsA('BasePart') then
+                    if u143(v153) or v153.Name == 'CollisionCrouch' then
+                        if v153.Name == 'CollisionCrouch' then
+                            v153.CanCollide = v153.CollisionGroup == 'PlayerCrouching'
+                        end
+                    else
+                        v153.CanCollide = true
+                    end
+                end
+            end
+        end
+    end,
+}):AddKeyPicker('Noclip Keybind', {
+    Default = 'N',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'Noclip',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+
+local u154 = _LocalPlayer6.Character or _LocalPlayer6.CharacterAdded:Wait()
+local v155 = u154
+local u156 = u154.FindFirstChild(v155, 'Collision')
+
+con = _RunService2.RenderStepped:Connect(function()
+    u154 = _LocalPlayer6.Character or _LocalPlayer6.CharacterAdded:Wait()
+
+    if u154 then
+        u156 = u154:FindFirstChild('Collision')
+        C = u154:FindFirstChild('ClonedCollision')
+
+        if u156 then
+            u156.CanCollide = false
+        end
+        if C then
+            C.CanCollide = false
+        end
+    end
+end)
+
+FloorsBox:AddToggle('AntiSnare', {
+    Text = 'Anti Snare',
+    Tooltip = 'You become immune to Snare traps',
+    Default = false,
+    Callback = function(p157)
+        local v158, v159, v160 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v161
+
+            v160, v161 = v158(v159, v160)
+
+            if v160 == nil then
+                break
+            end
+            if v161.Name == 'Snare' then
+                v161:WaitForChild('Hitbox', 9000000000).CanTouch = not p157
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiDupe', {
+    Text = 'Anti Dupe',
+    Tooltip = 'You become immune to Sideroom Dupe',
+    Default = false,
+    Callback = function(_)
+        local v162, v163, v164 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v165
+
+            v164, v165 = v162(v163, v164)
+
+            if v164 == nil then
+                break
+            end
+            if v165.Name == 'DoorFake' then
+                v165:WaitForChild('Collision', 5).CanTouch = not Toggles.AntiDupe.Value
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiBanana', {
+    Text = 'Anti Banana',
+    Tooltip = 'You become immune to Banana',
+    Default = false,
+    Callback = function(p166)
+        local v167, v168, v169 = pairs(workspace:GetChildren())
+
+        while true do
+            local v170
+
+            v169, v170 = v167(v168, v169)
+
+            if v169 == nil then
+                break
+            end
+            if v170.Name == 'BananaPeel' then
+                v170.CanTouch = not p166
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiJeff', {
+    Text = 'Anti Jeff ',
+    Tooltip = 'You become immune to Jeff',
+    Default = false,
+    Callback = function(p171)
+        local v172, v173, v174 = pairs(workspace:GetChildren())
+
+        while true do
+            local v175
+
+            v174, v175 = v172(v173, v174)
+
+            if v174 == nil then
+                break
+            end
+            if v175.Name == 'JeffTheKiller' then
+                local v176, v177, v178 = pairs(v175:GetChildren())
+
+                while true do
+                    local v179
+
+                    v178, v179 = v176(v177, v178)
+
+                    if v178 == nil then
+                        break
+                    end
+                    if v179:IsA('BasePart') then
+                        v179.CanTouch = not p171
+                    end
+                end
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiVacuum', {
+    Text = 'Anti Vacuum',
+    Tooltip = 'You become immune to Vacuum',
+    Default = false,
+    Callback = function(p180)
+        local v181, v182, v183 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v184
+
+            v183, v184 = v181(v182, v183)
+
+            if v183 == nil then
+                break
+            end
+            if v184.Name == 'SideroomSpace' then
+                local v185, v186, v187 = pairs(v184:GetChildren())
+
+                while true do
+                    local v188
+
+                    v187, v188 = v185(v186, v187)
+
+                    if v187 == nil then
+                        break
+                    end
+                    if v188:IsA('BasePart') then
+                        v188.CanTouch = not p180
+                    end
+                end
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiGloomPile', {
+    Text = 'Anti GloomPile',
+    Tooltip = 'You become immune to GloomPile',
+    Default = false,
+    Callback = function(p189)
+        local v190, v191, v192 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v193
+
+            v192, v193 = v190(v191, v192)
+
+            if v192 == nil then
+                break
+            end
+            if v193.Name == 'GloomPile' then
+                local v194, v195, v196 = pairs(v193:GetChildren())
+
+                while true do
+                    local v197
+
+                    v196, v197 = v194(v195, v196)
+
+                    if v196 == nil then
+                        break
+                    end
+                    if v197:IsA('BasePart') then
+                        v197.CanTouch = not p189
+                    end
+                end
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiLava', {
+    Text = 'Anti Lava',
+    Tooltip = 'You become immune to Lava',
+    Default = false,
+    Callback = function(p198)
+        local v199, v200, v201 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v202
+
+            v201, v202 = v199(v200, v201)
+
+            if v201 == nil then
+                break
+            end
+            if v202.Name == 'Lava' then
+                v202.CanTouch = not p198
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiScaryWall', {
+    Text = 'Anti ScaryWall',
+    Tooltip = 'You become immune to ScaryWall',
+    Default = false,
+    Callback = function(p203)
+        local v204, v205, v206 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v207
+
+            v206, v207 = v204(v205, v206)
+
+            if v206 == nil then
+                break
+            end
+            if v207.Name == 'ScaryWall' then
+                local v208, v209, v210 = pairs(v207:GetChildren())
+
+                while true do
+                    local v211
+
+                    v210, v211 = v208(v209, v210)
+
+                    if v210 == nil then
+                        break
+                    end
+                    if v211:IsA('BasePart') then
+                        v211.CanTouch = not p203
+                    end
+                end
+            end
+        end
+    end,
+})
+FloorsBox:AddToggle('AntiGiggle', {
+    Text = 'Anti Giggle',
+    Tooltip = 'You become immune to GiggleCeiling',
+    Default = false,
+    Callback = function(_)
+        local v212, v213, v214 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v215
+
+            v214, v215 = v212(v213, v214)
+
+            if v214 == nil then
+                break
+            end
+            if v215.Name == 'GiggleCeiling' then
+                v215:WaitForChild('Hitbox', 5).CanTouch = not Toggles.AntiGiggle.Value
+            end
+        end
+    end,
+})
+FloorsBx:AddToggle('AntiSeek', {
+    Text = 'Anti Seek Obstacles',
+    Default = false,
+    Callback = function(p216)
+        local v217, v218, v219 = pairs(workspace.CurrentRooms:GetDescendants())
+
+        while true do
+            local v220
+
+            v219, v220 = v217(v218, v219)
+
+            if v219 == nil then
+                break
+            end
+            if v220.Name == 'Seek_Arm' or v220.Name == 'ChandelierObstruction' then
+                local v221, v222, v223 = pairs(v220:GetChildren())
+
+                while true do
+                    local v224
+
+                    v223, v224 = v221(v222, v223)
+
+                    if v223 == nil then
+                        break
+                    end
+                    if v224:IsA('BasePart') then
+                        v224.CanTouch = not p216
+                    end
+                end
+            end
+        end
+    end,
+})
+
+local _ReplicatedStorage4 = game:GetService('ReplicatedStorage')
+local _Players2 = game:GetService('Players')
+local _RunService3 = game:GetService('RunService')
+local _LocalPlayer7 = _Players2.LocalPlayer
+local _PlayerGui2 = _Players2.LocalPlayer:WaitForChild('PlayerGui')
+local v230, v231, v232 = ipairs(_ReplicatedStorage4:GetDescendants())
+local v233 = nil
+
+while true do
+    local u234
+
+    v232, u234 = v230(v231, v232)
+
+    if v232 == nil then
+        u234 = v233
+
+        break
+    end
+    if u234.Name == 'PL' and u234:IsA('RemoteEvent') then
+        break
+    end
+end
+
+local function u253(p235, p236)
+    local v237, v238, v239 = ipairs(p235.UI:GetChildren())
+    local v240 = {}
+    local v241 = {}
+
+    while true do
+        local v242
+
+        v239, v242 = v237(v238, v239)
+
+        if v239 == nil then
+            break
+        end
+
+        local v243 = tonumber(v242.Name)
+
+        if v243 then
+            local v244 = v242.ImageRectOffset.X .. '_' .. v242.ImageRectOffset.Y
+
+            v240[v243] = v244
+            v241[v244] = {
+                v243,
+                '',
+            }
+        end
+    end
+
+    if p236 then
+        local v245, v246, v247 = ipairs(p236:GetChildren())
+
+        while true do
+            local v248
+
+            v247, v248 = v245(v246, v247)
+
+            if v247 == nil then
+                break
+            end
+            if v248.Name == 'Icon' then
+                local v249 = v248.ImageRectOffset.X .. '_' .. v248.ImageRectOffset.Y
+                local _TextLabel = v248:FindFirstChildWhichIsA('TextLabel')
+
+                if v241[v249] and _TextLabel then
+                    v241[v249][2] = _TextLabel.Text
+                end
+            end
+        end
+    end
+
+    local v251 = {}
+
+    for v252 = 1, #v240 do
+        v251[v252] = v241[v240[v252] ][2]
+    end
+
+    return table.concat(v251)
+end
+
+local u254 = 40
+local u255 = 0
+local u256 = 0
+
+local function u257()
+    return workspace:FindFirstChild('Padlock', true)
+end
+local function u277(p258)
+    local u259 = {}
+    local u260 = 0
+    local u261 = {}
+
+    return _RunService3.Heartbeat:Connect(function(p262)
+        u260 = u260 + p262
+
+        if u260 >= 0.3 then
+            u260 = 0
+
+            local v263 = _LocalPlayer7.Character or _LocalPlayer7.CharacterAdded:Wait()
+            local _PermUI = _PlayerGui2:FindFirstChild('PermUI')
+
+            if _PermUI then
+                _PermUI = _PlayerGui2.PermUI:FindFirstChild('Hints')
+            end
+
+            local v265, v266, v267 = ipairs(v263:GetDescendants())
+
+            while true do
+                local v268
+
+                v267, v268 = v265(v266, v267)
+
+                if v267 == nil then
+                    break
+                end
+                if not u259[v268] and (v268.Name == 'LibraryHintPaper' or v268.Name == 'LibraryHintPaperHard') then
+                    u259[v268] = true
+                end
+            end
+
+            local v269, v270, v271 = pairs(u259)
+
+            while true do
+                v271 = v269(v270, v271)
+
+                if v271 == nil then
+                    break
+                end
+                if v271.Parent then
+                    local v272 = u253(v271, _PermUI)
+
+                    if v272 ~= u261[v271] then
+                        u261[v271] = v272
+
+                        if p258 ~= 'Fire' then
+                            if p258 == 'Notify' and tick() - u256 >= 0.4 then
+                                u256 = tick()
+
+                                Library:Notify('Code: ' .. v272, 3)
+                            end
+                        else
+                            local v273 = u257()
+                            local _HumanoidRootPart = v263:FindFirstChild('HumanoidRootPart')
+                            local v275
+
+                            if v273 then
+                                v275 = v273:IsA('Model') and v273:GetPivot().Position or v273.Position
+                            else
+                                v275 = v273
+                            end
+                            if v273 and (_HumanoidRootPart and ((v275 - _HumanoidRootPart.Position).Magnitude <= u254 and tick() - u255 >= 0.4)) then
+                                u255 = tick()
+
+                                u234:FireServer(v272)
+                            end
+                        end
+                    end
+                else
+                    local v276 = u259
+
+                    u261[v271] = nil
+                    v276[v271] = nil
+                end
+            end
+        end
+    end)
+end
+
+AutoBox:AddSlider('UnlockDist', {
+    Text = 'Unlock Padlock Distance',
+    Min = 10,
+    Max = 100,
+    Default = 40,
+    Callback = function(p278)
+        u254 = p278
+    end,
+})
+AutoBox:AddToggle('AutoLibraryFire', {
+    Text = 'Auto Library Code',
+    Default = false,
+    Callback = function(p279)
+        if _G.fire then
+            _G.fire:Disconnect()
+
+            _G.fire = nil
+        end
+        if p279 then
+            _G.fire = u277('Fire')
+        end
+    end,
+})
+AutoBox:AddToggle('NotifyLibrary', {
+    Text = 'Notify Library Code',
+    Default = false,
+    Callback = function(p280)
+        if _G.note then
+            _G.note:Disconnect()
+
+            _G.note = nil
+        end
+        if p280 then
+            _G.note = u277('Notify')
+        end
+    end,
+})
+AutoBox:AddDivider()
+
+local u281 = {
+    HidePrompt = true,
+    ClimbPrompt = true,
+    PushPrompt = true,
+    InteractPrompt = true,
+    PropPrompt = true,
+    StarRiftPrompt = true,
+    RevivePrompt = true,
+    RiftPrompt = true,
+    UnlockPrompt = true,
+    FusesPrompt = true,
+    SkullPrompt = true,
+}
+local u282 = {
+    Padlock = true,
+    Seek_Arm = true,
+    KeyObtainFake = true,
+    ChandelierObstruction = true,
+    AlarmClockModel = true,
+    Model = true,
+    ChestBoxLocked = true,
+}
+local u283 = {}
+
+local function u286(p284)
+    if not p284:IsA('ProximityPrompt') then
+        return false
+    end
+    if u281[p284.Name] then
+        return false
+    end
+
+    local _Parent = p284.Parent
+
+    return _Parent and not u282[_Parent.Name] and true or false
+end
+local function u291()
+    table.clear(u283)
+
+    local v287, v288, v289 = ipairs(workspace.CurrentRooms:GetDescendants())
+
+    while true do
+        local v290
+
+        v289, v290 = v287(v288, v289)
+
+        if v289 == nil then
+            break
+        end
+        if u286(v290) then
+            u283[#u283 + 1] = v290
+        end
+    end
+end
+
+local u292 = game.ReplicatedStorage.GameData.Floor.Value == 'Fools'
+
+function firepromptsnear()
+    _RunService2.Heartbeat:Wait(0.15)
+
+    if _LocalPlayer6.Character then
+        if not workspace.CurrentRooms:FindFirstChild('Jeff', true) then
+            local v293, v294, v295 = ipairs(u283)
+
+            while true do
+                local v296
+
+                v295, v296 = v293(v294, v295)
+
+                if v295 == nil then
+                    break
+                end
+                if v296.Parent and (not u292 or v296.Name ~= 'GoldPile') and (v296:GetAttribute('Interactions') or 0) < 1 then
+                    local v297 = v296.Parent:IsA('BasePart') and v296.Parent or v296.Parent:FindFirstChildWhichIsA('BasePart')
+
+                    if v297 and (v297.Position - _LocalPlayer6.Character.HumanoidRootPart.Position).Magnitude <= 12.5 then
+                        fireproximityprompt(v296)
+                    end
+                end
+            end
+        end
+    else
+        return
+    end
+end
+
+local u298 = nil
+
+AutoBox:AddToggle('AutoInteract', {
+    Text = 'Auto Interact',
+    Default = false,
+    Callback = function(p299)
+        if p299 then
+            u291()
+
+            u298 = _RunService2.Heartbeat:Connect(firepromptsnear)
+        else
+            if u298 then
+                u298:Disconnect()
+
+                u298 = nil
+            end
+
+            table.clear(u283)
+        end
+    end,
+}):AddKeyPicker('Auto Interact Keybind', {
+    Default = 'R',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'Auto Interact',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+AutoBox:AddDivider()
+
+local u300 = {}
+
+AutoBox:AddToggle('InteractInstant', {
+    Text = 'Interact Instant',
+    Default = false,
+    Callback = function(p301)
+        if p301 then
+            local v302, v303, v304 = ipairs(workspace:GetDescendants())
+
+            while true do
+                local v305
+
+                v304, v305 = v302(v303, v304)
+
+                if v304 == nil then
+                    break
+                end
+                if v305:IsA('ProximityPrompt') then
+                    u300[v305] = v305.HoldDuration
+                    v305.HoldDuration = 0
+                end
+            end
+        else
+            local v306, v307, v308 = pairs(u300)
+
+            while true do
+                local v309
+
+                v308, v309 = v306(v307, v308)
+
+                if v308 == nil then
+                    break
+                end
+                if v308 and v308.Parent then
+                    v308.HoldDuration = v309
+                end
+            end
+
+            table.clear(u300)
+        end
+    end,
+})
+
+local u310 = {
+    GlobalShadows = Lighting.GlobalShadows,
+    Brightness = Lighting.Brightness,
+    ClockTime = Lighting.ClockTime,
+    FogEnd = Lighting.FogEnd,
+    OutdoorAmbient = Lighting.OutdoorAmbient,
+    ExposureCompensation = Lighting.ExposureCompensation,
+}
+local u311 = nil
+
+local function u312()
+    Lighting.GlobalShadows = false
+    Lighting.Brightness = 1.5
+    Lighting.ClockTime = 14
+    Lighting.FogEnd = 1000000
+    Lighting.OutdoorAmbient = Color3.fromRGB(192, 192, 192)
+    Lighting.ExposureCompensation = 0.25
+end
+local function u313()
+    Lighting.GlobalShadows = u310.GlobalShadows
+    Lighting.Brightness = u310.Brightness
+    Lighting.ClockTime = u310.ClockTime
+    Lighting.FogEnd = u310.FogEnd
+    Lighting.OutdoorAmbient = u310.OutdoorAmbient
+    Lighting.ExposureCompensation = u310.ExposureCompensation
+end
+
+ESPSettings:AddToggle('FullBright', {
+    Text = 'FullBright',
+    Default = false,
+    Callback = function(p314)
+        if u311 then
+            u311:Disconnect()
+
+            u311 = nil
+        end
+
+        u313()
+
+        if p314 then
+            u312()
+
+            u311 = Lighting.Changed:Connect(function(p315)
+                if p315 == 'GlobalShadows' or (p315 == 'Brightness' or (p315 == 'ClockTime' or (p315 == 'FogEnd' or (p315 == 'OutdoorAmbient' or p315 == 'ExposureCompensation')))) then
+                    u312()
+                end
+            end)
+        end
+    end,
+})
+
+local u316 = false
+
+old = hookmetamethod(game, '__namecall', newcclosure(function(p317, ...)
+    if u316 and (getnamecallmethod() == 'FireServer' and p317.Name == 'ClutchHeartbeat') then
+        return false
+    else
+        return old(p317, ...)
+    end
+end))
+
+AutoBox:AddToggle('AntiHeartbeatMiniGame', {
+    Text = 'Auto Heartbeat Minigame',
+    Default = false,
+    Callback = function(p318)
+        u316 = p318
+    end,
+})
+BypassBox:AddDivider()
+
+local _LocalPlayer8 = game.Players.LocalPlayer
+local u320 = false
+
+game:GetService('RunService')
+
+local function u324(p321)
+    local _Collision = p321:FindFirstChild('Collision')
+
+    if _Collision then
+        if not p321:FindFirstChild('ClonedCollision') then
+            local v323 = _Collision:Clone()
+
+            v323.Name = 'ClonedCollision'
+            v323.Massless = true
+            v323.Parent = p321
+        end
+    end
+end
+local function u326()
+    while u320 do
+        task.wait(0.215)
+
+        local _Character2 = _LocalPlayer8.Character
+
+        if not (_Character2 and _Character2:FindFirstChild('ClonedCollision')) then
+            break
+        end
+        if _Character2.HumanoidRootPart.Anchored or Toggles.NB.Value then
+            _Character2.ClonedCollision.Massless = true
+
+            task.wait(0.35)
+        else
+            _Character2.ClonedCollision.Massless = false
+
+            task.wait(0.215)
+
+            _Character2.ClonedCollision.Massless = true
+        end
+    end
+
+    if _LocalPlayer8.Character and _LocalPlayer8.Character:FindFirstChild('ClonedCollision') then
+        _LocalPlayer8.Character.ClonedCollision.Massless = true
+    end
+end
+
+_LocalPlayer8.CharacterAdded:Connect(function(p327)
+    task.wait(1)
+
+    if u320 then
+        u324(p327)
+    end
+end)
+BypassBox:AddToggle('SpeedBypass', {
+    Text = 'Speed Bypass',
+    Default = false,
+    Tooltip = 'Bypasses game speed anticheat',
+    Callback = function(p328)
+        u320 = p328
+
+        local _Character3 = _LocalPlayer8.Character
+
+        if _Character3 then
+            u324(_Character3)
+        end
+
+        SpeedSlider:SetMax(p328 and 75 or 7)
+
+        if p328 then
+            task.spawn(u326)
+        end
+    end,
+})
+game:GetService('ReplicatedStorage')
+
+local _Players3 = game:GetService('Players')
+
+game:GetService('RunService')
+
+local _LocalPlayer9 = _Players3.LocalPlayer
+local u332 = _LocalPlayer9.Character or _LocalPlayer9.CharacterAdded:Wait()
+local u333 = nil
+local u334 = 1.98
+local u335 = false
+
+local function v337(p336)
+    u332 = p336
+    u333 = nil
+
+    u332:WaitForChild('HumanoidRootPart', 3)
+
+    u333 = u332:FindFirstChild('Collision')
+
+    if u335 and u333 then
+        u333.Position = u333.Position - Vector3.new(0, u334, 0)
+    end
+end
+
+_LocalPlayer9.CharacterAdded:Connect(v337)
+
+if u332 then
+    v337(u332)
+end
+
+Godmode = BypassBox:AddToggle('Godmode', {
+    Text = 'God Mode',
+    Default = false,
+    Tooltip = 'Make you Invincible To Entities',
+    Callback = function(p338)
+        u335 = p338
+
+        if u333 then
+            if u335 then
+                u333.Position = u333.Position - Vector3.new(0, u334, 0)
+            else
+                u333.Position = u333.Position + Vector3.new(0, u334, 0)
+            end
+        end
+    end,
+}):AddKeyPicker('Avoid Entities Keybind', {
+    Default = 'G',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'God Mode',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+
+local _Players4 = game:GetService('Players')
+local _RunService4 = game:GetService('RunService')
+local _Workspace3 = game:GetService('Workspace')
+local _LocalPlayer10 = _Players4.LocalPlayer
+local u343 = _LocalPlayer10.Character or _LocalPlayer10.CharacterAdded:Wait()
+local v344 = u343
+local u345 = u343.WaitForChild(v344, 'HumanoidRootPart')
+local u346 = 5
+local u347 = 1
+local u348 = 0.2
+local u349 = 0.1
+local u350 = false
+local u351 = false
+local u352 = nil
+local u353 = nil
+local u354 = RaycastParams.new()
+
+u354.FilterType = Enum.RaycastFilterType.Exclude
+u354.IgnoreWater = true
+
+local function u355()
+    u354.FilterDescendantsInstances = {u343}
+end
+
+u355()
+_LocalPlayer10.CharacterAdded:Connect(function(p356)
+    u343 = p356
+    u345 = u343:WaitForChild('HumanoidRootPart')
+
+    u355()
+end)
+
+local u357 = {
+    Door = true,
+    DoorNormal = true,
+    Luggage_Cart_Crouch = true,
+}
+
+local function u359()
+    u351 = true
+
+    for _ = 1, u347 do
+        if not u350 then
+            break
+        end
+
+        local _Collision2 = u343:FindFirstChild('Collision')
+        local _ = _Collision2.CFrame
+
+        if _Collision2 then
+            _Collision2:PivotTo(_Collision2.CFrame * CFrame.new(0, 0, 5000))
+        end
+
+        _RunService4.Heartbeat:Wait()
+    end
+
+    task.delay(0.09, function()
+        if collisionPart then
+            collisionPart:PivotTo(cframe)
+
+            if u353 then
+                u353:Disconnect()
+
+                u353 = nil
+            end
+        end
+    end)
+    task.delay(u348, function()
+        u351 = false
+    end)
+end
+
+function onEnforce()
+    if not u350 then
+        if u353 then
+            u353:Disconnect()
+
+            u353 = nil
+        end
+    end
+end
+
+throttleAccum = 0
+
+local function u362(p360)
+    if u351 then
+        return
+    else
+        throttleAccum = throttleAccum + p360
+
+        if throttleAccum >= u349 then
+            throttleAccum = 0
+
+            if u345 and u345.Parent then
+                origin = u345.Position
+                direction = u345.CFrame.LookVector * u346
+                hitResult = _Workspace3:Raycast(origin, direction, u354)
+
+                if hitResult and hitResult.Instance:IsA('BasePart') then
+                    local _Parent2 = hitResult.Instance.Parent
+
+                    if _Parent2 then
+                        _Parent2 = hitResult.Instance.Parent.Name
+                    end
+                    if not u357[_Parent2] then
+                        u359()
+
+                        if not u353 then
+                            u353 = _RunService4.Heartbeat:Connect(onEnforce)
+                        end
+                    end
+                end
+            end
+        else
+            return
+        end
+    end
+end
+
+BypassBox:AddToggle('NB', {
+    Text = 'Noclip Bypass',
+    Default = false,
+    Callback = function(p363)
+        u350 = p363
+        u351 = false
+        throttleAccum = 0
+
+        if p363 then
+            u355()
+
+            if u352 then
+                u352:Disconnect()
+
+                u352 = nil
+            end
+
+            u352 = _RunService4.Heartbeat:Connect(u362)
+        else
+            if u352 then
+                u352:Disconnect()
+
+                u352 = nil
+            end
+            if u353 then
+                u353:Disconnect()
+
+                u353 = nil
+            end
+
+            u351 = false
+        end
+    end,
+}):AddKeyPicker('NB Keybind', {
+    Default = 'B',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'Noclip Bypass',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+BypassBox:AddDivider()
+
+if _ReplicatedStorage3:FindFirstChild('Bricks') or _ReplicatedStorage3:FindFirstChild('EntityInfo') then
+    local u364 = false
+    local u365 = nil
+
+    FloorsBx:AddToggle('DeleteSeekFE', {
+        Text = 'Delete Seek (FE)',
+        Default = false,
+        Tooltip = 'Makes Seek never appear',
+        Callback = function(p366)
+            u364 = p366
+
+            if u365 and coroutine.status(u365) ~= 'dead' then
+                u364 = false
+
+                task.wait(0.3)
+            end
+            if u364 then
+                u365 = coroutine.create(function()
+                    while u364 do
+                        task.wait(0.3)
+
+                        local _TriggerSeek = workspace:FindFirstChild('TriggerSeek', true)
+
+                        if _TriggerSeek then
+                            _TriggerSeek:Destroy()
+                        end
+
+                        local _TriggerEventCollision = workspace:FindFirstChild('TriggerEventCollision', true)
+
+                        if _TriggerEventCollision then
+                            _TriggerEventCollision:ClearAllChildren()
+                        end
+                    end
+                end)
+
+                coroutine.resume(u365)
+            end
+        end,
+    })
+end
+if _ReplicatedStorage3.GameData.Floor.Value == 'Retro' then
+    local _LatestRoom = _ReplicatedStorage3.GameData.LatestRoom
+    local u370 = nil
+    local u371 = nil
+
+    FloorsBx:AddToggle('AntiFakeBridge', {
+        Text = 'Remove Fake Bridge',
+        Default = false,
+        Callback = function(p372)
+            if u370 then
+                u370:Disconnect()
+
+                u370 = nil
+            end
+            if u371 then
+                u371:Disconnect()
+
+                u371 = nil
+            end
+            if p372 then
+                local function u379(p373)
+                    local v374, v375, v376 = ipairs(p373:GetDescendants())
+
+                    while true do
+                        local v377
+
+                        v376, v377 = v374(v375, v376)
+
+                        if v376 == nil then
+                            break
+                        end
+                        if v377:IsA('BasePart') and (v377.Name == 'Bridge' and not v377.CanCollide) then
+                            v377:Destroy()
+                        end
+                    end
+
+                    u370 = p373.DescendantAdded:Connect(function(p378)
+                        if p378:IsA('BasePart') and (p378.Name == 'Bridge' and not p378.CanCollide) then
+                            p378:Destroy()
+                        end
+                    end)
+                end
+                local function v381()
+                    if u370 then
+                        u370:Disconnect()
+
+                        u370 = nil
+                    end
+
+                    local v380 = workspace.CurrentRooms:FindFirstChild(_LatestRoom.Value)
+
+                    if v380 then
+                        u379(v380)
+                    end
+                end
+
+                v381()
+
+                u371 = _LatestRoom.Changed:Connect(v381)
+            end
+        end,
+    })
+end
+
+local _Workspace4 = game:GetService('Workspace')
+
+game:GetService('RunService')
+
+local _ReplicatedStorage5 = game:GetService('ReplicatedStorage')
+
+game:GetService('Players')
+
+local _LatestRoom2 = _ReplicatedStorage5:WaitForChild('GameData'):WaitForChild('LatestRoom')
+local _CurrentRooms = _Workspace4:WaitForChild('CurrentRooms')
+
+function currentRoom()
+    return _CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value]
+end
+
+notifyentities = {
+    RushMoving = {
+        'Rush',
+        'Find a hiding spot.',
+    },
+    AmbushMoving = {
+        'Ambush',
+        'Hide multiple times!',
+    },
+    A60 = {
+        'A-60',
+        'Hide immediately!',
+    },
+    A120 = {
+        'A-120',
+        'Find A HidingSpot!',
+    },
+    JeffTheKiller = {
+        'Jeff',
+        'Keep distance and avoid.',
+    },
+    SeekMoving = {
+        'Seek',
+        'Run and dodge obstacles!',
+    },
+    SeekMovingNewClone = {
+        'Seek',
+        'Run and dodge obstacles!',
+    },
+    BackdoorRush = {
+        'Blitz',
+        'Find a hiding spot.',
+    },
+    GlitchRush = {
+        'GlitchRush',
+        'Find a hiding spot.',
+    },
+    GlitchAmbush = {
+        'Glitch Ambush',
+        'Find HidingSpot!',
+    },
+    GiggleCeiling = {
+        'Giggle',
+        'Avoid it.',
+    },
+    Eyes = {
+        'Eyes',
+        "Don't look at it.",
+    },
+    BackdoorLookman = {
+        'Lookman',
+        "Don't look at it.",
+    },
+}
+tracked_notify = {}
+tracked_chat = {}
+
+ESPBox:AddToggle('EntityNotify', {
+    Text = 'Entities Notify',
+    Default = false,
+    Callback = function(p386)
+        local v387, v388, v389 = pairs(tracked_notify)
+
+        while true do
+            v389 = v387(v388, v389)
+
+            if v389 == nil then
+                break
+            end
+
+            tracked_notify[v389] = nil
+        end
+
+        if p386 then
+            local v390, v391, v392 = ipairs(workspace:GetDescendants())
+
+            while true do
+                local v393
+
+                v392, v393 = v390(v391, v392)
+
+                if v392 == nil then
+                    break
+                end
+                if v393:IsA('Model') then
+                    data = notifyentities[v393.Name]
+
+                    if data and not tracked_notify[v393] then
+                        tracked_notify[v393] = true
+
+                        Library:Notify(('\u{fffd}\u{fffd} %s has spawned! %s'):format(data[1], data[2]), 4)
+                        u4()
+                    end
+                end
+            end
+        end
+    end,
+})
+ESPBox:AddToggle('ChatNotify', {
+    Text = 'Chat Notify',
+    Default = false,
+    Callback = function(p394)
+        local v395, v396, v397 = pairs(tracked_chat)
+
+        while true do
+            v397 = v395(v396, v397)
+
+            if v397 == nil then
+                break
+            end
+
+            tracked_chat[v397] = nil
+        end
+
+        if p394 then
+            local v398, v399, v400 = ipairs(workspace:GetDescendants())
+
+            while true do
+                local v401
+
+                v400, v401 = v398(v399, v400)
+
+                if v400 == nil then
+                    break
+                end
+                if v401:IsA('Model') then
+                    data = notifyentities[v401.Name]
+
+                    if data and not tracked_chat[v401] then
+                        tracked_chat[v401] = true
+
+                        ChatNotify(('\u{fffd}\u{fffd} %s has spawned! %s'):format(data[1], data[2]))
+                        u4()
+                    end
+                end
+            end
+        end
+    end,
+})
+ESPBox:AddDivider()
+
+EntityNames = {
+    RushMoving = 'Rush',
+    AmbushMoving = 'Ambush',
+    A60 = 'A-60',
+    A120 = 'A-120',
+    BackdoorRush = 'Blitz',
+    SallyWindow = 'Sally',
+    JeffTheKiller = 'Jeff',
+    GrumbleRig = 'Grumble',
+    GiggleCeiling = 'Giggle',
+    Snare = 'Snare',
+    FigureRig = 'Figure',
+    FigureRagdoll = 'Figure',
+    BananaPeel = 'BananaPeel',
+    SeekMovingNewClone = 'Seek',
+    SeekMoving = 'Seek',
+    GlitchRush = 'GlitchRush',
+    Eyes = 'Eyes',
+    GlitchAmbush = 'GlitchAmbush',
+    BackdoorLookman = 'Lookman',
+    Screech = 'Screech',
+    GlitchedScreech = 'GlitchedScreech',
+}
+tracked = {}
+State = false
+EspCon = nil
+
+function getbasepart(p402)
+    local function u409(p403)
+        local v404, v405, v406 = ipairs(p403:GetChildren())
+
+        while true do
+            local v407
+
+            v406, v407 = v404(v405, v406)
+
+            if v406 == nil then
+                break
+            end
+            if v407:IsA('BasePart') then
+                return v407
+            end
+
+            local v408 = u409(v407)
+
+            if v408 then
+                return v408
+            end
+        end
+    end
+
+    local v410
+
+    if p402:FindFirstChildOfClass('BasePart') then
+        v410 = u409
+    else
+        u409(p402)
+
+        v410 = u409
+    end
+
+    repeat
+        task.wait()
+
+        local v411 = p402:FindFirstChildOfClass('BasePart') or v410(p402)
+    until v411
+
+    return v411
+end
+function createesp(p412)
+    if EntityNames[p412.Name] and not tracked[p412] then
+        getbasepart(p412).Transparency = 0.99
+
+        if not p412:FindFirstChild('Humanoid') then
+            Instance.new('Humanoid', p412)
+        end
+
+        local v413 = ESPLibrary:AddESP({
+            Object = p412,
+            Text = EntityNames[p412.Name],
+            Color = Color3.fromRGB(255, 0, 0),
+        })
+
+        tracked[p412] = v413
+    end
+end
+function removeallesp()
+    local v414, v415, v416 = pairs(tracked)
+
+    while true do
+        local v417
+
+        v416, v417 = v414(v415, v416)
+
+        if v416 == nil then
+            break
+        end
+
+        ESPLibrary:RemoveESP(v417)
+
+        tracked[v416] = nil
+    end
+end
+
+ESPBox:AddToggle('EntityESP', {
+    Text = 'Entities',
+    Default = false,
+    Callback = function(p418)
+        State = p418
+
+        if EspCon then
+            EspCon:Disconnect()
+
+            EspCon = nil
+        end
+
+        removeallesp()
+
+        if State then
+            local v419 = workspace:GetDescendants()
+
+            for v420 = 1, #v419 do
+                local v421 = v419[v420]
+
+                if EntityNames[v421.Name] then
+                    createesp(v421)
+                end
+            end
+        end
+    end,
+})
+
+local _LatestRoom3 = game.ReplicatedStorage.GameData.LatestRoom
+
+local function v448(p423, p424, p425, p426)
+    local u427 = {}
+    local u428 = nil
+    local u429 = nil
+    local u430 = nil
+
+    local function u436(p431)
+        if u427[p431] then
+            return
+        else
+            local v432
+
+            if p431.Name ~= 'Door' then
+                v432 = p431
+            else
+                v432 = p431.PrimaryPart or p431
+            end
+            if v432 then
+                local v433
+
+                if type(p425) ~= 'function' then
+                    v433 = tostring(p425)
+                else
+                    local v434, v435 = pcall(function()
+                        return p425(p431)
+                    end)
+
+                    v433 = v434 and v435 and v435 or ''
+                end
+
+                u427[p431] = ESPLibrary:AddESP({
+                    Object = v432,
+                    Text = v433,
+                    Color = p426,
+                })
+            end
+        end
+    end
+
+    function clearTracked()
+        local v437, v438, v439 = pairs(u427)
+
+        while true do
+            local v440
+
+            v439, v440 = v437(v438, v439)
+
+            if v439 == nil then
+                break
+            end
+
+            ESPLibrary:RemoveESP(v440)
+        end
+
+        table.clear(u427)
+    end
+
+    local function u441()
+        if u428 then
+            u428:Disconnect()
+
+            u428 = nil
+        end
+        if u429 then
+            u429:Disconnect()
+
+            u429 = nil
+        end
+    end
+    local function u446(p442)
+        clearTracked()
+        u441()
+
+        if p442 then
+            local v443 = p442:GetDescendants()
+
+            for v444 = 1, #v443 do
+                local v445 = v443[v444]
+
+                if p424(v445) then
+                    u436(v445)
+                end
+            end
+        end
+    end
+
+    ESPBox:AddToggle(p423, {
+        Text = p423,
+        Default = false,
+        Callback = function(p447)
+            if u430 then
+                u430:Disconnect()
+
+                u430 = nil
+            end
+
+            u441()
+            clearTracked()
+
+            if p447 then
+                u430 = _LatestRoom3:GetPropertyChangedSignal('Value'):Connect(function()
+                    u446(currentRoom())
+                end)
+
+                u446(currentRoom())
+            end
+        end,
+    })
+end
+
+v448('Door', function(p449)
+    local _Model = p449:IsA('Model')
+
+    if _Model then
+        _Model = p449.Name == 'Door'
+    end
+
+    return _Model
+end, function(p451)
+    return p451:FindFirstChild('Lock') and 'Locked Door' or 'Door'
+end, Color3.fromRGB(0, 0, 255))
+v448('HidingSpot', function(p452)
+    if p452.Name == 'Wardrobe' or (p452.Name == 'Rooms_Locker' or (p452.Name == 'Backdoor_Wardrobe' or (p452.Name == 'Toolshed' or (p452.Name == 'Locker_Large' or (p452.Name == 'Bed' or (p452.Name == 'CircularVent' or (p452.Name == 'Rooms_Locker_Fridge' or (p452.Name == 'RetroWardrobe' or (p452.Name == 'Dumpster' or p452.Name == 'Double_Bed'))))))))) then
+        return p452
+    end
+end, function(p453)
+    if p453.Name == 'Bed' or p453.Name == 'Double_Bed' then
+        return 'Bed'
+    end
+    if p453.Name == 'Rooms_Locker' or p453.Name == 'Locker_Large' then
+        return 'Locker'
+    end
+    if p453.Name == 'Wardrobe' or (p453.Name == 'Backdoor_Wardrobe' or (p453.Name == 'Toolshed' or p453.Name == 'RetroWardrobe')) then
+        return 'Closet'
+    end
+    if p453.Name == 'CircularVent' then
+        return 'Hiding Vent'
+    end
+    if p453.Name == 'Rooms_Locker_Fridge' then
+        return 'Locker_Fridge'
+    end
+    if p453.Name == 'Dumpster' then
+        return 'Dumpster'
+    end
+end, Color3.fromRGB(0, 255, 0))
+v448('Key', function(p454)
+    if p454.Name == 'KeyObtain' then
+        return p454
+    end
+end, 'Key', Color3.fromRGB(0, 255, 0))
+v448('Chest', function(p455)
+    return p455.Name == 'Toolbox' or (p455.Name == 'Toolbox_Locked' or (p455.Name == 'ChestBox' or (p455.Name == 'Chest_Vine' or p455.Name == 'ChestBoxLocked')))
+end, function(p456)
+    return p456.Name
+end, Color3.fromRGB(0, 0, 255))
+v448('Library Books', function(p457)
+    if p457:IsA('Model') and p457.Name == 'LiveHintBook' then
+        return p457
+    end
+end, 'Book', Color3.fromRGB(0, 0, 255))
+v448('Gate Lever', function(p458)
+    if p458:IsA('Model') and p458.Name == 'LeverForGate' then
+        return p458
+    end
+end, 'Gate Lever', Color3.fromRGB(0, 0, 255))
+v448('Breaker', function(p459)
+    if p459.Name == 'LiveBreakerPolePickup' then
+        return p459
+    end
+end, 'Breaker', Color3.fromRGB(0, 255, 0))
+v448('Timer Lever', function(p460)
+    if p460.Name == 'TimerLever' then
+        return p460
+    end
+end, 'TimerLever', Color3.fromRGB(0, 0, 255))
+v448('Generator', function(p461)
+    if p461.Name == 'MinesGenerator' then
+        return p461
+    end
+end, 'Generator', Color3.fromRGB(0, 255, 0))
+v448('Fuse', function(p462)
+    if p462.Name == 'FuseObtain' then
+        return p462
+    end
+end, 'Fuse', Color3.fromRGB(0, 255, 0))
+v448('Chest', function(p463)
+    return p463.Name == 'Toolbox' or (p463.Name == 'Toolbox_Locked' or (p463.Name == 'Chest' or (p463.Name == 'Chest_Vine' or p463.Name == 'Chest_Locked')))
+end, function(p464)
+    return p464.Name
+end, Color3.fromRGB(0, 0, 255))
+
+local v465 = {
+    {
+        Toggle = 'Anchor',
+        Target = 'MinesAnchor',
+        Label = 'Anchor',
+    },
+    {
+        Toggle = 'Electrical Key',
+        Target = 'ElectricalKeyObtain',
+        Label = 'ElectricalKey',
+    },
+    {
+        Toggle = 'Water Pump',
+        Target = 'WaterPump',
+        Label = 'WaterPump',
+    },
+}
+local u466 = u277
+local u467 = u343
+local u468 = u283
+local u469 = u332
+local u470 = u286
+
+for v471 = 1, #v465 do
+    local u472 = v465[v471]
+
+    v448(u472.Toggle, function(p473)
+        if p473.Name == u472.Target then
+            return p473
+        end
+    end, u472.Label, Color3.fromRGB(0, 255, 0))
+end
+
+local _Players5 = game:GetService('Players')
+local _LocalPlayer11 = _Players5.LocalPlayer
+
+ESPBox:AddToggle('Players', {
+    Text = 'Players',
+    Default = false,
+}):OnChanged(function(p476)
+    if p476 then
+        local v477 = _Players5
+        local v478, v479, v480 = pairs(v477:GetPlayers())
+
+        while true do
+            local v481
+
+            v480, v481 = v478(v479, v480)
+
+            if v480 == nil then
+                break
+            end
+            if v481 ~= _LocalPlayer11 and v481.Character then
+                ESPLibrary:AddESP({
+                    Object = v481.Character,
+                    Text = v481.Name,
+                    Color = Color3.fromRGB(0, 150, 255),
+                })
+            end
+        end
+    else
+        local v482 = _Players5
+        local v483, v484, v485 = pairs(v482:GetPlayers())
+
+        while true do
+            local v486
+
+            v485, v486 = v483(v484, v485)
+
+            if v485 == nil then
+                break
+            end
+            if v486.Character then
+                ESPLibrary:RemoveESP(v486.Character)
+            end
+        end
+    end
+end)
+_Players5.PlayerAdded:Connect(function(p487)
+    p487.CharacterAdded:Connect(function(p488)
+        if Toggles.Players.Value then
+            if p487 ~= _LocalPlayer11 then
+                ESPLibrary:AddESP({
+                    Object = p488,
+                    Text = p487.Name,
+                    Color = Color3.fromRGB(0, 150, 255),
+                })
+            end
+        end
+    end)
+end)
+
+local v489, v490, v491 = ipairs({
+    'Flashlight',
+    'Lockpick',
+    'Vitamins',
+    'Bandage',
+    'StarVial',
+    'StarBottle',
+    'StarJug',
+    'Shakelight',
+    'Straplight',
+    'Bulklight',
+    'Battery',
+    'Candle',
+    'Crucifix',
+    'CrucifixWall',
+    'Glowsticks',
+    'SkeletonKey',
+    'Candy',
+    'ShieldMini',
+    'ShieldBig',
+    'BandagePack',
+    'BatteryPack',
+    'RiftCandle',
+    'LaserPointer',
+    'HolyGrenade',
+    'Shears',
+    'Smoothie',
+    'Cheese',
+    'Bread',
+    'AlarmClock',
+    'RiftSmoothie',
+    'GweenSoda',
+    'GlitchCub',
+})
+local u492 = _LocalPlayer11
+local u493 = {}
+local u494 = {}
+local u495 = nil
+local u496 = nil
+
+while true do
+    local v497
+
+    v491, v497 = v489(v490, v491)
+
+    if v491 == nil then
+        break
+    end
+
+    u493[v497] = true
+end
+
+local function u502()
+    local v498, v499, v500 = pairs(u494)
+
+    while true do
+        local v501
+
+        v500, v501 = v498(v499, v500)
+
+        if v500 == nil then
+            break
+        end
+
+        ESPLibrary:RemoveESP(v501)
+    end
+
+    u494 = {}
+
+    if u495 then
+        u495:Disconnect()
+
+        u495 = nil
+    end
+end
+local function u504(p503)
+    if not u494[p503] and p503 then
+        u494[p503] = ESPLibrary:AddESP({
+            Object = p503,
+            Text = p503.Name,
+            Color = Color3.fromRGB(255, 215, 0),
+        })
+    end
+end
+local function u506(p505)
+    if u494[p505] then
+        ESPLibrary:RemoveESP(u494[p505])
+
+        u494[p505] = nil
+    end
+end
+local function u512()
+    u502()
+
+    local v507 = currentRoom()
+
+    if v507 then
+        local v508, v509, v510 = ipairs(v507:GetDescendants())
+
+        while true do
+            local v511
+
+            v510, v511 = v508(v509, v510)
+
+            if v510 == nil then
+                break
+            end
+            if u493[v511.Name] then
+                u504(v511)
+            end
+        end
+
+        u495 = v507.DescendantRemoving:Connect(u506)
+    end
+end
+
+ESPBox:AddToggle('Items', {
+    Text = 'Items',
+    Default = false,
+    Callback = function(p513)
+        u502()
+
+        if u496 then
+            u496:Disconnect()
+
+            u496 = nil
+        end
+        if p513 then
+            u512()
+
+            u496 = _LatestRoom2.Changed:Connect(u512)
+        end
+    end,
+})
+
+local u514 = {}
+
+local function u519()
+    local v515, v516, v517 = pairs(u514)
+
+    while true do
+        local v518
+
+        v517, v518 = v515(v516, v517)
+
+        if v517 == nil then
+            break
+        end
+        if v518.ancestryConn then
+            v518.ancestryConn:Disconnect()
+        end
+        if v518.handle then
+            ESPLibrary:RemoveESP(v518.handle)
+        end
+    end
+
+    u514 = {}
+end
+local function u523(p520)
+    if u514[p520] then
+        return
+    else
+        local _GoldValue = p520:GetAttribute('GoldValue')
+
+        if _GoldValue then
+            u514[p520] = {
+                handle = ESPLibrary:AddESP({
+                    Object = p520,
+                    Text = 'Gold ' .. tostring(_GoldValue),
+                    Color = Color3.fromRGB(255, 215, 0),
+                }),
+                ancestryConn = p520.AncestryChanged:Connect(function(_, p522)
+                    if not (p522 and p520:IsDescendantOf(workspace.CurrentRooms)) and u514[p520] then
+                        if u514[p520].handle then
+                            ESPLibrary:RemoveESP(u514[p520].handle)
+                        end
+                        if u514[p520].ancestryConn then
+                            u514[p520].ancestryConn:Disconnect()
+                        end
+
+                        u514[p520] = nil
+                    end
+                end),
+            }
+        end
+    end
+end
+
+ESPBox:AddToggle('Gold', {
+    Text = 'Gold',
+    Default = false,
+    Callback = function(p524)
+        u519()
+
+        if p524 then
+            local v525, v526, v527 = pairs(workspace.CurrentRooms:GetDescendants())
+
+            while true do
+                local v528
+
+                v527, v528 = v525(v526, v527)
+
+                if v527 == nil then
+                    break
+                end
+                if v528.Name == 'GoldPile' then
+                    u523(v528)
+                end
+            end
+        end
+    end,
+})
+ESPSettings:AddToggle('Rainbow ESP', {
+    Text = 'Rainbow Esp',
+    Default = false,
+    Callback = function(p529)
+        ESPLibrary:SetRainbow(p529)
+    end,
+})
+ESPSettings:AddToggle('Traces ESP', {
+    Text = 'Tracers Esp',
+    Default = false,
+    Callback = function(p530)
+        ESPLibrary:SetTracers(p530)
+    end,
+})
+ESPSettings:AddToggle('Distance Meters ESP', {
+    Text = 'Distance Meters Esp',
+    Default = false,
+    Callback = function(p531)
+        ESPLibrary:SetShowDistance(p531)
+    end,
+})
+
+infinitevalue = false
+clonedprompts = {}
+infinitecheck = nil
+
+function handleprompt(p532)
+    if p532:IsA('ProximityPrompt') and not clonedprompts[p532] then
+        local v533 = p532.Parent and (p532.Parent.Name or '') or ''
+
+        if p532.Name == 'ActivateEventPrompt' and (v533 == 'Chest_Vine' or (v533 == 'ChestBoxLocked' or v533 == 'Toolbox_Locked')) or (p532.Name == 'UnlockPrompt' or (p532.Name == 'FusesPrompt' or p532.Name == 'SkullPrompt')) then
+            local u534 = p532:Clone()
+
+            u534.Name = 'FakePrompt'
+            clonedprompts[p532] = u534
+            u534.Parent = p532.Parent
+            u534.Enabled = true
+            u534.ClickablePrompt = true
+
+            local v535 = u534
+
+            u534.SetAttribute(v535, 'Interaction', 0)
+
+            p532.Enabled = false
+            p532.ClickablePrompt = false
+
+            u534.Triggered:Connect(function()
+                local _Character4 = u492.Character
+
+                if _Character4 then
+                    _Character4 = u492.Character:FindFirstChildOfClass('Tool')
+                end
+                if _Character4 then
+                    local _RemotesFolder3 = _ReplicatedStorage5:FindFirstChild('RemotesFolder')
+
+                    if _RemotesFolder3 then
+                        _RemotesFolder3.DropItem:FireServer(_Character4)
+                        workspace.Drops.ChildAdded:Wait()
+
+                        local _Model2 = workspace.Drops:FindFirstChildOfClass('Model')
+                        local v539 = _Model2 and _Model2:FindFirstChildOfClass('ProximityPrompt')
+
+                        if v539 then
+                            fireproximityprompt(v539)
+                        end
+
+                        fireproximityprompt(p532)
+                        u534:SetAttribute('Interaction', (u534:GetAttribute('Interaction') or 0) + 1)
+                    end
+                else
+                    return
+                end
+            end)
+        end
+    end
+end
+function refreshprompts()
+    local _Character5 = u492.Character
+
+    if not _Character5 or _Character5:FindFirstChild('Lockpick') or (_Character5:FindFirstChild('SkeletonKey') or _Character5:FindFirstChild('Shears')) then
+        local v541, v542, v543 = ipairs(workspace:GetDescendants())
+
+        while true do
+            local v544
+
+            v543, v544 = v541(v542, v543)
+
+            if v543 == nil then
+                break
+            end
+            if v544:IsA('ProximityPrompt') then
+                handleprompt(v544)
+            end
+        end
+    else
+        local v545, v546, v547 = pairs(clonedprompts)
+
+        while true do
+            local v548
+
+            v547, v548 = v545(v546, v547)
+
+            if v547 == nil then
+                break
+            end
+            if v548 then
+                v548:Destroy()
+            end
+            if v547 and v547:IsDescendantOf(workspace) then
+                v547.Enabled = true
+                v547.ClickablePrompt = true
+            end
+
+            clonedprompts[v547] = nil
+        end
+    end
+end
+function startinfinite()
+    if not infinitecheck then
+        infinitecheck = task.spawn(function()
+            while infinitevalue do
+                refreshprompts()
+                task.wait(0.12)
+            end
+        end)
+    end
+end
+function stopinfinite()
+    infinitevalue = false
+
+    if infinitecheck then
+        infinitecheck = nil
+    end
+
+    local v549, v550, v551 = pairs(clonedprompts)
+
+    while true do
+        local v552
+
+        v551, v552 = v549(v550, v551)
+
+        if v551 == nil then
+            break
+        end
+        if v552 then
+            v552:Destroy()
+        end
+        if v551 and v551:IsDescendantOf(workspace) then
+            v551.Enabled = true
+            v551.ClickablePrompt = true
+        end
+    end
+
+    table.clear(clonedprompts)
+end
+
+PlayerBox:AddToggle('InfiniteItems', {
+    Text = 'Infinite Items',
+    Default = false,
+    Callback = function(p553)
+        if p553 then
+            if not _ReplicatedStorage5:FindFirstChild('RemotesFolder') then
+                return
+            end
+
+            infinitevalue = true
+
+            startinfinite()
+        else
+            stopinfinite()
+        end
+    end,
+})
+PlayerBox:AddDivider()
+ESPSettings:AddSlider('Text Size', {
+    Text = 'Text Size',
+    Min = 16,
+    Max = 26,
+    Default = 23,
+    Rounding = 0,
+    Callback = function(p554)
+        ESPLibrary:SetTextSize(p554)
+    end,
+})
+ESPSettings:AddDivider()
+AntiBox:AddToggle('AntiJamming', {
+    Text = 'Anti-Jamming',
+    Default = false,
+    Callback = function(p555)
+        if game.ReplicatedStorage:WaitForChild('LiveModifiers').Jammin then
+            local _Main = game.SoundService:FindFirstChild('Main')
+            local v557 = _Main and _Main:FindFirstChild('Jamming')
+
+            if v557 then
+                v557.Enabled = not p555
+            end
+
+            local _PlayerGui3 = u492:FindFirstChild('PlayerGui')
+
+            if _PlayerGui3 then
+                _PlayerGui3 = u492.PlayerGui:FindFirstChild('MainUI')
+            end
+            if _PlayerGui3 then
+                local v559 = _PlayerGui3:FindFirstChild('Initiator') and _PlayerGui3.Initiator:FindFirstChild('Main_Game')
+
+                if v559 then
+                    v559 = _PlayerGui3.Initiator.Main_Game:FindFirstChild('Health')
+                end
+
+                local v560 = v559 and v559:FindFirstChild('Jam')
+
+                if v560 then
+                    v560.Playing = not p555
+                end
+            end
+        end
+    end,
+})
+
+local _Players6 = game:GetService('Players')
+local _Workspace5 = game:GetService('Workspace')
+local _LocalPlayer12 = _Players6.LocalPlayer
+local u564 = nil
+
+local function u565()
+    repeat
+        u564 = _Workspace5.CurrentCamera
+
+        task.wait(0.2)
+    until u564
+end
+
+u565()
+
+local u566 = 70
+local u567 = 70
+local u568 = false
+local u569 = false
+local u570 = nil
+
+local function u573()
+    if not u569 then
+        u569 = true
+
+        task.spawn(function()
+            while u569 and u566 ~= u567 do
+                local v571 = u567 - u566
+                local v572 = 0 < v571 and 2 or -2
+
+                if math.abs(v571) < 2 then
+                    v572 = v571
+                end
+
+                u566 = u566 + v572
+                u564.FieldOfView = u566
+
+                task.wait(0.009)
+            end
+
+            u569 = false
+        end)
+    end
+end
+local function u574()
+    if u570 then
+        u570:Disconnect()
+    end
+
+    u570 = u564:GetPropertyChangedSignal('FieldOfView'):Connect(function()
+        if math.abs(u564.FieldOfView - u566) > 0.1 then
+            u564.FieldOfView = u566
+        end
+    end)
+    u564.FieldOfView = u566
+end
+local function u575()
+    if u570 then
+        u570:Disconnect()
+
+        u570 = nil
+    end
+end
+
+local u576 = false
+
+local function u595(p577)
+    local _Humanoid2 = p577:FindFirstChildOfClass('Humanoid')
+
+    if _Humanoid2 then
+        local u579 = _Humanoid2:FindFirstChildOfClass('Animator') or _Humanoid2:WaitForChild('Animator', 3)
+
+        if u579 then
+            local _Animations = p577:FindFirstChild('Animations')
+
+            if _Animations then
+                local _Think1 = _Animations:FindFirstChild('Think1')
+                local _Think2 = _Animations:FindFirstChild('Think2')
+
+                if _Think1 or _Think2 then
+                    local u583 = {}
+
+                    if _Think1 and _Think1:IsA('Animation') then
+                        table.insert(u583, _Think1.AnimationId)
+                    end
+                    if _Think2 and _Think2:IsA('Animation') then
+                        table.insert(u583, _Think2.AnimationId)
+                    end
+
+                    local function v594()
+                        local v584 = u579:GetPlayingAnimationTracks()
+                        local v585, v586, v587 = pairs(v584)
+                        local v588 = false
+
+                        while true do
+                            local v589
+
+                            v587, v589 = v585(v586, v587)
+
+                            if v587 == nil then
+                                break
+                            end
+
+                            local v590, v591, v592 = pairs(u583)
+
+                            while true do
+                                local v593
+
+                                v592, v593 = v590(v591, v592)
+
+                                if v592 == nil then
+                                    break
+                                end
+                                if v589.Animation.AnimationId == v593 then
+                                    v588 = true
+
+                                    break
+                                end
+                            end
+
+                            if v588 then
+                                break
+                            end
+                        end
+
+                        if v588 and not u576 then
+                            u576 = true
+                            u566 = 70
+                            u564.FieldOfView = u566
+                        elseif not v588 and u576 then
+                            u576 = false
+
+                            if u568 then
+                                u566 = u567
+
+                                u573()
+                            end
+                        end
+                    end
+
+                    u579.AnimationPlayed:Connect(v594)
+                    v594()
+                end
+            else
+                return
+            end
+        else
+            return
+        end
+    else
+        return
+    end
+end
+
+_LocalPlayer12.CharacterAdded:Connect(function(p596)
+    u565()
+
+    if u568 then
+        u566 = u564.FieldOfView
+
+        u574()
+        u573()
+    end
+
+    u595(p596)
+end)
+
+local v597 = _Workspace5
+
+_Workspace5.GetPropertyChangedSignal(v597, 'CurrentCamera'):Connect(function()
+    u565()
+
+    if u568 then
+        u566 = u564.FieldOfView
+
+        u574()
+        u573()
+    end
+end)
+
+if _LocalPlayer12.Character then
+    u595(_LocalPlayer12.Character)
+end
+
+ESPSettings:AddSlider('FOV', {
+    Text = 'Field of View',
+    Min = 70,
+    Max = 120,
+    Default = 70,
+    Rounding = 0,
+    Callback = function(p598)
+        u567 = p598
+
+        if u568 and not u576 then
+            u573()
+        end
+    end,
+})
+ESPSettings:AddToggle('EnableFOV', {
+    Text = 'Enable Field of View',
+    Default = false,
+    Callback = function(p599)
+        u568 = p599
+
+        u565()
+
+        if p599 then
+            u566 = u564.FieldOfView
+
+            u574()
+
+            if not u576 then
+                u573()
+            end
+        else
+            u575()
+
+            u567 = 70
+
+            u573()
+        end
+    end,
+})
+ESPSettings:AddDivider()
+
+local _Lighting = game:GetService('Lighting')
+local _TweenService = game:GetService('TweenService')
+local _Atmosphere = _Lighting:FindFirstChildOfClass('Atmosphere')
+local u603 = nil
+local u604 = false
+
+AntiBox:AddToggle('AntiFog', {
+    Text = 'Anti Fog',
+    Default = false,
+    Callback = function(p605)
+        if _Atmosphere then
+            u604 = p605
+
+            if p605 then
+                if u603 == nil then
+                    u603 = _Atmosphere.Density
+                end
+
+                task.spawn(function()
+                    while u604 do
+                        _TweenService:Create(_Atmosphere, TweenInfo.new(0.5), {Density = 0}):Play()
+                        task.wait(0.8)
+                    end
+                end)
+            elseif u603 then
+                local v606 = {Density = u603}
+
+                _TweenService:Create(_Atmosphere, TweenInfo.new(0.5), v606):Play()
+            end
+        end
+    end,
+})
+
+storedFigures = {}
+
+local v607, v608, v609 = ipairs(workspace.CurrentRooms:GetDescendants())
+local u610 = u523
+local u611 = u504
+
+while true do
+    local v612, v613 = v607(v608, v609)
+
+    if v612 == nil then
+        break
+    end
+
+    v609 = v612
+
+    if v613.Name == 'FigureRagdoll' or v613.Name == 'FigureRig' then
+        table.insert(storedFigures, v613)
+    end
+end
+
+BypassBox:AddToggle('DeleteFigure', {
+    Text = 'Delete Figure',
+    Default = false,
+    Callback = function(p614)
+        if isnetworkowner then
+            while p614 do
+                local v615, v616, v617 = ipairs(storedFigures)
+
+                while true do
+                    local v618
+
+                    v617, v618 = v615(v616, v617)
+
+                    if v617 == nil then
+                        break
+                    end
+                    if v618 and (v618:FindFirstChild('Root') and isnetworkowner(v618.Root)) then
+                        v618:PivotTo(CFrame.new(0, -9999, 0))
+                    end
+                end
+
+                task.wait(0.02)
+            end
+        else
+            Library:Notify("[Delete Figure] Executor Doesn't Support isnetworkowner it wouldn't work", 4)
+        end
+    end,
+})
+
+local u619 = game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('_Shade') or game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('Shade')
+
+AntiBox:AddToggle('AN', {
+    Text = 'Anti Halt',
+    Default = false,
+    Callback = function(p620)
+        if u619 then
+            u619.Name = p620 and '_Shade' or 'Shade'
+        end
+    end,
+})
+
+local u621 = game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('_Void') or game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('Void')
+
+AntiBox:AddToggle('AVJ', {
+    Text = 'Anti Void JumpScare',
+    Default = false,
+    Callback = function(p622)
+        if u621 then
+            u621.Name = p622 and '_Void' or 'Void'
+        end
+    end,
+})
+
+local u623 = game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('_Glitch') or game:GetService('ReplicatedStorage').ClientModules.EntityModules:FindFirstChild('Glitch')
+
+AntiBox:AddToggle('AGJ', {
+    Text = 'Anti Glitch JumpScare',
+    Default = false,
+    Callback = function(p624)
+        if u623 then
+            u623.Name = p624 and '_Glitch' or 'Glitch'
+        end
+    end,
+})
+
+if _ReplicatedStorage5.GameData.Floor.Value == 'Rooms' then
+    AutoRoomsValue = false
+
+    FloorsBx:AddToggle('Auto Rooms', {
+        Text = 'Auto Rooms',
+        Default = false,
+        Callback = function(p625)
+            AutoRoomsValue = p625
+
+            if not workspace:FindFirstChild('PathfindingFolder') then
+                PathfindingFolder = Instance.new('Folder', workspace)
+                PathfindingFolder.Name = 'PathfindingFolder'
+            end
+
+            function show(p626)
+                local _Part = Instance.new('Part', workspace.PathfindingFolder)
+
+                _Part.Size = Vector3.new(0.5, 0.5, 0.5)
+                _Part.Color = Color3.new(0, 0, 1)
+                _Part.Position = p626
+                _Part.Anchored = true
+                _Part.CanCollide = false
+                _Part.Parent = workspace.PathfindingFolder
+            end
+            function getLocker()
+                local _huge = math.huge
+                local v629, v630, v631 = ipairs(workspace.CurrentRooms:GetDescendants())
+                local v632 = nil
+
+                while true do
+                    local v633
+
+                    v631, v633 = v629(v630, v631)
+
+                    if v631 == nil then
+                        break
+                    end
+                    if v633.Name == 'Rooms_Locker' or v633.Name == 'Rooms_Locker_Fridge' then
+                        if not v633:FindFirstChild('Enter') then
+                            local _Part2 = Instance.new('Part', v633)
+
+                            _Part2.Name = 'Enter'
+                            _Part2.CanCollide = false
+                            _Part2.Anchored = true
+                            _Part2.Size = Vector3.new(9, 9, 9)
+                            _Part2.Transparency = 1
+                            _Part2.Position = v633.Door.Position + v633.Door.CFrame.LookVector * 6
+                        end
+                        if v633.HiddenPlayer.Value == nil then
+                            local _Magnitude = (_LocalPlayer12.Character.HumanoidRootPart.Position - v633:WaitForChild('Enter').Position).Magnitude
+
+                            if _Magnitude < _huge then
+                                v632 = v633.Enter
+                                _huge = _Magnitude
+                            end
+                        end
+                    end
+                end
+
+                return v632
+            end
+            function move(p636)
+                local v637 = PathfindingService:CreatePath({
+                    AgentRadius = 1.5,
+                    AgentHeight = 1,
+                    WaypointSpacing = 1.5,
+                    AgentCanJump = false,
+                })
+
+                v637:ComputeAsync(_LocalPlayer12.Character.HumanoidRootPart.Position, p636)
+
+                if v637.Status == Enum.PathStatus.Success then
+                    workspace:WaitForChild('PathfindingFolder'):ClearAllChildren()
+
+                    local v638, v639, v640 = ipairs(v637:GetWaypoints())
+
+                    while true do
+                        local v641
+
+                        v640, v641 = v638(v639, v640)
+
+                        if v640 == nil then
+                            break
+                        end
+
+                        show(v641.Position)
+                        _LocalPlayer12.Character.Humanoid:MoveTo(v641.Position)
+                        _LocalPlayer12.Character.Humanoid.MoveToFinished:Wait()
+                    end
+                end
+            end
+
+            while AutoRoomsValue do
+                task.wait(0.02)
+
+                if not AutoRoomsValue or _ReplicatedStorage5.GameData.LatestRoom.Value == 1000 then
+                    break
+                end
+
+                locker = getLocker()
+
+                if workspace:FindFirstChild('A60') or workspace:FindFirstChild('A120') then
+                    move(locker.Position)
+
+                    if not _LocalPlayer12.Character.HumanoidRootPart.Anchored then
+                        fireproximityprompt(locker.Parent:FindFirstChild('HidePrompt'))
+                    end
+                else
+                    _ReplicatedStorage5.RemotesFolder.CamLock:FireServer()
+                    _LocalPlayer12.Character:SetAttribute('Hiding', false)
+                    move(workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value].Door.Door.Position)
+                end
+            end
+        end,
+    })
+end
+
+local _RunService5 = game:GetService('RunService')
+local _ReplicatedStorage6 = game:GetService('ReplicatedStorage')
+local _Players7 = game:GetService('Players')
+local _LocalPlayer13 = _Players7.LocalPlayer
+
+if not game.ReplicatedStorage:FindFirstChild('RemotesFolder') then
+    local v646 = _ReplicatedStorage6
+
+    if not _ReplicatedStorage6.FindFirstChild(v646, 'Bricks') then
+        local v647 = _ReplicatedStorage6
+
+        _ReplicatedStorage6.FindFirstChild(v647, 'EntityInfo')
+    end
+end
+
+lastDir = Vector3.zero
+fceConn = nil
+
+BypassBox:AddToggle('FCE', {
+    Text = 'Closet Exit Fix',
+    Default = false,
+    Tooltip = 'Fixes Where you Cant Exit Closet Instantly After Hiding',
+    Callback = function(p648)
+        FastValue.Value = p648
+
+        if fceConn then
+            fceConn:Disconnect()
+
+            fceConn = nil
+        end
+        if p648 then
+            fceConn = _RunService5.Heartbeat:Connect(function()
+                u469 = _LocalPlayer13.Character
+
+                local v649 = u469
+
+                if v649 then
+                    v649 = u469:FindFirstChild('Humanoid')
+                end
+
+                humanoid = v649
+
+                if humanoid then
+                    dir = humanoid.MoveDirection
+
+                    if dir.Magnitude > 0 and lastDir.Magnitude == 0 and u469:GetAttribute('Hiding') == true then
+                        task.delay(0.08, function()
+                            _ReplicatedStorage6.Remote:FireServer()
+                        end)
+                    end
+
+                    lastDir = dir
+                end
+            end)
+        end
+    end,
+})
+BypassBox:AddDivider()
+
+if _ReplicatedStorage6.GameData.Floor.Value == 'Mines' then
+    local u650 = false
+
+    FloorsBx:AddToggle('ASF', {
+        Text = 'Anti-Seek Flood',
+        Default = false,
+        Callback = function(p651)
+            u650 = p651
+
+            while u650 do
+                task.wait(0.25)
+
+                if not u650 then
+                    local _AntiDeath = workspace:FindFirstChild('AntiDeath', true)
+
+                    if _AntiDeath then
+                        _AntiDeath:Destroy()
+                    end
+
+                    break
+                end
+
+                local _SeekFloodline = workspace:FindFirstChild('SeekFloodline', true)
+
+                if _SeekFloodline and not _SeekFloodline:FindFirstChild('AntiDeath') then
+                    local _Part3 = Instance.new('Part', _SeekFloodline)
+
+                    _Part3.Name = 'AntiDeath'
+                    _Part3.Size = _SeekFloodline.Size
+                    _Part3.Transparency = 1
+                    _Part3.CanCollide = true
+                    _Part3.Position = _SeekFloodline.Position + Vector3.new(0, 9, 0)
+                end
+            end
+        end,
+    })
+end
+if _ReplicatedStorage6.GameData.Floor.Value == 'Mines' then
+    local u655 = {}
+    local u656 = {}
+
+    local function u659(p657)
+        if not p657.Parent:FindFirstChild('AntiBridge') then
+            local v658 = p657:Clone()
+
+            v658.Name = 'AntiBridge'
+            v658.Size = Vector3.new(p657.Size.X, p657.Size.Y, 30)
+            v658.Color = Color3.new(0, 0, 0.5)
+            v658.CFrame = p657.CFrame * CFrame.new(0, 0, -5)
+            v658.Transparency = 0
+            v658.Anchored = true
+            v658.CanCollide = true
+            v658.CanTouch = true
+            v658.Parent = p657.Parent
+
+            table.insert(u655, v658)
+        end
+    end
+    local function u667(p660)
+        if not p660:FindFirstChild('AntiBridge') then
+            local v661, v662, v663 = ipairs(p660:GetChildren())
+
+            while true do
+                local v664
+
+                v663, v664 = v661(v662, v663)
+
+                if v663 == nil then
+                    break
+                end
+                if v664.Name == 'PlayerBarrier' and (v664.Size.Y == 2.75 and v664.Rotation.X % 180 == 0) then
+                    u659(v664)
+                end
+            end
+
+            local v666 = p660.ChildAdded:Connect(function(p665)
+                if p665.Name == 'PlayerBarrier' then
+                    u659(p665)
+                end
+            end)
+
+            table.insert(u656, v666)
+        end
+    end
+
+    FloorsBx:AddToggle('ABF', {
+        Text = 'Anti-Bridge Fall',
+        Default = false,
+        Callback = function(p668)
+            local v669, v670, v671 = ipairs(u656)
+
+            while true do
+                local v672
+
+                v671, v672 = v669(v670, v671)
+
+                if v671 == nil then
+                    break
+                end
+
+                v672:Disconnect()
+            end
+
+            u656 = {}
+
+            local v673, v674, v675 = ipairs(u655)
+
+            while true do
+                local v676
+
+                v675, v676 = v673(v674, v675)
+
+                if v675 == nil then
+                    break
+                end
+                if v676 and v676.Parent then
+                    v676:Destroy()
+                end
+            end
+
+            u655 = {}
+
+            if p668 then
+                task.spawn(function()
+                    local v677, v678, v679 = ipairs(workspace.CurrentRooms:GetChildren())
+
+                    while true do
+                        local v680
+
+                        v679, v680 = v677(v678, v679)
+
+                        if v679 == nil then
+                            break
+                        end
+
+                        local _Parts = v680:FindFirstChild('Parts')
+
+                        if _Parts then
+                            local v682, v683, v684 = ipairs(_Parts:GetChildren())
+
+                            while true do
+                                local v685
+
+                                v684, v685 = v682(v683, v684)
+
+                                if v684 == nil then
+                                    break
+                                end
+                                if v685.Name == 'Bridge' then
+                                    u667(v685)
+                                end
+                            end
+
+                            local v687 = _Parts.ChildAdded:Connect(function(p686)
+                                if p686.Name == 'Bridge' then
+                                    u667(p686)
+                                end
+                            end)
+
+                            table.insert(u656, v687)
+                        end
+                    end
+                end)
+
+                local v696 = workspace.CurrentRooms.ChildAdded:Connect(function(p688)
+                    task.defer(function()
+                        local _Parts2 = p688:WaitForChild('Parts', 3)
+
+                        if _Parts2 then
+                            local v690, v691, v692 = ipairs(_Parts2:GetChildren())
+
+                            while true do
+                                local v693
+
+                                v692, v693 = v690(v691, v692)
+
+                                if v692 == nil then
+                                    break
+                                end
+                                if v693.Name == 'Bridge' then
+                                    u667(v693)
+                                end
+                            end
+
+                            local v695 = _Parts2.ChildAdded:Connect(function(p694)
+                                if p694.Name == 'Bridge' then
+                                    u667(p694)
+                                end
+                            end)
+
+                            table.insert(u656, v695)
+                        end
+                    end)
+                end)
+
+                table.insert(u656, v696)
+            end
+        end,
+    })
+end
+
+local _ReplicatedStorage7 = game:GetService('ReplicatedStorage')
+local _Workspace6 = game:GetService('Workspace')
+local _LatestRoom4 = _ReplicatedStorage7:WaitForChild('GameData'):WaitForChild('LatestRoom')
+local v700 = _ReplicatedStorage7:GetDescendants()
+local u701 = nil
+
+for v702 = 1, #v700 do
+    local v703 = v702
+
+    if v700[v703].Name == 'EBF' then
+        u701 = v700[v703]
+
+        break
+    end
+end
+
+local u704 = true
+
+AutoBox:AddToggle('ABS', {
+    Text = 'Auto Breaker Solve',
+    Default = false,
+    Callback = function(p705)
+        u704 = not p705
+
+        if p705 and u701 then
+            task.spawn(function()
+                while not u704 do
+                    local v706 = tostring(_LatestRoom4.Value)
+                    local v707 = _Workspace6.CurrentRooms:FindFirstChild(v706)
+
+                    if v707 and v707:FindFirstChild('DoorToBreakDown') then
+                        u701:FireServer()
+                    end
+
+                    task.wait(0.1)
+                end
+            end)
+        end
+    end,
+})
+SettingsBox:AddDropdown('Notify Side', {
+    Values = {
+        'Left',
+        'Right',
+    },
+    Default = 2,
+    Multi = false,
+    Text = 'Notify Side',
+    Tooltip = 'Make Notification Appears On Left or Right Side.',
+    Callback = function(p708)
+        Library.NotifySide = p708
+    end,
+})
+SettingsBox:AddToggle('ShowKeybinds', {
+    Text = 'Show Keybinds',
+    Default = false,
+    Tooltip = 'Toggle the visibility of the keybinds menu',
+}):OnChanged(function()
+    Library.KeybindFrame.Visible = Toggles.ShowKeybinds.Value
+end)
+SettingsBox:AddToggle('Dieanleksj', {
+    Text = 'Disables Roblox Void',
+    Default = true,
+    Tooltip = 'Disables Void',
+}):OnChanged(function()
+    workspace.FallenPartsDestroyHeight = 0 / 0
+end)
+SettingsBox:AddToggle('CustomCursor', {
+    Text = 'Custom Cursor',
+    Default = false,
+    Tooltip = 'Toggle the visibility of the keybinds menu',
+}):OnChanged(function()
+    Library.ShowCustomCursor = Value
+end)
+SettingsBox:AddDivider()
+SettingsBox:AddDropdown('DPIDropdown', {
+    Values = {
+        '50%',
+        '75%',
+        '100%',
+        '125%',
+        '150%',
+        '175%',
+        '200%',
+    },
+    Default = '100%',
+    Text = 'DPI Scale',
+    Callback = function(p709)
+        local v710 = p709:gsub('%%', '')
+        local v711 = tonumber(v710)
+
+        Library:SetDPIScale(v711)
+    end,
+})
+SettingsBox:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', {
+    Default = 'RightShift',
+    NoUI = true,
+    Text = 'Menu keybind',
+})
+
+Library.ToggleKeybind = Options.MenuKeybind
+
+local _Credits = Tabs.UISettings:AddRightGroupbox('Credits')
+
+_Credits:AddLabel('KardinCat - Creator', true)
+_Credits:AddLabel('bocaj111004 - Developer', true)
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+ThemeManager:ApplyToTab(Tabs.UISettings)
+SaveManager:IgnoreThemeSettings()
+SaveManager:SetIgnoreIndexes({
+    'MenuKeybind',
+})
+ThemeManager:SetFolder('Prohax')
+SaveManager:SetFolder('Prohax/DOORS')
+SaveManager:BuildConfigSection(Tabs.UISettings)
+
+StoredFigures = {}
+
+local v713, v714, v715 = ipairs(workspace.CurrentRooms:GetDescendants())
+local u716 = nil
+
+while true do
+    local v717, v718 = v713(v714, v715)
+
+    if v717 == nil then
+        break
+    end
+
+    v715 = v717
+
+    if v718.Name == 'FigureRig' or v718.Name == 'FigureRagdoll' then
+        table.insert(StoredFigures, v718)
+    end
+end
+
+TrollBox:AddToggle('FigureFreeze', {
+    Text = 'Figure Freeze (FE)',
+    Default = false,
+    Callback = function(p719)
+        if p719 then
+            u716 = _RunService5.Heartbeat:Connect(function()
+                local v720, v721, v722 = ipairs(StoredFigures)
+
+                while true do
+                    local v723
+
+                    v722, v723 = v720(v721, v722)
+
+                    if v722 == nil then
+                        break
+                    end
+
+                    local _PrimaryPart = v723.PrimaryPart
+
+                    if _PrimaryPart and (isnetworkowner(_PrimaryPart) and not _PrimaryPart:FindFirstChildOfClass('BodyPosition')) then
+                        local _BodyPosition2 = Instance.new('BodyPosition')
+
+                        _BodyPosition2.MaxForce = Vector3.new(1e30, 1e30, 1e30)
+                        _BodyPosition2.P = 9999999999
+                        _BodyPosition2.Position = _PrimaryPart.Position
+                        _BodyPosition2.Parent = _PrimaryPart
+                    end
+                end
+            end)
+        else
+            if u716 then
+                u716:Disconnect()
+
+                u716 = nil
+            end
+
+            local v726, v727, v728 = ipairs(StoredFigures)
+
+            while true do
+                local v729
+
+                v728, v729 = v726(v727, v728)
+
+                if v728 == nil then
+                    break
+                end
+
+                local _PrimaryPart2 = v729.PrimaryPart
+
+                if _PrimaryPart2 then
+                    local _BodyPosition3 = _PrimaryPart2:FindFirstChildOfClass('BodyPosition')
+
+                    if _BodyPosition3 then
+                        _BodyPosition3:Destroy()
+                    end
+                end
+            end
+        end
+    end,
+})
+
+StoreFigures = {}
+
+local v732, v733, v734 = ipairs(workspace.CurrentRooms:GetDescendants())
+local u735 = nil
+
+while true do
+    local v736, v737 = v732(v733, v734)
+
+    if v736 == nil then
+        break
+    end
+
+    v734 = v736
+
+    if v737.Name == 'FigureRig' or v737.Name == 'FigureRagdoll' then
+        table.insert(StoreFigures, v737)
+    end
+end
+
+TrollBox:AddToggle('TPFigure', {
+    Text = 'TP Figure to Latest Door (FE)',
+    Default = false,
+    Callback = function(p738)
+        if p738 then
+            if not isnetworkowner then
+                Library:Notify("[TP Figure] Doesn't work cuz Executor Doesn't Support isnetworkowner", 4)
+
+                return
+            end
+
+            u735 = _RunService5.Heartbeat:Connect(function()
+                local v739, v740, v741 = ipairs(StoreFigures)
+
+                while true do
+                    local v742
+
+                    v741, v742 = v739(v740, v741)
+
+                    if v741 == nil then
+                        break
+                    end
+
+                    local _Root = v742:FindFirstChild('Root')
+
+                    if _Root and isnetworkowner(_Root) then
+                        local _Door = workspace.CurrentRooms[game.ReplicatedStorage.GameData.LatestRoom.Value].Door
+
+                        if _Door and _Door:FindFirstChild('Door') then
+                            v742:PivotTo(_Door.Door.CFrame)
+                        end
+                    end
+                end
+            end)
+        elseif u735 then
+            u735:Disconnect()
+
+            u735 = nil
+        end
+    end,
+})
+
+con = nil
+RemotesFolder = nil
+
+TrollBox:AddToggle('Spam MotorReplication (FE)', {
+    Text = 'Spam MotorReplication (FE)',
+    Default = false,
+    Callback = function(p745)
+        if p745 then
+            if _ReplicatedStorage7:FindFirstChild('EntityInfo') then
+                RemotesFolder = _ReplicatedStorage7.EntityInfo
+            elseif _ReplicatedStorage7:FindFirstChild('RemotesFolder') then
+                RemotesFolder = _ReplicatedStorage7.RemotesFolder
+            else
+                RemotesFolder = _ReplicatedStorage7.Bricks
+            end
+
+            con = _RunService5.Heartbeat:Connect(function()
+                RemotesFolder.MotorReplication:FireServer(-198182828, math.random(-12233333, 999999))
+            end)
+        elseif con then
+            con:Disconnect()
+
+            con = nil
+        end
+    end,
+})
+
+local _RunService6 = game:GetService('RunService')
+local _LocalPlayer14 = game.Players.LocalPlayer
+local u748 = nil
+local u749 = nil
+
+local function u751()
+    if u748 then
+        return
+    else
+        u749 = _LocalPlayer14.Character
+
+        local u750 = u749
+
+        if u750 then
+            u750 = u749:FindFirstChild('Collision')
+        end
+        if u750 then
+            u748 = _RunService6.RenderStepped:Connect(function()
+                u749.Rotation = Vector3.new(u750.Rotation.X, u750.Rotation.Y, -90)
+            end)
+        end
+    end
+end
+local function u752()
+    if u748 then
+        u748:Disconnect()
+
+        u748 = nil
+
+        if u749 and u749.Parent then
+            u749.Rotation = Vector3.zero
+        end
+    end
+end
+
+TrollBox:AddToggle('UpsideDown', {
+    Text = 'Upside Down (FE)',
+    Default = false,
+    Callback = function(p753)
+        if p753 then
+            u751()
+        else
+            u752()
+        end
+    end,
+})
+MiscBox3:AddToggle('No CutScenes', {
+    Text = 'Disable CutScenes',
+    Default = false,
+    Callback = function(p754)
+        if p754 then
+            (game:GetService('Players').LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener:FindFirstChild('Cutscenes') or game:GetService('Players').LocalPlayer.PlayerGui.MainUI.Initiator.Main_Game.RemoteListener:FindFirstChild('_Cutscenes')).Name = p754 and '_Cutscenes' or 'Cutscenes'
+        end
+    end,
+})
+
+local _Workspace7 = game:GetService('Workspace')
+local u756 = {}
+local u757 = {}
+local u758 = nil
+
+function addLadder(p759)
+    if u756[p759] then
+        return
+    elseif p759:IsDescendantOf(_Workspace7:WaitForChild('CurrentRooms')) then
+        if p759.Name == 'Ladder' then
+            u756[p759] = ESPLibrary:AddESP({
+                Object = p759,
+                Text = 'Ladder',
+                Color = Color3.fromRGB(0, 0, 255),
+            })
+            u757[p759] = p759.AncestryChanged:Connect(function(_, p760)
+                if not (p760 and p759:IsDescendantOf(_Workspace7.CurrentRooms)) then
+                    if u756[p759] then
+                        ESPLibrary:RemoveESP(u756[p759])
+
+                        u756[p759] = nil
+                    end
+                    if u757[p759] then
+                        u757[p759]:Disconnect()
+
+                        u757[p759] = nil
+                    end
+                end
+            end)
+        end
+    end
+end
+
+local function u769()
+    local v761, v762, v763 = pairs(u757)
+
+    while true do
+        local v764
+
+        v763, v764 = v761(v762, v763)
+
+        if v763 == nil then
+            break
+        end
+
+        v764:Disconnect()
+    end
+
+    u757 = {}
+
+    local v765, v766, v767 = pairs(u756)
+
+    while true do
+        local v768
+
+        v767, v768 = v765(v766, v767)
+
+        if v767 == nil then
+            break
+        end
+
+        ESPLibrary:RemoveESP(v768)
+    end
+
+    u756 = {}
+end
+
+ESPBox:AddToggle('LadderESP', {
+    Text = 'Ladder ESP',
+    Default = false,
+    Callback = function(p770)
+        if u758 then
+            u758:Disconnect()
+
+            u758 = nil
+        end
+
+        u769()
+
+        if p770 then
+            local _CurrentRooms2 = _Workspace7:FindFirstChild('CurrentRooms')
+
+            if _CurrentRooms2 then
+                local v772, v773, v774 = ipairs(_CurrentRooms2:GetDescendants())
+
+                while true do
+                    local v775
+
+                    v774, v775 = v772(v773, v774)
+
+                    if v774 == nil then
+                        break
+                    end
+                    if v775.Name == 'Ladder' then
+                        addLadder(v775)
+                    end
+                end
+            end
+        else
+            return
+        end
+    end,
+})
+
+if _ReplicatedStorage7.GameData.Floor.Value == 'Mines' then
+    local u776 = nil
+    local u777 = nil
+    local u778 = nil
+    local u779 = nil
+    local u780 = false
+    local u781 = false
+    local u782 = false
+    local u783 = false
+
+    local function u785(p784)
+        return p784:GetAttribute('RawName') == 'JKKKKKKKKSWU'
+    end
+    local function u791()
+        local _CurrentRooms3 = workspace:FindFirstChild('CurrentRooms')
+
+        if not _CurrentRooms3 then
+            return false
+        end
+
+        local v787, v788, v789 = ipairs(_CurrentRooms3:GetChildren())
+
+        while true do
+            local v790
+
+            v789, v790 = v787(v788, v789)
+
+            if v789 == nil then
+                break
+            end
+            if u785(v790) then
+                return true
+            end
+        end
+
+        return false
+    end
+    local function u793(p792)
+        if u785(p792) then
+            u780 = true
+
+            if u776 and not u781 then
+                u781 = true
+                u782 = false
+                u783 = false
+            end
+        end
+    end
+    local function u795(p794)
+        if u785(p794) then
+            u780 = false
+
+            if u781 then
+                u781 = false
+                u782 = false
+                u783 = false
+            end
+        end
+    end
+    local function u797()
+        if u780 then
+            if not u782 then
+                Library:Notify('[Anticheat Bypass] Next room is HaltHallway: bypass breaks.', 3)
+
+                u782 = true
+                u783 = false
+            end
+        else
+            if not u783 then
+                u783 = true
+                u782 = false
+            end
+
+            local _Character6 = _Players7.LocalPlayer.Character
+
+            if _Character6 then
+                _Character6:SetAttribute('Climbing', false)
+            end
+        end
+    end
+    local function u800()
+        if not u776 then
+            u780 = u791()
+
+            local _CurrentRooms4 = workspace:FindFirstChild('CurrentRooms')
+
+            if _CurrentRooms4 then
+                u778 = _CurrentRooms4.ChildAdded:Connect(u793)
+                u779 = _CurrentRooms4.ChildRemoved:Connect(u795)
+            end
+
+            u776 = _RunService5.Heartbeat:Connect(u797)
+            u777 = _Players7.LocalPlayer.CharacterAdded:Connect(function(p799)
+                task.defer(function()
+                    p799:SetAttribute('Climbing', false)
+                end)
+            end)
+        end
+    end
+    local function u801()
+        if u776 then
+            u776:Disconnect()
+
+            u776 = nil
+        end
+        if u777 then
+            u777:Disconnect()
+
+            u777 = nil
+        end
+        if u778 then
+            u778:Disconnect()
+
+            u778 = nil
+        end
+        if u779 then
+            u779:Disconnect()
+
+            u779 = nil
+        end
+
+        u781 = false
+        u780 = false
+        u782 = false
+        u783 = false
+    end
+
+    FloorsBx:AddToggle('AnticheatBypass', {
+        Text = 'Anticheat Bypass',
+        Default = false,
+        Callback = function(p802)
+            if p802 then
+                u800()
+            else
+                u801()
+            end
+        end,
+    })
+end
+if _ReplicatedStorage7.GameData.Floor.Value == 'Mines' then
+    TARGET_NAME = 'SeekGuidingLight'
+
+    local u803 = {}
+    local u804 = {}
+    local u805 = nil
+    local u806 = nil
+
+    function createGuideFor(p807)
+        if not u803[p807] and p807:IsA('BasePart') then
+            local _Part4 = Instance.new('Part')
+
+            _Part4.Name = 'SeekLightGuide'
+            _Part4.Size = Vector3.new(1, 1, 1)
+            _Part4.Anchored = true
+            _Part4.CanCollide = false
+            _Part4.Material = Enum.Material.Neon
+            _Part4.BrickColor = BrickColor.new('Bright yellow')
+            _Part4.Transparency = 0.5
+            _Part4.CFrame = p807.CFrame
+            _Part4.Parent = workspace
+            u803[p807] = _Part4
+            u804[p807] = p807.AncestryChanged:Connect(function(_, p809)
+                if not (p809 and p807:IsDescendantOf(workspace)) then
+                    if u803[p807] then
+                        u803[p807]:Destroy()
+
+                        u803[p807] = nil
+                    end
+                    if u804[p807] then
+                        u804[p807]:Disconnect()
+
+                        u804[p807] = nil
+                    end
+                end
+            end)
+
+            if not u806 then
+                u806 = _RunService5.RenderStepped:Connect(function()
+                    local v810, v811, v812 = pairs(u803)
+                    local v813 = false
+
+                    while true do
+                        local v814
+
+                        v812, v814 = v810(v811, v812)
+
+                        if v812 == nil then
+                            break
+                        end
+                        if v812:IsDescendantOf(workspace) then
+                            v814.CFrame = v812.CFrame
+                            v813 = true
+                        else
+                            v814:Destroy()
+
+                            u803[v812] = nil
+
+                            if u804[v812] then
+                                u804[v812]:Disconnect()
+
+                                u804[v812] = nil
+                            end
+                        end
+                    end
+
+                    if not v813 then
+                        u806:Disconnect()
+
+                        u806 = nil
+                    end
+                end)
+            end
+        end
+    end
+
+    local function u823()
+        local v815, v816, v817 = pairs(u804)
+
+        while true do
+            local v818
+
+            v817, v818 = v815(v816, v817)
+
+            if v817 == nil then
+                break
+            end
+
+            v818:Disconnect()
+        end
+
+        u804 = {}
+
+        local v819, v820, v821 = pairs(u803)
+
+        while true do
+            local v822
+
+            v821, v822 = v819(v820, v821)
+
+            if v821 == nil then
+                break
+            end
+
+            v822:Destroy()
+        end
+
+        u803 = {}
+
+        if u806 then
+            u806:Disconnect()
+
+            u806 = nil
+        end
+    end
+
+    FloorsBx:AddToggle('ShowSeekGuide', {
+        Text = 'Show PathfindingNodes (Seek)',
+        Default = false,
+        Callback = function(p824)
+            if u805 then
+                u805:Disconnect()
+
+                u805 = nil
+            end
+
+            u823()
+
+            if p824 then
+                local v825, v826, v827 = ipairs(workspace:GetDescendants())
+
+                while true do
+                    local v828
+
+                    v827, v828 = v825(v826, v827)
+
+                    if v827 == nil then
+                        break
+                    end
+                    if v828:IsA('BasePart') and v828.Name == TARGET_NAME then
+                        createGuideFor(v828)
+                    end
+                end
+            end
+        end,
+    })
+end
+
+local _Players8 = game:GetService('Players')
+local _RunService7 = game:GetService('RunService')
+local _UserInputService = game:GetService('UserInputService')
+local _LocalPlayer15 = _Players8.LocalPlayer
+
+Fly = Fly or {}
+Fly.Enabled = false
+Fly.Speed = 15
+Fly.FlyBody = nil
+Fly.FlyGyro = nil
+
+local u833 = nil
+local u834 = nil
+
+function Fly.SetupBodies(p835)
+    local _HumanoidRootPart2 = p835:FindFirstChild('HumanoidRootPart')
+
+    if _HumanoidRootPart2 then
+        local _BodyVelocity = Instance.new('BodyVelocity')
+
+        _BodyVelocity.Name = 'FlyBodyVelocity'
+        _BodyVelocity.MaxForce = Vector3.new(9000000000, 9000000000, 9000000000)
+        _BodyVelocity.Velocity = Vector3.zero
+        _BodyVelocity.Parent = _HumanoidRootPart2
+        Fly.FlyBody = _BodyVelocity
+
+        local _BodyGyro = Instance.new('BodyGyro')
+
+        _BodyGyro.Name = 'FlyBodyGyro'
+        _BodyGyro.MaxTorque = Vector3.new(9000000000, 9000000000, 9000000000)
+
+        local _CurrentCamera2 = workspace.CurrentCamera
+
+        if _CurrentCamera2 then
+            _BodyGyro.CFrame = _CurrentCamera2.CFrame
+        end
+
+        _BodyGyro.Parent = _HumanoidRootPart2
+        Fly.FlyGyro = _BodyGyro
+
+        local _Humanoid3 = p835:FindFirstChild('Humanoid')
+
+        if _Humanoid3 then
+            _Humanoid3.PlatformStand = true
+        end
+    end
+end
+function Fly.CleanupBodies()
+    if Fly.FlyBody then
+        Fly.FlyBody:Destroy()
+
+        Fly.FlyBody = nil
+    end
+    if Fly.FlyGyro then
+        Fly.FlyGyro:Destroy()
+
+        Fly.FlyGyro = nil
+    end
+
+    local _Character7 = _LocalPlayer15.Character
+    local v842 = _Character7 and _Character7:FindFirstChild('Humanoid')
+
+    if v842 then
+        v842.PlatformStand = false
+    end
+end
+
+local function u861()
+    if Fly.Enabled then
+        local _Character8 = _LocalPlayer15.Character
+
+        if _Character8 then
+            local _Humanoid4 = _Character8:FindFirstChild('Humanoid')
+            local _HumanoidRootPart3 = _Character8:FindFirstChild('HumanoidRootPart')
+            local _CurrentCamera3 = workspace.CurrentCamera
+
+            if _Humanoid4 and (_HumanoidRootPart3 and (Fly.FlyBody and (Fly.FlyGyro and _CurrentCamera3))) then
+                local _zero = Vector3.zero
+
+                if _UserInputService.KeyboardEnabled then
+                    local v848 = _UserInputService:IsKeyDown(Enum.KeyCode.W)
+                    local v849 = _UserInputService:IsKeyDown(Enum.KeyCode.S)
+                    local v850 = _UserInputService:IsKeyDown(Enum.KeyCode.A)
+                    local v851 = _UserInputService:IsKeyDown(Enum.KeyCode.D)
+                    local _CFrame = _CurrentCamera3.CFrame
+                    local _LookVector = _CFrame.LookVector
+                    local _RightVector = _CFrame.RightVector
+
+                    if v848 then
+                        _zero = _zero + _LookVector
+                    end
+                    if v849 then
+                        _zero = _zero - _LookVector
+                    end
+                    if v850 then
+                        _zero = _zero - _RightVector
+                    end
+                    if v851 then
+                        _zero = _zero + _RightVector
+                    end
+                else
+                    local _MoveDirection = _Humanoid4.MoveDirection
+
+                    if _MoveDirection.Magnitude > 0 then
+                        local _CFrame2 = _CurrentCamera3.CFrame
+                        local v857 = Vector3.new(_CFrame2.LookVector.X, 0, _CFrame2.LookVector.Z)
+                        local v858 = Vector3.new(_CFrame2.RightVector.X, 0, _CFrame2.RightVector.Z)
+
+                        if v857.Magnitude > 0 then
+                            v857 = v857.Unit
+                        end
+                        if v858.Magnitude > 0 then
+                            v858 = v858.Unit
+                        end
+
+                        local v859 = _MoveDirection:Dot(v857)
+                        local v860 = _MoveDirection:Dot(v858)
+
+                        _zero = _CFrame2.LookVector * v859 + _CFrame2.RightVector * v860
+                    end
+                end
+                if _zero.Magnitude <= 0 then
+                    Fly.FlyBody.Velocity = Vector3.zero
+                else
+                    Fly.FlyBody.Velocity = _zero.Unit * Fly.Speed
+                end
+
+                Fly.FlyGyro.CFrame = _CurrentCamera3.CFrame
+                _Humanoid4.PlatformStand = true
+            end
+        else
+            return
+        end
+    else
+        return
+    end
+end
+
+function Fly.Enable()
+    if not Fly.Enabled then
+        Fly.Enabled = true
+
+        local _Character9 = _LocalPlayer15.Character
+
+        if _Character9 then
+            Fly.SetupBodies(_Character9)
+        end
+        if not u833 then
+            u833 = _RunService7.RenderStepped:Connect(u861)
+        end
+        if not u834 then
+            u834 = _LocalPlayer15.CharacterAdded:Connect(function(p863)
+                if Fly.Enabled then
+                    p863:WaitForChild('HumanoidRootPart')
+                    Fly.SetupBodies(p863)
+                end
+            end)
+        end
+    end
+end
+function Fly.Disable()
+    if Fly.Enabled then
+        Fly.Enabled = false
+
+        Fly.CleanupBodies()
+
+        if u833 then
+            u833:Disconnect()
+
+            u833 = nil
+        end
+        if u834 then
+            u834:Disconnect()
+
+            u834 = nil
+        end
+    end
+end
+function Fly.Toggle()
+    if Fly.Enabled then
+        Fly.Disable()
+    else
+        Fly.Enable()
+    end
+end
+function Fly.SetSpeed(p864)
+    Fly.Speed = p864 or Fly.Speed
+end
+
+FlySpeed = PlayerBox:AddSlider('FlySpeed', {
+    Text = 'Fly Speed',
+    Min = 10,
+    Max = 100,
+    Default = Fly.Speed,
+    Rounding = 0,
+    Callback = function(p865)
+        Fly.SetSpeed(p865)
+    end,
+})
+
+PlayerBox:AddToggle('Fly', {
+    Text = 'Fly',
+    Default = false,
+    Callback = function(p866)
+        if p866 then
+            Fly.Enable()
+        else
+            Fly.Disable()
+        end
+    end,
+}):AddKeyPicker('Fly Keybind', {
+    Default = 'F',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'Fly',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+PlayerBox:AddDivider()
+
+local _Players9 = game:GetService('Players')
+local _RunService8 = game:GetService('RunService')
+
+_Workspace7 = game:GetService('Workspace')
+
+local _LocalPlayer16 = _Players9.LocalPlayer
+
+u93 = 0
+u94 = 0
+u95 = 0
+transparencyConnections = {}
+u833 = nil
+u834 = nil
+toggleState = false
+
+function lockTransparency(p870, p871)
+    local v872, v873, v874 = ipairs(transparencyConnections)
+
+    while true do
+        local v875
+
+        v874, v875 = v872(v873, v874)
+
+        if v874 == nil then
+            break
+        end
+
+        v875:Disconnect()
+    end
+
+    transparencyConnections = {}
+
+    local v876, v877, v878 = ipairs(p870:GetChildren())
+
+    while true do
+        local v879
+
+        v878, v879 = v876(v877, v878)
+
+        if v878 == nil then
+            break
+        end
+        if v879:IsA('Accessory') and v879:FindFirstChild('Handle') then
+            u466 = v879.Handle
+            u466.LocalTransparencyModifier = p871
+            transparencyConnections[#transparencyConnections + 1] = u466:GetPropertyChangedSignal('LocalTransparencyModifier'):Connect(function()
+                u466.LocalTransparencyModifier = p871
+            end)
+        end
+        if v879.Name == 'Head' and v879:IsA('BasePart') then
+            head = v879
+            head.LocalTransparencyModifier = p871
+            transparencyConnections[#transparencyConnections + 1] = head:GetPropertyChangedSignal('LocalTransparencyModifier'):Connect(function()
+                head.LocalTransparencyModifier = p871
+            end)
+        end
+    end
+end
+function updateCameraThirdPerson()
+    u469 = _LocalPlayer16.Character
+
+    if u469 then
+        head = u469:FindFirstChild('Head')
+
+        if head then
+            cam = _Workspace7.CurrentCamera
+
+            if cam then
+                cam.CameraType = Enum.CameraType.Scriptable
+                baseCFrame = head.CFrame
+                offsetCFrame = CFrame.new(u93, u94, u95)
+                cam.CFrame = baseCFrame * offsetCFrame
+            end
+        else
+            return
+        end
+    else
+        return
+    end
+end
+function enableThirdPerson()
+    if not toggleState then
+        toggleState = true
+        u469 = _LocalPlayer16.Character
+
+        if u469 then
+            lockTransparency(u469, 0)
+        end
+        if not u833 then
+            u833 = _RunService8.RenderStepped:Connect(updateCameraThirdPerson)
+        end
+        if not u834 then
+            u834 = _LocalPlayer16.CharacterAdded:Connect(function(p880)
+                head = p880:WaitForChild('Head', 5)
+
+                if head then
+                    lockTransparency(p880, 0)
+                end
+            end)
+        end
+    end
+end
+function disableThirdPerson()
+    if toggleState then
+        toggleState = false
+
+        if u833 then
+            u833:Disconnect()
+
+            u833 = nil
+        end
+        if u834 then
+            u834:Disconnect()
+
+            u834 = nil
+        end
+
+        u469 = _LocalPlayer16.Character
+
+        if u469 then
+            lockTransparency(u469, 1)
+        end
+
+        cam = _Workspace7.CurrentCamera
+
+        if cam then
+            cam.CameraType = Enum.CameraType.Custom
+
+            if _LocalPlayer16.Character then
+                humanoid = _LocalPlayer16.Character:FindFirstChild('Humanoid')
+
+                if humanoid then
+                    cam.CameraSubject = humanoid
+                end
+            end
+        end
+    end
+end
+
+PlayerBox:AddSlider('ThirdPersonX', {
+    Text = 'Third Person X',
+    Min = -10,
+    Max = 10,
+    Default = u93,
+    Rounding = 0,
+    Callback = function(p881)
+        u93 = p881
+
+        if toggleState then
+            updateCameraThirdPerson()
+        end
+    end,
+})
+PlayerBox:AddSlider('ThirdPersonY', {
+    Text = 'Third Person Y',
+    Min = -10,
+    Max = 10,
+    Default = u94,
+    Rounding = 0,
+    Callback = function(p882)
+        u94 = p882
+
+        if toggleState then
+            updateCameraThirdPerson()
+        end
+    end,
+})
+PlayerBox:AddSlider('ThirdPersonZ', {
+    Text = 'Third Person Z',
+    Min = -10,
+    Max = 10,
+    Default = u95,
+    Rounding = 0,
+    Callback = function(p883)
+        u95 = p883
+
+        if toggleState then
+            updateCameraThirdPerson()
+        end
+    end,
+})
+PlayerBox:AddToggle('ThirdPerson', {
+    Text = 'Third Person',
+    Default = false,
+    Callback = function(p884)
+        if p884 then
+            enableThirdPerson()
+        else
+            disableThirdPerson()
+        end
+    end,
+}):AddKeyPicker('ThirdP Keybind', {
+    Default = 'T',
+    SyncToggleState = true,
+    Mode = 'Toggle',
+    Text = 'ThirdPerson',
+    NoUI = false,
+    Callback = function(_) end,
+    ChangedCallback = function(_) end,
+})
+
+if _LocalPlayer16.Character then
+    lockTransparency(_LocalPlayer16.Character, 1)
+end
+
+_LocalPlayer16.CharacterAdded:Connect(function(p885)
+    p885:WaitForChild('Head', 5)
+
+    if toggleState then
+        lockTransparency(p885, 0)
+    else
+        lockTransparency(p885, 1)
+    end
+end)
+MiscBox3:AddDivider()
+
+Instance.new('Folder', _Workspace7).Name = 'AntiLagStorage'
+
+MiscBox3:AddToggle('AntiLag', {
+    Text = 'Anti Lag',
+    Default = false,
+    Callback = function(p886)
+        if p886 then
+            local v887, v888, v889 = pairs(game.MaterialService:GetChildren())
+
+            while true do
+                local v890
+
+                v889, v890 = v887(v888, v889)
+
+                if v889 == nil then
+                    break
+                end
+
+                v890.Parent = workspace:WaitForChild('AntiLagStorage')
+            end
+        else
+            local v891, v892, v893 = ipairs(workspace:FindFirstChild('AntiLagStorage'):GetChildren())
+
+            while true do
+                local v894
+
+                v893, v894 = v891(v892, v893)
+
+                if v893 == nil then
+                    break
+                end
+
+                v894.Parent = game.MaterialService
+            end
+        end
+    end,
+})
+
+_RunService8 = game:GetService('RunService')
+
+local _Players10 = game:GetService('Players')
+
+ReplicatedDS = game:GetService('ReplicatedStorage').GameData
+_CurrentRooms = workspace:WaitForChild('CurrentRooms')
+Player = _Players10.LocalPlayer
+
+if not Player.Character then
+    Player.CharacterAdded:Wait()
+end
+
+doorReachConn = nil
+throttleTimer = 0
+u349 = 0.15
+DoorReach = MiscBox2:AddToggle('DoorReach', {
+    Text = 'Door Reach',
+    Tooltip = 'Makes Door Open From Far',
+})
+
+DoorReach:OnChanged(function(p896)
+    if doorReachConn then
+        doorReachConn:Disconnect()
+
+        doorReachConn = nil
+        throttleTimer = 0
+    end
+    if p896 then
+        doorReachConn = _RunService8.Heartbeat:Connect(function(p897)
+            throttleTimer = throttleTimer + p897
+
+            if throttleTimer >= u349 then
+                throttleTimer = throttleTimer - u349
+                room = _CurrentRooms:FindFirstChild(ReplicatedDS.LatestRoom.Value)
+
+                if room then
+                    if not (workspace:FindFirstChild('SeekMovingNewClone') or workspace:FindFirstChild('SeekMoving')) then
+                        door = room:FindFirstChild('Door')
+
+                        if door and door:FindFirstChild('ClientOpen') then
+                            door.ClientOpen:FireServer()
+                        end
+                    end
+                else
+                    return
+                end
+            else
+                return
+            end
+        end)
+    end
+end)
+
+transparencyvalue = 0.5
+closetstate = false
+closetcon = nil
+targets = {
+    Wardrobe = true,
+    Locker_Large = true,
+    Rooms_Locker = true,
+    Backdoor_Wardrobe = true,
+    Bed = true,
+    Toolshed = true,
+    CircularVent = true,
+    Rooms_Locker_Fridge = true,
+    RetroWardrobe = true,
+    Dumpster = true,
+    Double_Bed = true,
+}
+
+function closettransparency(p898)
+    local v899 = _CurrentRooms
+    local v900, v901, v902 = ipairs(v899:GetDescendants())
+
+    while true do
+        local v903
+
+        v902, v903 = v900(v901, v902)
+
+        if v902 == nil then
+            break
+        end
+        if targets[v903.Name] and (v903:FindFirstChild('HidePrompt') and v903:FindFirstChild('HiddenPlayer').Value == _LocalPlayer13.Character) then
+            local v904, v905, v906 = ipairs(v903:GetDescendants())
+
+            while true do
+                local v907
+
+                v906, v907 = v904(v905, v906)
+
+                if v906 == nil then
+                    break
+                end
+                if v907:IsA('BasePart') and v907.Name ~= 'PlayerCollision' then
+                    v907.Transparency = p898 and transparencyvalue or 0
+                end
+            end
+        end
+    end
+end
+function closetupdate()
+    if closetstate then
+        u467 = Player.Character
+
+        if u467 and u467:GetAttribute('Hiding') == true then
+            closettransparency(true)
+        else
+            closettransparency(false)
+        end
+    end
+end
+function closettoggle(p908)
+    if closetcon then
+        closetcon:Disconnect()
+
+        closetcon = nil
+    end
+
+    closetstate = p908
+    u467 = Player.Character or Player.CharacterAdded:Wait()
+
+    if p908 then
+        if u467:GetAttribute('Hiding') == true then
+            closettransparency(true)
+        end
+
+        closetcon = u467:GetAttributeChangedSignal('Hiding'):Connect(closetupdate)
+    else
+        closettransparency(false)
+    end
+end
+
+ESPSettings:AddSlider('Transparency', {
+    Text = 'Transparency',
+    Min = 0.5,
+    Max = 1,
+    Default = transparencyvalue,
+    Rounding = 2,
+    Callback = function(p909)
+        transparencyvalue = p909
+
+        if closetstate and Player.Character and Player.Character:GetAttribute('Hiding') == true then
+            closettransparency(true)
+        end
+    end,
+})
+ESPSettings:AddToggle('Transparency Closet', {
+    Text = 'Transparency Closet',
+    Default = false,
+    Callback = function(p910)
+        closettoggle(p910)
+    end,
+})
+
+local _RunService9 = game:GetService('RunService')
+local _LocalPlayer17 = game:GetService('Players').LocalPlayer
+local u913 = {}
+local u914 = nil
+local u915 = nil
+local u916 = 0
+local u917 = {}
+
+local function u927()
+    u913 = {}
+
+    local v918, v919, v920 = ipairs(workspace.CurrentRooms:GetChildren())
+
+    while true do
+        local v921
+
+        v920, v921 = v918(v919, v920)
+
+        if v920 == nil then
+            break
+        end
+
+        local _Assets = v921:FindFirstChild('Assets')
+
+        if _Assets then
+            local v923, v924, v925 = pairs(_Assets:GetChildren())
+
+            while true do
+                local v926
+
+                v925, v926 = v923(v924, v925)
+
+                if v925 == nil then
+                    break
+                end
+                if v926.Name == 'Wardrobe' or (v926.Name == 'Rooms_Locker' or (v926.Name == 'Rooms_Locker_Fridge' or (v926.Name == 'Bed' or (v926.Name == 'Double_Bed' or (v926.Name == 'CircularVent' or (v926.Name == 'Toolshed' or v926.Name == 'Locker_Large')))))) then
+                    table.insert(u913, v926)
+                end
+            end
+        end
+    end
+end
+local function u937()
+    local _Character10 = _LocalPlayer17.Character
+
+    if _Character10 then
+        _Character10 = _LocalPlayer17.Character:FindFirstChild('HumanoidRootPart')
+    end
+    if _Character10 then
+        local v929, v930, v931 = ipairs(u913)
+        local v932 = nil
+        local v933 = nil
+
+        while true do
+            local v934
+
+            v931, v934 = v929(v930, v931)
+
+            if v931 == nil then
+                break
+            end
+
+            local _BasePart = v934:FindFirstChildWhichIsA('BasePart')
+
+            if _BasePart then
+                local _Magnitude2 = (_BasePart.Position - _Character10.Position).Magnitude
+
+                if not v932 or _Magnitude2 < v932 then
+                    v933 = v934
+                    v932 = _Magnitude2
+                end
+            end
+        end
+
+        return v933, v932
+    end
+end
+local function u947()
+    local v938, v939, v940 = ipairs({
+        'A60',
+        'A120',
+        'RushMoving',
+        'AmbushMoving',
+        'GlitchRush',
+        'GlitchAmbush',
+        'BackdoorRush',
+        'CustomEntity',
+    })
+    local v941 = {}
+
+    while true do
+        local v942
+
+        v940, v942 = v938(v939, v940)
+
+        if v940 == nil then
+            break
+        end
+
+        local v943, v944, v945 = ipairs(workspace:GetChildren())
+
+        while true do
+            local v946
+
+            v945, v946 = v943(v944, v945)
+
+            if v945 == nil then
+                break
+            end
+            if v946.Name == v942 and v946.PrimaryPart then
+                table.insert(v941, {
+                    Instance = v946,
+                    Name = v942,
+                    Primary = v946.PrimaryPart,
+                })
+            end
+        end
+    end
+
+    return v941
+end
+local function u949(p948)
+    return p948 == 'A60' and 149 or (p948 == 'A120' and 90 or p948 == 'RushMoving' and 125) or (p948 == 'AmbushMoving' and 155 or p948 == 'GlitchRush' and 140 or (p948 == 'GlitchAmbush' and 140 or (p948 == 'BackdoorRush' and 120 or 150)))
+end
+local function u951(p950)
+    if p950 and p950:IsA('ProximityPrompt') then
+        fireproximityprompt(p950)
+    end
+end
+
+AutoBox:AddToggle('AutoCloset', {
+    Text = 'Auto Closet',
+    Default = false,
+    Callback = function(p952)
+        if u914 then
+            u914:Disconnect()
+
+            u914 = nil
+        end
+        if u915 then
+            u915:Disconnect()
+
+            u915 = nil
+        end
+        if p952 then
+            u927()
+
+            u915 = _RunService9.Heartbeat:Connect(u927)
+            u914 = _RunService9.Heartbeat:Connect(function(p953)
+                local v954 = u947()
+                local _Character11 = _LocalPlayer17.Character
+                local v956
+
+                if _Character11 then
+                    v956 = _Character11:FindFirstChild('HumanoidRootPart')
+                else
+                    v956 = _Character11
+                end
+
+                local v957
+
+                if _Character11 then
+                    v957 = _Character11:GetAttribute('Hiding')
+                else
+                    v957 = _Character11
+                end
+                if v956 then
+                    local v958, v959, v960 = ipairs(v954)
+                    local v961 = false
+                    local v962 = true
+
+                    while true do
+                        local v963
+
+                        v960, v963 = v958(v959, v960)
+
+                        if v960 == nil then
+                            break
+                        end
+
+                        local _Position = v963.Primary.Position
+                        local v965 = (_Position - (u917[v963.Primary] or _Position)).Magnitude / p953
+
+                        u917[v963.Primary] = _Position
+
+                        local _Magnitude3 = (_Position - v956.Position).Magnitude
+                        local v967 = u949(v963.Name)
+
+                        if v963.Name ~= 'CustomEntity' then
+                            v961 = _Magnitude3 <= v967 and true or v961
+                        else
+                            v961 = 100 <= v965 and _Magnitude3 <= 140 and true or (v965 <= 50 and _Magnitude3 <= 90 and true or v961)
+                        end
+                        if _Magnitude3 <= v967 + 10 then
+                            v962 = false
+                        end
+                    end
+
+                    if v961 then
+                        if not v957 and tick() - u916 > 0.4 then
+                            local v968 = u937()
+                            local v969 = v968 and v968:FindFirstChildWhichIsA('BasePart')
+                            local v970 = v969 and ((v969.Position - v956.Position).Magnitude <= 13 and v968:FindFirstChild('HidePrompt', true))
+
+                            if v970 then
+                                u951(v970)
+
+                                u916 = tick()
+                            end
+                        end
+                    elseif v962 and v957 then
+                        _Character11:SetAttribute('Hiding', false)
+                    end
+                end
+            end)
+        end
+    end,
+})
+
+entity_names = {
+    'RushMoving',
+    'AmbushMoving',
+    'A60',
+    'A120',
+    'GlitchRush',
+    'GlitchAmbush',
+    'BackdoorRush',
+}
+spectatecon = nil
+spectatevalue = false
+u564 = workspace.CurrentCamera
+runservice = game:GetService('RunService')
+players = game:GetService('Players')
+localplayer = players.LocalPlayer
+
+function getentity()
+    local v971, v972, v973 = ipairs(entity_names)
+
+    while true do
+        local v974
+
+        v973, v974 = v971(v972, v973)
+
+        if v973 == nil then
+            break
+        end
+
+        ent = workspace:FindFirstChild(v974)
+
+        if ent and ent.PrimaryPart then
+            return ent
+        end
+    end
+end
+function updatecamera()
+    ent = getentity()
+
+    if ent and localplayer.Character and localplayer.Character:GetAttribute('Hiding') then
+        u564.CameraType = Enum.CameraType.Scriptable
+        u564.CFrame = CFrame.lookAt(u564.CFrame.Position, ent.PrimaryPart.Position)
+    end
+end
+
+AutoBox:AddToggle('Spectate', {
+    Text = 'Spectate Entity (While Hiding)',
+    Default = false,
+    Callback = function(p975)
+        spectatevalue = p975
+
+        if spectatecon then
+            spectatecon:Disconnect()
+
+            spectatecon = nil
+        end
+        if spectatevalue then
+            spectatecon = runservice.RenderStepped:Connect(updatecamera)
+        end
+    end,
+})
+Library:Notify('Loaded, Prohax, Successfully', 3)
+workspace.DescendantAdded:Connect(function(p976)
+    if Toggles.DeleteFigure.Value and (p976.Name == 'FigureRig' or p976.Name == 'FigureRagdoll') then
+        table.insert(storedFigures, p976)
+    end
+
+    local _Name = p976.Name
+    local _Parent3 = p976.Parent
+
+    if p976:IsA('ProximityPrompt') then
+        if u470(p976) and Toggles.AutoInteract.Value then
+            u468[#u468 + 1] = p976
+        end
+        if Toggles.InteractInstant.Value then
+            task.defer(function()
+                if p976 and p976.Parent then
+                    p976.HoldDuration = 0
+                end
+            end)
+        end
+    end
+    if Toggles.Items.Value and (u493[_Name] and p976:IsDescendantOf(currentRoom())) then
+        u611(p976)
+    end
+    if Toggles.Gold.Value and (_Name == 'GoldPile' and p976:IsDescendantOf(workspace.CurrentRooms)) then
+        u610(p976)
+    end
+
+    local v979 = _Name == 'Snare' and (_Parent3 and _Parent3.Name == 'Assets') and p976:WaitForChild('Hitbox', 9000000000)
+
+    if v979 then
+        v979.CanTouch = not Toggles.AntiSnare.Value
+    end
+    if _Name == 'DoorFake' then
+        task.wait()
+
+        local v980, v981, v982 = ipairs(p976:GetChildren())
+
+        while true do
+            local v983
+
+            v982, v983 = v980(v981, v982)
+
+            if v982 == nil then
+                break
+            end
+            if v983:IsA('BasePart') then
+                v983.CanTouch = not Toggles.AntiDupe.Value
+            end
+        end
+    end
+
+    local v984 = _Name == 'GiggleCeiling' and p976:WaitForChild('Hitbox', 9000000000)
+
+    if v984 then
+        v984.CanTouch = not Toggles.AntiGiggle.Value
+    end
+    if _Name == 'Seek_Arm' then
+        task.wait()
+
+        local v985, v986, v987 = ipairs(p976:GetChildren())
+
+        while true do
+            local v988
+
+            v987, v988 = v985(v986, v987)
+
+            if v987 == nil then
+                break
+            end
+            if v988:IsA('BasePart') then
+                v988.CanTouch = not Toggles.AntiSeek.Value
+            end
+        end
+    end
+    if _Name == 'ChandelierObstruction' then
+        task.wait()
+
+        local v989, v990, v991 = ipairs(p976:GetChildren())
+
+        while true do
+            local v992
+
+            v991, v992 = v989(v990, v991)
+
+            if v991 == nil then
+                break
+            end
+            if v992:IsA('BasePart') then
+                v992.CanTouch = not Toggles.AntiSeek.Value
+            end
+        end
+    end
+    if _Name == 'BananaPeel' then
+        p976.CanTouch = not Toggles.AntiBanana.Value
+    end
+    if _Name == 'JeffTheKiller' then
+        task.wait()
+
+        local v993, v994, v995 = ipairs(p976:GetChildren())
+
+        while true do
+            local v996
+
+            v995, v996 = v993(v994, v995)
+
+            if v995 == nil then
+                break
+            end
+            if v996:IsA('BasePart') then
+                v996.CanTouch = not Toggles.AntiJeff.Value
+            end
+        end
+    end
+    if _Name == 'Lava' then
+        p976.CanTouch = not Toggles.AntiLava.Value
+    end
+    if _Name == 'ScaryWall' then
+        task.wait()
+
+        local v997, v998, v999 = ipairs(p976:GetChildren())
+
+        while true do
+            local v1000
+
+            v999, v1000 = v997(v998, v999)
+
+            if v999 == nil then
+                break
+            end
+            if v1000:IsA('BasePart') then
+                v1000.CanTouch = not Toggles.AntiScaryWall.Value
+            end
+        end
+    end
+    if _Name == 'SideroomSpace' then
+        task.wait()
+
+        local v1001, v1002, v1003 = ipairs(p976:GetChildren())
+
+        while true do
+            local v1004
+
+            v1003, v1004 = v1001(v1002, v1003)
+
+            if v1003 == nil then
+                break
+            end
+            if v1004:IsA('BasePart') then
+                v1004.CanTouch = not Toggles.AntiVacuum.Value
+            end
+        end
+    end
+    if _Name == 'GloomEgg' then
+        task.wait()
+
+        local v1005, v1006, v1007 = ipairs(p976:GetChildren())
+
+        while true do
+            local v1008
+
+            v1007, v1008 = v1005(v1006, v1007)
+
+            if v1007 == nil then
+                break
+            end
+            if v1008:IsA('BasePart') then
+                v1008.CanTouch = not Toggles.AntiGloomPile.Value
+            end
+        end
+    end
+    if Toggles.InfiniteItems.Value and p976:IsA('ProximityPrompt') then
+        handleprompt(p976)
+    end
+    if Toggles.EntityESP.Value and EntityNames[p976.Name] then
+        createesp(p976)
+    end
+    if Toggles.EntityNotify.Value and p976:IsA('Model') then
+        data = notifyentities[p976.Name]
+
+        if data and not tracked_notify[p976] then
+            tracked_notify[p976] = true
+
+            Library:Notify(('\u{fffd}\u{fffd} %s has spawned! %s'):format(data[1], data[2]), 4)
+            u4()
+        end
+    end
+    if Toggles.ChatNotify.Value and p976:IsA('Model') then
+        data = notifyentities[p976.Name]
+
+        if data and not tracked_chat[p976] then
+            tracked_chat[p976] = true
+
+            ChatNotify(('\u{fffd}\u{fffd} %s has spawned! %s'):format(data[1], data[2]))
+            u4()
+        end
+    end
+    if Toggles.DisableDrawersInteractionsSounds.Value and (p976.Name == 'Open' or p976.Name == 'Close') and p976.Parent.Name == 'Main' then
+        p976:Destroy()
+    end
+    if infinitevalue then
+        if p976:IsA('ProximityPrompt') then
+            local _Character12 = _LocalPlayer17.Character
+
+            if _Character12 and (_Character12:FindFirstChild('Lockpick') or (_Character12:FindFirstChild('SkeletonKey') or _Character12:FindFirstChild('Shears'))) then
+                handleprompt(p976)
+            end
+        end
+        if Toggles.FigureFreeze.Value and (p976.Name == 'FigureRagdoll' or p976.Name == 'FigureRig') then
+            table.insert(StoredFigures, p976)
+        end
+        if Toggles.TPFigure.Value and (p976.Name == 'FigureRagdoll' or p976.Name == 'FigureRig') then
+            table.insert(StoreFigures, p976)
+        end
+        if Toggles.LadderESP.Value and p976.Name == 'Ladder' then
+            addLadder(p976)
+        end
+        if _ReplicatedStorage7.GameData.Floor.Value == 'Mines' and (Toggles.ShowSeekGuide.Value and (p976:IsA('BasePart') and p976.Name == TARGET_NAME)) then
+            createGuideFor(p976)
+        end
+    end
+end)
