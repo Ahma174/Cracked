@@ -1,5 +1,3 @@
--- ts file was generated at discord.gg/25ms
-
 local u1 = loadstring(Game:HttpGet('https://raw.githubusercontent.com/TheRealXORA/Roblox/refs/heads/Main/Scripts%20/UI%20Libraries/Mobile%20Discord.lua', true))()
 local v2 = u1
 local v3 = u1.Window(v2, '{ScriptHubV3-DISCORD.GG/PRODUCTIONS} (WORKS ON ANY EXECUTORS) (V3.78a)')
