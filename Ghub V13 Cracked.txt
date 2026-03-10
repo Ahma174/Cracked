@@ -1,5 +1,3 @@
--- ts file was generated at discord.gg/25ms
-
 game:GetService('StarterGui'):SetCore('SendNotification', {
     Title = 'Ghub v13',
     Text = 'SUBSCRIBE TO MY CHANNEL',
