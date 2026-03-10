@@ -1,0 +1,1652 @@
+-- ts file was generated at discord.gg/25ms
+
+game:GetService('StarterGui'):SetCore('SendNotification', {
+    Title = 'Ghub v13',
+    Text = 'SUBSCRIBE TO MY CHANNEL',
+})
+
+local u1 = loadstring(game:HttpGet('https://raw.githubusercontent.com/Maikderninja/Maikderninja/main/Test.lua'))()
+local u2 = {
+    SchemeColor = Color3.fromRGB(100, 100, 255),
+    Background = Color3.fromRGB(0, 0, 0),
+    Header = Color3.fromRGB(0, 0, 0),
+    TextColor = Color3.fromRGB(255, 255, 255),
+    ElementColor = Color3.fromRGB(20, 20, 20),
+}
+local _Ghubv13 = u1.CreateLib('Ghub v13', u2)
+
+Instance.new('ScreenGui')
+Instance.new('TextButton')
+Instance.new('UICorner')
+
+local _ScreenGui = Instance.new('ScreenGui')
+local _TextButton = Instance.new('TextButton')
+local _UICorner = Instance.new('UICorner')
+
+_ScreenGui.Name = 'ToggleGui_HE'
+_ScreenGui.Parent = game.CoreGui
+_TextButton.Name = 'Toggle'
+_TextButton.Parent = _ScreenGui
+_TextButton.BackgroundColor3 = Color3.fromRGB(100, 0, 255)
+_TextButton.Position = UDim2.new(0, 0, 0.427710831, 0)
+_TextButton.Size = UDim2.new(0, 81, 0, 36)
+_TextButton.Font = Enum.Font.SourceSans
+_TextButton.Text = 'Toggle'
+_TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+_TextButton.TextSize = 20
+_TextButton.TextWrapped = true
+_TextButton.Active = true
+_TextButton.Draggable = true
+
+_TextButton.MouseButton1Click:connect(function()
+    u1:ToggleUI()
+end)
+
+_UICorner.Parent = _TextButton
+
+local _Name = game:GetService('MarketplaceService'):GetProductInfo(game.PlaceId).Name
+local _PlaceId = game.PlaceId
+local _LocalPlayer = game:GetService('Players').LocalPlayer
+local _Name2 = _LocalPlayer.Name
+local _DisplayName = _LocalPlayer.DisplayName
+local _UserId = _LocalPlayer.UserId
+local _ = _LocalPlayer.Character
+local _AccountAge = _LocalPlayer.AccountAge
+local v14 = #game.Players:GetPlayers()
+local v15 = identifyexecutor()
+local _Home = _Ghubv13:NewTab('Home')
+
+_Home:NewSection('Welcome ' .. _Name2)
+_Home:NewSection('Display Name: ' .. _DisplayName)
+_Home:NewSection('Player Id: ' .. _UserId)
+_Home:NewSection('Account Age: ' .. _AccountAge)
+_Home:NewSection('Game Name: ' .. _Name)
+_Home:NewSection('Game Id: ' .. _PlaceId)
+_Home:NewSection('Executor: ' .. v15 .. '')
+_Home:NewSection('Players in Server: ' .. v14)
+
+local _Player = _Ghubv13:NewTab('Player')
+
+_Player:NewSection('Player')
+
+local _SETWALKSPEED = _Player:NewSection('SET WALKSPEED')
+
+_SETWALKSPEED:NewTextBox('Set WalkSpeed', 'WalkSpeed', function(p19)
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = p19
+end)
+_SETWALKSPEED:NewToggle('WalkSpeed Auto 500', ':)', function(p20)
+    if p20 then
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 500
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'WalkSpeed On',
+        })
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'WalkSpeed Off',
+        })
+    end
+end)
+
+local _SETJUMPPOWER = _Player:NewSection('SET JUMP POWER')
+
+_SETJUMPPOWER:NewTextBox('Set JumpPower', 'JumpPower', function(p22)
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = p22
+end)
+_SETJUMPPOWER:NewToggle('JumpPower Auto 500', ':)', function(p23)
+    if p23 then
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 500
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower On',
+        })
+    else
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower Off',
+        })
+    end
+end)
+
+local _SETGRAVITY = _Player:NewSection('SET GRAVITY')
+
+_SETGRAVITY:NewTextBox('Set Gravity', 'Gravity', function(p25)
+    game:GetService('Workspace').Gravity = p25
+end)
+_SETGRAVITY:NewToggle('Gravity Auto 999', ':)', function(p26)
+    if p26 then
+        game:GetService('Workspace').Gravity = 999
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower On',
+        })
+    else
+        game:GetService('Workspace').Gravity = 196.2
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower Off',
+        })
+    end
+end)
+_SETGRAVITY:NewToggle('Gravity Auto -999', ':)', function(p27)
+    if p27 then
+        game:GetService('Workspace').Gravity = -999
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower On',
+        })
+    else
+        game:GetService('Workspace').Gravity = 196.2
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower Off',
+        })
+    end
+end)
+
+local _SETFOV = _Player:NewSection('SET FOV')
+
+_SETFOV:NewTextBox('Set FOV (70-120)', 'FOV', function(p29)
+    game:GetService('Workspace').Camera.FieldOfView = p29
+end)
+_SETFOV:NewToggle('FOV Auto 120', ':)', function(p30)
+    if p30 then
+        game:GetService('Workspace').Camera.FieldOfView = 120
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower On',
+        })
+    else
+        game:GetService('Workspace').Camera.FieldOfView = 70
+
+        starterGui:SetCore('SendNotification', {
+            Title = 'Message',
+            Text = 'JumpPower Off',
+        })
+    end
+end)
+
+local _ResetWalkSpeedJumpowergravityFov = _Player:NewSection('Reset WalkSpeed/Jumpower/gravity/Fov')
+
+_ResetWalkSpeedJumpowergravityFov:NewButton('Reset WalkSpeed', '', function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+
+    starterGui:SetCore('SendNotification', {
+        Title = 'Message',
+        Text = 'Successfully Executed',
+    })
+end)
+_ResetWalkSpeedJumpowergravityFov:NewButton('Reset JumpPower', '', function()
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+
+    starterGui:SetCore('SendNotification', {
+        Title = 'Message',
+        Text = 'Successfully Executed',
+    })
+end)
+_ResetWalkSpeedJumpowergravityFov:NewButton('Reset Gravity', '', function()
+    game:GetService('Workspace').Gravity = 196.2
+
+    starterGui:SetCore('SendNotification', {
+        Title = 'Message',
+        Text = 'Successfully Executed',
+    })
+end)
+_ResetWalkSpeedJumpowergravityFov:NewButton('Reset FOV', '', function()
+    game:GetService('Workspace').Camera.FieldOfView = 70
+
+    starterGui:SetCore('SendNotification', {
+        Title = 'Message',
+        Text = 'Successfully Executed',
+    })
+end)
+_ResetWalkSpeedJumpowergravityFov:NewButton('RESET ALL', '', function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+    game:GetService('Workspace').Gravity = 196.2
+    game:GetService('Workspace').Camera.FieldOfView = 70
+end)
+
+local _TPTOPLAYER = _Player:NewSection('TP TO PLAYER')
+
+_TPTOPLAYER:NewTextBox('TP TO PLAYER TYPE HERE', 'Go to a player.', function(p33)
+    local _Character = game.Players.LocalPlayer.Character
+    local v35 = game.Workspace:FindFirstChild(p33)
+
+    _Character.HumanoidRootPart.CFrame = v35.HumanoidRootPart.CFrame * CFrame.new(0, 2, 0)
+end)
+
+players = {}
+
+local v36, v37, v38 = pairs(game:GetService('Players'):GetChildren())
+local v39 = {
+    'SchemeColor',
+    'Background',
+    'Header',
+    'TextColor',
+    'ElementColor',
+}
+
+while true do
+    local v40
+
+    v38, v40 = v36(v37, v38)
+
+    if v38 == nil then
+        break
+    end
+
+    table.insert(players, v40.Name)
+end
+
+_TPTOPLAYER:NewDropdown('Select Player', ' ', players, function(p41)
+    Select = p41
+end)
+_TPTOPLAYER:NewButton('Refresh', ' ', function()
+    table.clear(players)
+
+    local v42, v43, v44 = pairs(game:GetService('Players'):GetChildren())
+
+    while true do
+        local v45
+
+        v44, v45 = v42(v43, v44)
+
+        if v44 == nil then
+            break
+        end
+
+        table.insert(players, v45.Name)
+    end
+end)
+_TPTOPLAYER:NewButton('Teleport', ' ', function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[Select].Character.HumanoidRootPart.CFrame
+end)
+
+local _TOGGLENOCLIPINFJUMPXRAY = _Player:NewSection('TOGGLE NOCLIP/INFJUMP/XRAY')
+
+_TOGGLENOCLIPINFJUMPXRAY:NewToggle('Infinite Jump', 'Unlimited Jump', function(p47)
+    getgenv().InfiniteJumpEnabled = p47
+
+    game:GetService('UserInputService').JumpRequest:connect(function()
+        if InfiniteJumpEnabled == true then
+            game:GetService('Players').LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState('Jumping')
+        end
+    end)
+end)
+_TOGGLENOCLIPINFJUMPXRAY:NewToggle('Noclip', 'A simple noclip', function(p48)
+    getgenv().noclipEnabled = p48
+
+    game:GetService('RunService').Stepped:connect(function()
+        game.Players.LocalPlayer.Character.Humanoid:ChangeState(noclip)
+
+        if noclipEnabled == true then
+            local _LocalPlayer2 = game.Players.LocalPlayer
+            local v50 = _LocalPlayer2.Character or _LocalPlayer2.CharacterAdded:Wait()
+            local v51, v52, v53 = pairs(v50:GetDescendants())
+
+            while true do
+                local u54
+
+                v53, u54 = v51(v52, v53)
+
+                if v53 == nil then
+                    break
+                end
+
+                pcall(function()
+                    if u54:IsA('BasePart') then
+                        u54.CanCollide = false
+                    end
+                end)
+            end
+        end
+
+        game:GetService('RunService').Stepped:wait()
+    end)
+end)
+_TOGGLENOCLIPINFJUMPXRAY:NewToggle('X-Ray', '', function(p55)
+    xrayOn = p55
+
+    local _LocalPlayer3 = game.Players.LocalPlayer
+
+    if xrayOn then
+        local v57, v58, v59 = pairs(workspace:GetDescendants())
+
+        while true do
+            local v60
+
+            v59, v60 = v57(v58, v59)
+
+            if v59 == nil then
+                break
+            end
+            if v60:IsA('BasePart') then
+                local _Character2 = _LocalPlayer3.Character
+
+                if _Character2 then
+                    _Character2 = v60:IsDescendantOf(_LocalPlayer3.Character)
+                end
+                if not _Character2 then
+                    if not v60:FindFirstChild('OriginalTransparency') then
+                        local _NumberValue = Instance.new('NumberValue')
+
+                        _NumberValue.Name = 'OriginalTransparency'
+                        _NumberValue.Value = v60.Transparency
+                        _NumberValue.Parent = v60
+                    end
+
+                    v60.Transparency = 0.5
+                end
+            end
+        end
+    else
+        local v63, v64, v65 = pairs(workspace:GetDescendants())
+
+        while true do
+            local v66
+
+            v65, v66 = v63(v64, v65)
+
+            if v65 == nil then
+                break
+            end
+            if v66:IsA('BasePart') and v66:FindFirstChild('OriginalTransparency') then
+                v66.Transparency = v66.OriginalTransparency.Value
+
+                v66.OriginalTransparency:Destroy()
+            end
+        end
+    end
+end)
+
+local _FlyguiV3keyboardscriptshiftlock = _Player:NewSection('Fly gui V3/keyboard script/shift lock')
+
+_FlyguiV3keyboardscriptshiftlock:NewButton('Fly gui v3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/XNEOFF/FlyGuiV3/main/FlyGuiV3.txt'))()
+end)
+_FlyguiV3keyboardscriptshiftlock:NewButton('Keyboard script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt', true))()
+end)
+_FlyguiV3keyboardscriptshiftlock:NewButton('Shift Lock Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Uibs9vTq'))()
+end)
+_Player:NewSection('Anti AFK'):NewButton('Anti-Afk', "Won't get kicked for being afk", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Proxylol/OtherScripts/main/AntiAfk.lua', true))()
+end)
+
+local _Btools = _Player:NewSection('Btools')
+
+_Btools:NewButton('Btools 1', 'ButtonInfo', function()
+    loadstring(game:GetObjects('rbxassetid://6695644299')[1].Source)()
+end)
+_Btools:NewButton('Btools 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/Fe%20Btools%20R6%20and%20R15%20V5%20by%20Rouxhaver', true))()
+end)
+_Btools:NewButton('Btools 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.ga/zxwQDjbc/raw', true))()
+end)
+_Btools:NewButton('Btools 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/9tzDNpTs', true))()
+end)
+_Btools:NewButton('Btools 5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/eHGpx2EZ'))()
+end)
+
+local _ANIMATIONS = _Player:NewSection('ANIMATIONS')
+
+_ANIMATIONS:NewButton('Astronaut', 'Animation', function()
+    local _Animate = game.Players.LocalPlayer.Character.Animate
+
+    _Animate.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=891621366'
+    _Animate.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=891633237'
+    _Animate.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=891667138'
+    _Animate.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=891636393'
+    _Animate.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=891627522'
+    _Animate.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=891609353'
+    _Animate.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=891617961'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Bubbly', 'Animation', function()
+    local _Animate2 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate2.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=910004836'
+    _Animate2.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=910009958'
+    _Animate2.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=910034870'
+    _Animate2.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=910025107'
+    _Animate2.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=910016857'
+    _Animate2.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=910001910'
+    _Animate2.swimidle.SwimIdle.AnimationId = 'http://www.roblox.com/asset/?id=910030921'
+    _Animate2.swim.Swim.AnimationId = 'http://www.roblox.com/asset/?id=910028158'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Cartoony', 'Animation', function()
+    local _Animate3 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate3.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=742637544'
+    _Animate3.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=742638445'
+    _Animate3.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=742640026'
+    _Animate3.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=742638842'
+    _Animate3.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=742637942'
+    _Animate3.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=742636889'
+    _Animate3.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=742637151'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Elder', 'Animation', function()
+    local _Animate4 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate4.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=845397899'
+    _Animate4.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=845400520'
+    _Animate4.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=845403856'
+    _Animate4.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=845386501'
+    _Animate4.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=845398858'
+    _Animate4.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=845392038'
+    _Animate4.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=845396048'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Knight', 'Animation', function()
+    local _Animate5 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate5.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=657595757'
+    _Animate5.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=657568135'
+    _Animate5.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=657552124'
+    _Animate5.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=657564596'
+    _Animate5.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=658409194'
+    _Animate5.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=658360781'
+    _Animate5.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=657600338'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Levitation', 'Animation', function()
+    local _Animate6 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate6.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616006778'
+    _Animate6.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616008087'
+    _Animate6.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616013216'
+    _Animate6.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616010382'
+    _Animate6.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616008936'
+    _Animate6.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=616003713'
+    _Animate6.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616005863'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Mage', 'Animation', function()
+    local _Animate7 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate7.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=707742142'
+    _Animate7.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=707855907'
+    _Animate7.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=707897309'
+    _Animate7.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=707861613'
+    _Animate7.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=707853694'
+    _Animate7.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=707826056'
+    _Animate7.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=707829716'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Ninja', 'Animation', function()
+    local _Animate8 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate8.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=656117400'
+    _Animate8.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=656118341'
+    _Animate8.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=656121766'
+    _Animate8.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=656118852'
+    _Animate8.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=656117878'
+    _Animate8.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=656114359'
+    _Animate8.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=656115606'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Pirate', 'Animation', function()
+    local _Animate9 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate9.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=750781874'
+    _Animate9.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=750782770'
+    _Animate9.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=750785693'
+    _Animate9.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=750783738'
+    _Animate9.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=750782230'
+    _Animate9.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=750779899'
+    _Animate9.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=750780242'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Robot', 'Animation', function()
+    local _Animate10 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate10.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616088211'
+    _Animate10.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616089559'
+    _Animate10.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616095330'
+    _Animate10.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616091570'
+    _Animate10.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616090535'
+    _Animate10.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=616086039'
+    _Animate10.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616087089'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Stylish', 'Animation', function()
+    local _Animate11 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate11.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616136790'
+    _Animate11.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616138447'
+    _Animate11.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616146177'
+    _Animate11.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616140816'
+    _Animate11.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616139451'
+    _Animate11.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=616133594'
+    _Animate11.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616134815'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Superhero', 'Animation', function()
+    local _Animate12 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate12.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616111295'
+    _Animate12.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616113536'
+    _Animate12.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616122287'
+    _Animate12.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616117076'
+    _Animate12.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616115533'
+    _Animate12.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=616104706'
+    _Animate12.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616108001'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Toy', 'Animation', function()
+    local _Animate13 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate13.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=782841498'
+    _Animate13.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=782845736'
+    _Animate13.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=782843345'
+    _Animate13.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=782842708'
+    _Animate13.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=782847020'
+    _Animate13.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=782843869'
+    _Animate13.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=782846423'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Vampire', 'Animation', function()
+    local _Animate14 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate14.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1083445855'
+    _Animate14.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1083450166'
+    _Animate14.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083473930'
+    _Animate14.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083462077'
+    _Animate14.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083455352'
+    _Animate14.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083439238'
+    _Animate14.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083443587'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Werewolf', 'Animation', function()
+    local _Animate15 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate15.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1083195517'
+    _Animate15.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1083214717'
+    _Animate15.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083178339'
+    _Animate15.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083216690'
+    _Animate15.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083218792'
+    _Animate15.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083182000'
+    _Animate15.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1083189019'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_ANIMATIONS:NewButton('Zombie', 'Animation', function()
+    local _Animate16 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate16.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616158929'
+    _Animate16.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616160636'
+    _Animate16.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616168032'
+    _Animate16.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616163682'
+    _Animate16.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616161997'
+    _Animate16.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=616156119'
+    _Animate16.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616157476'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+
+local _SPECIALANIMATIONS = _Player:NewSection('SPECIAL ANIMATIONS')
+
+_SPECIALANIMATIONS:NewButton('Patrol', 'Animation', function()
+    local _Animate17 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate17.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1149612882'
+    _Animate17.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1150842221'
+    _Animate17.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1151231493'
+    _Animate17.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1150967949'
+    _Animate17.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1148811837'
+    _Animate17.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1148811837'
+    _Animate17.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1148863382'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Confident', 'Animation', function()
+    local _Animate18 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate18.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1069977950'
+    _Animate18.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1069987858'
+    _Animate18.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1070017263'
+    _Animate18.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1070001516'
+    _Animate18.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1069984524'
+    _Animate18.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1069946257'
+    _Animate18.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1069973677'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Popstar', 'Animation', function()
+    local _Animate19 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate19.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1212900985'
+    _Animate19.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1150842221'
+    _Animate19.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1212980338'
+    _Animate19.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1212980348'
+    _Animate19.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1212954642'
+    _Animate19.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1213044953'
+    _Animate19.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1212900995'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Cowboy', 'Animation', function()
+    local _Animate20 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate20.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1014390418'
+    _Animate20.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1014398616'
+    _Animate20.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1014421541'
+    _Animate20.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1014401683'
+    _Animate20.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1014394726'
+    _Animate20.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1014380606'
+    _Animate20.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1014384571'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Ghost', 'Animation', function()
+    local _Animate21 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate21.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=616006778'
+    _Animate21.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=616008087'
+    _Animate21.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=616013216'
+    _Animate21.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=616013216'
+    _Animate21.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=616008936'
+    _Animate21.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=616005863'
+    _Animate21.swimidle.SwimIdle.AnimationId = 'http://www.roblox.com/asset/?id=616012453'
+    _Animate21.swim.Swim.AnimationId = 'http://www.roblox.com/asset/?id=616011509'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Princess', 'Animation', function()
+    local _Animate22 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate22.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=941003647'
+    _Animate22.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=941013098'
+    _Animate22.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=941028902'
+    _Animate22.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=941015281'
+    _Animate22.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=941008832'
+    _Animate22.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=940996062'
+    _Animate22.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=941000007'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Sneaky', 'Animation', function()
+    local _Animate23 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate23.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=1132473842'
+    _Animate23.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=1132477671'
+    _Animate23.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=1132510133'
+    _Animate23.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=1132494274'
+    _Animate23.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=1132489853'
+    _Animate23.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=1132461372'
+    _Animate23.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=1132469004'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('Normal Animation Anthro (Default)', 'Animation', function()
+    local _Animate24 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate24.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=2510196951'
+    _Animate24.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=2510197257'
+    _Animate24.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=2510202577'
+    _Animate24.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=2510198475'
+    _Animate24.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=2510197830'
+    _Animate24.climb.ClimbAnim.AnimationId = 'http://www.roblox.com/asset/?id=2510192778'
+    _Animate24.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=2510195892'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_SPECIALANIMATIONS:NewButton('No animation', 'Animation', function()
+    local _Animate25 = game.Players.LocalPlayer.Character.Animate
+
+    _Animate25.idle.Animation1.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.idle.Animation2.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.walk.WalkAnim.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.run.RunAnim.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.jump.JumpAnim.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.fall.FallAnim.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.swimidle.SwimIdle.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    _Animate25.swim.Swim.AnimationId = 'http://www.roblox.com/asset/?id=0'
+    game.Players.LocalPlayer.Character.Humanoid.Jump = true
+end)
+_Player:NewSection('EMOTES'):NewButton('FE emotes gui', 'executor', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/eCpipCTH'))()
+end)
+
+local _KORBLOXHEADLESS = _Player:NewSection('KORBLOX/HEADLESS')
+
+_KORBLOXHEADLESS:NewButton('korblox/headless', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/H5yx10Jq'))()
+end)
+_KORBLOXHEADLESS:NewButton('korblox/headless gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/scripthubekitten/fakelimitedsv2/main/fakelimitedsv2', true))()
+end)
+_Player:NewSection('Spectating Mode'):NewButton('Player Spectating gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Q2yZyqwp', true))()
+end)
+
+local _FPSboostercounter = _Player:NewSection('FPS booster/counter')
+
+_FPSboostercounter:NewTextBox('SET FPS CAP', 'FPS', function(p98)
+    setfpscap(p98)
+end)
+_FPSboostercounter:NewButton('FPS booster', 'executor', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Nv1waujd'))()
+end)
+_FPSboostercounter:NewButton('FPS Counter', 'FPS COUNTER', function()
+    repeat
+        wait()
+    until game:IsLoaded()
+
+    wait(2)
+
+    local _ScreenGui2 = Instance.new('ScreenGui')
+    local _TextLabel = Instance.new('TextLabel')
+    local _TextLabel2 = Instance.new('TextLabel')
+
+    _ScreenGui2.Parent = game.CoreGui
+    _ScreenGui2.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    _TextLabel.Name = 'Fps'
+    _TextLabel.Parent = _ScreenGui2
+    _TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel.BackgroundTransparency = 1
+    _TextLabel.Position = UDim2.new(0.786138654, 0, 0, 0)
+    _TextLabel.Size = UDim2.new(0, 125, 0, 25)
+    _TextLabel.Font = Enum.Font.SourceSans
+    _TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _TextLabel.TextScaled = true
+    _TextLabel.TextSize = 14
+    _TextLabel.TextWrapped = true
+    _TextLabel2.Name = 'Ping'
+    _TextLabel2.Parent = _ScreenGui2
+    _TextLabel2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel2.BackgroundTransparency = 1
+    _TextLabel2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel2.Position = UDim2.new(0.700000048, 0, 0, 0)
+    _TextLabel2.Size = UDim2.new(0, 125, 0, 25)
+    _TextLabel2.Font = Enum.Font.SourceSans
+    _TextLabel2.TextColor3 = Color3.fromRGB(0, 0, 0)
+    _TextLabel2.TextScaled = true
+    _TextLabel2.TextSize = 14
+    _TextLabel2.TextWrapped = true
+
+    local _LocalScript = Instance.new('LocalScript', _TextLabel)
+
+    game:GetService('RunService').RenderStepped:Connect(function(p103)
+        _LocalScript.Parent.Text = 'FPS: ' .. math.round(1 / p103)
+    end)
+
+    local _LocalScript2 = Instance.new('LocalScript', _TextLabel2)
+
+    game:GetService('RunService').RenderStepped:Connect(function(p105)
+        _LocalScript2.Parent.Text = 'Ping: ' .. game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValueString(math.round(2 / p105))
+    end)
+end)
+
+local _ScriptFEScripts = _Ghubv13:NewTab('Script/FE Scripts')
+local _Scripts = _ScriptFEScripts:NewSection('Scripts')
+
+_Scripts:NewButton('Vereus Script', 'Need keyboard', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/wC64LrAJ'))()
+end)
+_Scripts:NewButton('Goku ssj script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/FwKgrMVR'))()
+end)
+_Scripts:NewButton('hyperlaser gun', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/9imumVD3'))()
+end)
+_Scripts:NewButton('UFO kiddnap gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/7scRrYKM'))()
+end)
+_Scripts:NewButton('Ban Hammer', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/WnN9iwdG', true))()
+end)
+_Scripts:NewButton('Giant universal huge', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/HDmrKZfm', true))()
+end)
+_Scripts:NewButton('releastic cam script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/kuK0XYAg', true))()
+end)
+
+local _FEScripts = _ScriptFEScripts:NewSection('FE Scripts')
+
+_FEScripts:NewButton('FE Spider man gui script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/2X0hKUgq', true))()
+end)
+_FEScripts:NewButton('FE The glitch v4', 'Z X F E C', function()
+    loadstring(game:HttpGet('https://pastefy.app/s6DE4bNC/raw', true))()
+end)
+_FEScripts:NewButton('FE TP saved location script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/Tp%20Place%20GUI', true))()
+end)
+_FEScripts:NewButton('FE Climb Walls Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_E872F3ky4888TSVdj6Adgi1hSLtM038AyxVpTVw07QA3QUDcI3sxmuD869hYR4id.lua.txt'))()
+end)
+_FEScripts:NewButton('FE Kidnap gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./main/Kidnap%20again'))()
+end)
+_FEScripts:NewButton('FE Kidnap gui v1.1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://paste.website/p/4383a3b5-cfd4-47b6-b9c4-cd026f393539.txt', true))()
+end)
+_FEScripts:NewButton('FE D**k Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/QVDFhqaB'))()
+end)
+_FEScripts:NewButton('FE Fling Tool', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.ga/xBdd9GId/raw', true))()
+end)
+_FEScripts:NewButton('FE Kill players gui R6 Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/6Zatm9G0'))()
+end)
+_FEScripts:NewButton('FE Invisible/TP to players Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./dbb6ce6f6cee4f7a5c9e20d7b88e83db2a93bf25/Invisible%20GUI'))()
+end)
+_FEScripts:NewButton('FE Trolling gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/hsUyqA8e'))()
+end)
+_FEScripts:NewButton('FE OP trolling gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Rj8yDMwQ'))()
+end)
+_FEScripts:NewButton('FE TP/Fling players Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Ud1cg5pR'))()
+end)
+_FEScripts:NewButton('FE Fling players with no collusion', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://gist.githubusercontent.com/1BlueCat/544f7efbe88235666b5b7add65b7344d/raw/f20804bb85542dcc3bc938982e1f05b7ff05cded/FE%2520Hat%2520Fling'))()
+end)
+_FEScripts:NewButton('FE deadnote gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/GoKxYBkU/raw', true))()
+end)
+_FEScripts:NewButton('FE Reverse script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./main/L'))()
+end)
+_FEScripts:NewButton('FE Freeze player Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/creepstu/fuzzy-octo-giggle/main/Source'))()
+end)
+_FEScripts:NewButton('FE SCP', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_nN0N66DHV2BjPwzYN59M17qSSlvJryM201CSC1sg07czxnZf48h9GHOFGd87G6Hh.lua.txt', true))()
+end)
+_FEScripts:NewButton('FE Dino Fling Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_K2n31uc6t2wY5A8786eR4K15sgbUF0vdQ80a0LzgvLRkSNYd89H1AS3124gMR6SM.lua.txt', true))()
+end)
+_FEScripts:NewButton('FE Permanent TP tool', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/IpjIW7ZH/raw'))()
+end)
+_FEScripts:NewButton('FE Ink monster', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_rTvXTs8F16D8D2oiLxZ62E1E9jT1we312yUyJr2h72Vwqr32l37rirU1S89hqRV7.lua.txt'))()
+end)
+_FEScripts:NewButton('FE Invisible Tool', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/uUtRsAX5'))()
+end)
+_FEScripts:NewButton('FE Ink Monster v2 script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_f4i3ntKS5B8tK9zpCAnr31Dp7RNSYOo20gpln1fs1h2U4yjXNdNk6lFqZvN1Ft2p.lua.txt'))()
+end)
+_FEScripts:NewButton('FE Invisible Car script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/0CS5vmly/raw', true))()
+end)
+_FEScripts:NewButton('FE teleport gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Infinity2346/Tect-Menu/main/Teleport%20Gui.lua'))()
+end)
+_FEScripts:NewButton('FE chat baypasser', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/AZYsGithub/ChatBypasser-AZY/main/Chat%20Bypass%20-%20ChatSplitter(Source).lua'))()
+end)
+_FEScripts:NewButton('FE cctv camera script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/CCTV%20Camera'))()
+end)
+_FEScripts:NewButton('FE bring gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/iThJgCAS', true))()
+end)
+_FEScripts:NewButton('FE inf jump gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/u9EuU3FE', true))()
+end)
+_FEScripts:NewButton('FE noclip gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/B5xRxTnk', true))()
+end)
+_FEScripts:NewButton('FE super fling gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./main/Fling%20GUI'))()
+end)
+_FEScripts:NewButton('FE invisible gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Invisible%20Gui'))()
+end)
+_FEScripts:NewButton('FE orbit victim gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./main/Orbit%20GUI'))()
+end)
+_FEScripts:NewButton('FE Anti fall script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/zephyr10101/AntiFall/main/Script'))()
+end)
+_FEScripts:NewButton('FE Front/backflip Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/yjxXnxbS'))()
+end)
+_FEScripts:NewButton('FE Amongus fling Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/R1Zj3MVi'))()
+end)
+_FEScripts:NewButton('FE trolling gui', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/ic5m4aJG/raw', true))()
+end)
+_FEScripts:NewButton('FE Collision Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/Collision.txt', true))()
+end)
+_FEScripts:NewButton('FE Touch Fling v3 Script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_5wpM7bBcOPspmX7lQ3m75SrYNWqxZ858ai3tJdEAId6jSI05IOUB224FQ0VSAswH.lua.txt', true))()
+end)
+_FEScripts:NewButton('FE Chat Hax script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/YH3TDza1'))()
+end)
+_FEScripts:NewButton('FE Antifling script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/GxdesRQx', true))()
+end)
+_FEScripts:NewButton('FE Lag Switch script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe/main/obf_7wPfE71d836IXKFb72ToLBmDlsrvLuwsFeHzhcf4Yct4Jd2BS0Do88c56IBS9vfU.lua'))()
+end)
+_FEScripts:NewButton('FE God mode toggle ', 'For lasers', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/zephyr10101/ignore-touchinterests/main/main', true))()
+end)
+_FEScripts:NewButton('FE zombie animation fling script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/w7KnPY70/raw', true))()
+end)
+_FEScripts:NewButton('FE Tool giver', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Ctqjmtkv', true))()
+end)
+_FEScripts:NewButton('FE Chat articles', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/BidoSkinsYT/BidoSkinsYT/main/Fe%20Chat%20article', true))()
+end)
+_FEScripts:NewButton('FE Copy people avatar script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RawParmesan/Parmesan-Hub/main/Loader', true))()
+end)
+_FEScripts:NewButton('FE mimic players script', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/0Ben1/fe./8fb5ed20fb168d1ae3044ede45b90f67e3fb37a2/file', true))()
+end)
+
+local _AdminScript = _Ghubv13:NewTab('Admin Script'):NewSection('Admin Script')
+
+_AdminScript:NewButton('Nameless Admin', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source'))()
+end)
+_AdminScript:NewButton('Infinite yield', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source', true))()
+end)
+_AdminScript:NewButton('Reviz Admin', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Caniwq2N', true))()
+end)
+_AdminScript:NewButton('Admin tools', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/VYIAk3o1/raw', true))()
+end)
+_AdminScript:NewButton('Leg Admin', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/leg1337/legadmv2/main/legadminv2.lua'))()
+end)
+_AdminScript:NewButton('FE Admin Panel', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.ga/Oic24KzG/raw', true))()
+end)
+
+local _HUBS = _Ghubv13:NewTab('HUBS'):NewSection('HUBS')
+
+_HUBS:NewButton('Chiezzy HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/zAuR0JUT'))()
+end)
+_HUBS:NewButton('Ghost HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))()
+end)
+_HUBS:NewButton('ExtremeX HUB v2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/gclich/Evv2/main/Protected_3951169998210840.lua.txt'))()
+end)
+_HUBS:NewButton('Shakars HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/shakar60/USH.P/main/rotected', true))()
+end)
+_HUBS:NewButton('British HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGetAsync('https://github.com/AnAvaragelilmemer/scripts/blob/main/BritishHubV14?raw=true'))()
+end)
+_HUBS:NewButton('Equinox HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/wzB1Qh78'))()
+end)
+_HUBS:NewButton('British HUB v6', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/YourLocalNzi/Ye/main/BHob6', true))()
+end)
+_HUBS:NewButton('BidoSkins HUB v1.8', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/BidoSkinsYT/BidoSkinsYT/main/Bido%20Skins%20V1.8'))()
+end)
+_HUBS:NewButton('British HUB v9', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RobloxArceusXScript/ProtectedLol/main/BritishHubV9'))()
+end)
+_HUBS:NewButton('Haxker_6666666 v2.2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://paste.website/p/f4c0bdd2-0340-4009-bf57-5d23d362aa94.txt'))()
+end)
+_HUBS:NewButton('OrangeX HUB v5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ImJosh66/Ab2rW/main/ORANGEX%20V5%20RELEASED%20ORANGEX%20ON%20TOP%20.txt'))()
+end)
+_HUBS:NewButton('GigaChad HUB v5.5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OWJBWKQLAISH/GigaChad-Hub/main/Protected_3038811338432694.lua.txt'))()
+end)
+_HUBS:NewButton('British Hub v4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/YourLocalNzi/Ye/main/BH%20v4%20Fix'))()
+end)
+_HUBS:NewButton('C00lgui revival HUB v2.0', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/theawesomari0/c00lgui/main/c00lgui', true))()
+end)
+_HUBS:NewButton('GigaChad HUB v3.5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OWJBWKQLAISH/GigaChad-Hub/main/Version%20V3.5'))()
+end)
+_HUBS:NewButton('MOON UI v13', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/IlikeyocutgHAH/MoonUI-v13-102-SCRIPTS/main/MoonUI%20v13!'))()
+end)
+_HUBS:NewButton('GigaChad HUB v1.5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OWJBWKQLAISH/GigaChad-Hub/main/GigaChad%20Hub%20V1.5'))()
+end)
+_HUBS:NewButton('GameHub v4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamerScripter/Game-Hub/main/loader'))()
+end)
+_HUBS:NewButton('Astrolynx HUB v0.4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://freenote.biz/raw/vBfN3NeVYN', true))()
+end)
+_HUBS:NewButton('Game HUB v3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamerScripter/Game-Hub/main/loader'))()
+end)
+_HUBS:NewButton('OrangeX Hub v3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ImJosh66/OrangeX-Hub-V3-Rel/main/OrangeX%20V3%20Milvan.txt'))()
+end)
+_HUBS:NewButton('Plenum HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamerScripter/Plenum-Hub/main/loader'))()
+end)
+_HUBS:NewButton('British HUB v10', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RedCoat8102/Britishhub/main/Protected_4099651388727348.lua.txt'))()
+end)
+_HUBS:NewButton('C00lgui Reborn rc7', 'ButtonInfo', function()
+    loadstring(game:GetObjects('rbxassetid://8127297852')[1].Source)()
+end)
+_HUBS:NewButton('British HUB v8', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/YourLocalNzi/Ye/main/RedCoat8102-obfuscated.lua'))()
+end)
+_HUBS:NewButton('British HUB v16', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/1tsFire/Br1tishHub/main/Protected_6883620778116350.lua.txt', true))()
+end)
+_HUBS:NewButton('GigaChad HUB v7 BETA', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/LolPrivate/Side/main/Gigachad%20Hub%20V7.lua', true))()
+end)
+_HUBS:NewButton('British HUB v17', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RedCoat7888/BH/main/Protected_6274400031599569.lua%20(1).txt'))()
+end)
+_HUBS:NewButton('Universal Junko HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/d5BS5qiX'))()
+end)
+_HUBS:NewButton('C00lkidd gui reivial 2.3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/theawesomari0/c00lgui/main/c00lgui%20v2.3', true))()
+end)
+_HUBS:NewButton('Alysee HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/NathTheDev/AlysseAndroid/main/loader.lua'))()
+end)
+_HUBS:NewButton('Haxker_666 3.0 HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/FreeRobloxScripts1/Haxker_6666666-Hub/main/Script-Hub/Version-3'))()
+end)
+_HUBS:NewButton('Multi Scripter X HUB v3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamerScripter/Multi-Scripter-X/main/loader'))()
+end)
+_HUBS:NewButton('Fathom HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/Y4AGJALY'))()
+end)
+_HUBS:NewButton('Psy HUB', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/JwGf73hp'))()
+end)
+_HUBS:NewButton('GHUB V12', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/gclich/GHUBV12S/main/GHUBV12S.txt'))()
+end)
+
+local _Games = _Ghubv13:NewTab('Games')
+
+_Games:NewSection('Games')
+
+local _BloxFruitScripts = _Games:NewSection('Blox Fruit Scripts')
+
+_BloxFruitScripts:NewButton('Blox Fruit Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Domadicoof/Domadicoof/main/Domadichub/NottoGay/Start.ranscript'))()
+end)
+_BloxFruitScripts:NewButton('Blox Fruit Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/REWzaKunGz1/premium/main/PadoHub'))()
+end)
+_BloxFruitScripts:NewButton('Blox Fruit Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/PNguyen0199/Script/main/Fai-Fao.lua'))()
+end)
+_BloxFruitScripts:NewButton('Blox Fruit Script 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/REDzHUB/BloxFruits/main/redz9999'))()
+end)
+
+local _PrisonlifeScripts = _Games:NewSection('Prison life Scripts')
+
+_PrisonlifeScripts:NewButton('Prison life Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Denverrz/scripts/master/PRISONWARE_v1.3.txt'))()
+end)
+_PrisonlifeScripts:NewButton('Prison life Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/H17S32/Tiger_Admin/main/Script'))()
+end)
+_PrisonlifeScripts:NewButton('Prison life Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://paste.website/p/96d68817-3f1e-4fef-a8b8-9aafdc810329.txt'))()
+end)
+_PrisonlifeScripts:NewButton('Prison life Script 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/KPWLHJ2z'))()
+end)
+_PrisonlifeScripts:NewButton('Prison life Script 5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/rfAULQ83'))()
+end)
+
+local _PetSimXScripts = _Games:NewSection('PetSimX Scripts')
+
+_PetSimXScripts:NewButton('PetSimX Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Jopsc/MainOp_script/main/Pet_scriptPetboi'))()
+end)
+_PetSimXScripts:NewButton('PetSimX Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://api.luarmor.net/files/v3/loaders/fc715fb43902af268c335a5c7269be5e.lua'))()
+end)
+_PetSimXScripts:NewButton('PetSimX Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Jopsc/PSX_SPBIT-/main/Script'))()
+end)
+
+local _BrookhavenScripts = _Games:NewSection('Brookhaven Scripts')
+
+_BrookhavenScripts:NewButton('Brookhaven Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/IceMael7/NewIceHub/main/Brookhaven'))()
+end)
+_BrookhavenScripts:NewButton('Brookhaven Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ChillSoftworks/Houseg/main/Housegui'))()
+end)
+_BrookhavenScripts:NewButton('Brookhaven Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://gist.githubusercontent.com/TurkOyuncu99/60832e7d04766a6381194d7502fbb1e8/raw/fbecd900a62e1fa054998f02084475b6c4ed8f18/woah', true))()
+end)
+_BrookhavenScripts:NewButton('Brookhaven Script 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastefy.app/tIiioko4/raw'))()
+end)
+
+local _TowerofHellScripts = _Games:NewSection('Tower of Hell Scripts')
+
+_TowerofHellScripts:NewButton('Tower of Hell Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://gist.githubusercontent.com/BloxiYT/85f97364b6367baac677e109488c9905/raw/c2972a2b892c4193509ddb2fe1ba3061435e1a8a/gistfile1.txt'))()
+end)
+_TowerofHellScripts:NewButton('Tower of Hell Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/2dgeneralspam1/scripts-and-stuff/master/scripts/garfield%20hub', true))()
+end)
+_TowerofHellScripts:NewButton('Tower of Hell Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/BbVHjH56'))()
+end)
+_TowerofHellScripts:NewButton('Tower of Hell Script 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/TrixAde/Proxima-Hub/main/Main.lua'))()
+end)
+_TowerofHellScripts:NewButton('Tower of Hell Script 5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/iiProductionz/Floater-Scripts/main/WaifuEdition/Tower%20Of%20Hell'))()
+end)
+_TowerofHellScripts:NewButton('Tower of Hell Script 6', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/dqvh/dqvh/main/SprinHub', true))()
+end)
+
+local _Naturaldisasterscripts = _Games:NewSection('Natural disaster scripts')
+
+_Naturaldisasterscripts:NewButton('Natural Disaster Survival Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/2dgeneralspam1/scripts-and-stuff/master/scripts/LoadstringUjHI6RQpz2o8', true))()
+end)
+_Naturaldisasterscripts:NewButton('Natural Disaster Survival Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/9NLK7/93qjoadnlaknwldk/main/main'))()
+end)
+_Naturaldisasterscripts:NewButton('Natural Disaster Survival Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/SmartModBoy/VortexAblity/main/SV'))()
+end)
+
+local _Arsenalscripts = _Games:NewSection('Arsenal scripts')
+
+_Arsenalscripts:NewButton('Arsenal script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/YellowGreg/Loadstring/main/arsenal4.lua'))()
+end)
+_Arsenalscripts:NewButton('Arsenal script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/HonestlyDex/DexHub/main/V3.lua'))()
+end)
+_Arsenalscripts:NewButton('Arsenal script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt'))()
+end)
+
+local _MurderMystery2scripts = _Games:NewSection('Murder Mystery 2 scripts')
+
+_MurderMystery2scripts:NewButton('MM2 Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/0mm'))()
+end)
+_MurderMystery2scripts:NewButton('MM2 Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Doggo-cryto/EclipseMM2/master/Script', true))()
+end)
+_MurderMystery2scripts:NewButton('MM2 Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/KidichiHB/Kidachi/main/Scripts/MM2_V2'))()
+end)
+
+local _Bedwarsscripts = _Games:NewSection('Bedwars scripts')
+
+_Bedwarsscripts:NewButton('Bed Wars Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OWJBWKQLAISH/Inferno-X/main/inferno%20X%20V2'))()
+end)
+_Bedwarsscripts:NewButton('Bed Wars Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/SuperGamingBros4/Roblox-HAX/main/Updated_Totally_Original_Script_Hub.Lua'))()
+end)
+_Bedwarsscripts:NewButton('Bed Wars Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/NewMainScript.lua', true))()
+end)
+
+local _Survivethekillerscripts = _Games:NewSection('Survive the killer scripts')
+
+_Survivethekillerscripts:NewButton('Survive the killer Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/FOXTROXHACKS/ElToro/main/Hub.lua'))()
+end)
+_Survivethekillerscripts:NewButton('Survive the killer Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Milan08Studio/ChairWare/main/main.lua'))()
+end)
+_Survivethekillerscripts:NewButton('Survive the killer Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/NickelHUBB/SonicTuru/main/SonicHub'))()
+end)
+
+local _Piggyscripts = _Games:NewSection('Piggy scripts')
+
+_Piggyscripts:NewButton('Piggy Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/lolpoppyus/Roblox-Lua/master/Piggy', true))()
+end)
+_Piggyscripts:NewButton('Piggy Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Piggy/Piggy'))()
+end)
+_Piggyscripts:NewButton('Piggy Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/PMuAYhks', true))()
+end)
+
+local _BladeBallscripts = _Games:NewSection('BladeBall scripts')
+
+_BladeBallscripts:NewButton('BladeBall Script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://shz.al/~LUYHUB'))()
+end)
+_BladeBallscripts:NewButton('BladeBall Script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://paste.gg/p/anonymous/42c468c6f0d94d6a86fc90caf7f0e897/files/9d3a059ff4064dc0b9efe621c774d175/raw'))()
+end)
+_BladeBallscripts:NewButton('BladeBall Script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OfficialHi/AstroHub/main/Loader/Main.lua'))()
+end)
+_BladeBallscripts:NewButton('BladeBall Script 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/qxA2ETxy'))()
+end)
+
+local _Dahoodscripts = _Games:NewSection('Da hood scripts')
+
+_Dahoodscripts:NewButton('Da hood script 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()
+end)
+_Dahoodscripts:NewButton('Da hood script 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/SpaceYes/Lua/Main/DaHood.Lua'))()
+end)
+_Dahoodscripts:NewButton('Da hood script 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/lerkermer/lua-projects/master/SwagModeV002'))()
+end)
+
+local _Buildaboatscripst = _Games:NewSection('Build a boat scripst')
+
+_Buildaboatscripst:NewButton('Build a boat treasure 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/littlegui/main/Build-A-Boat'))()
+end)
+_Buildaboatscripst:NewButton('Build a boat treasure 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/max2007killer/auto-build-not-limit/main/autobuild.txt'))()
+end)
+_Buildaboatscripst:NewButton('Build a boat treasure 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/XRoLLu/UWU/main/BUILD%20A%20BOAT%20FOR%20TREASURE.lua'))()
+end)
+
+local _Evadescripts = _Games:NewSection('Evade scripts')
+
+_Evadescripts:NewButton('Evade 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamingScripter/Darkrai-X/main/Games/Evade'))()
+end)
+_Evadescripts:NewButton('Evade 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/9Strew/roblox/main/gamescripts/evade.lua'))()
+end)
+_Evadescripts:NewButton('Evade 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://scriptblox.com/raw/UPDATE-Evade-Evade-UPDATED-5514'))()
+end)
+
+local _Chaosscripts = _Games:NewSection('Chaos scripts')
+
+_Chaosscripts:NewButton('Chaos 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/1111-ssss/Chaos_Script/main/Chaos_script.txt'))()
+end)
+_Chaosscripts:NewButton('chaos 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Vcsk/AstralHub/main/Loader.lua'))()
+end)
+_Chaosscripts:NewButton('chaos 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/1YQN7Vs2'))()
+end)
+
+local _Ragdollenginescripts = _Games:NewSection('Ragdoll engine scripts')
+
+_Ragdollenginescripts:NewButton('Ragdoll engine 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/martinelcrac/cryptonichub/main/Ragdollengine.lua'))()
+end)
+_Ragdollenginescripts:NewButton('Ragdoll engine 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Qwarle/Main_Scripts/main/QUI.lua'))()
+end)
+_Ragdollenginescripts:NewButton('Ragdoll engine 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://bruh.keshhub.com/.lua'))()
+end)
+
+local _PlsDonatescripts = _Games:NewSection('Pls Donate scripts')
+
+_PlsDonatescripts:NewButton('Pls donate 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/1f0yt/community/main/animooon'))()
+end)
+_PlsDonatescripts:NewButton('Pls donate 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/JunBloxYTPlayz/SORIX-Hub/main/Pls%20Donate%20V1'))()
+end)
+_PlsDonatescripts:NewButton('Pls donate 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/o5u3/PLS-Donate/main/Fake-Donate.lua'))()
+end)
+
+local _BuildToSurvivescripts = _Games:NewSection('Build To Survive scripts')
+
+_BuildToSurvivescripts:NewButton('Build To Survive 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/eHGpx2EZ'))()
+end)
+_BuildToSurvivescripts:NewButton('Build To Survive 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ToraIsMe/ToraIsMe/main/0BuildandSurvive', true))()
+end)
+
+local _Zombieattackscript = _Games:NewSection('Zombie attack script')
+
+_Zombieattackscript:NewButton('Zombie Attack 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/OneProtocol/Project/main/Loader', true))()
+end)
+_Zombieattackscript:NewButton('Zombie Attack 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/1201for/V.G-Hub/main/V.Ghub'))()
+end)
+_Zombieattackscript:NewButton('Zombie Attack 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RTrade/Voidz/main/Games.lua', true))()
+end)
+
+local _Katscripts = _Games:NewSection('Kat scripts')
+
+_Katscripts:NewButton('Kat 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GamingScripter/Darkrai-X/main/KAT'))()
+end)
+_Katscripts:NewButton('Kat 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt'))()
+end)
+_Katscripts:NewButton('Kat 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/zReal-King/Knife-Ability-Test/main/Gui'))()
+end)
+_Katscripts:NewButton('Kat 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/6rd91GZx', true))()
+end)
+
+local _Slapbattlescripts = _Games:NewSection('Slap battle scripts')
+
+_Slapbattlescripts:NewButton('slap battle 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/ionlyusegithubformcmods/1-Line-Scripts/main/Slap%20Battles'))()
+end)
+_Slapbattlescripts:NewButton('slap battle 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RandomScriptr3/gggggggg/main/lolez.txt', true))()
+end)
+
+local _Cantsaythewordscripts = _Games:NewSection("Can't say the word scripts")
+
+_Cantsaythewordscripts:NewButton("can't say the word 1", 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/KRNL2/CantSayTheWordScript/main/fe'))()
+end)
+_Cantsaythewordscripts:NewButton("can't say the word 2", 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/u068KhSk'))()
+end)
+_Games:NewSection('Survive and kill the killers')
+
+local _inarea51scripts = _Games:NewSection('in area 51 scripts')
+
+_inarea51scripts:NewButton('survive and kill the killers 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Ghostmode65/STK-Bo2/master/STK-Menus/v5/STKv5.txt'))()
+end)
+_inarea51scripts:NewButton('survive and kill the killers 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Ghostmode65/STK-Bo2/master/STK-Menus/v7/STv7-Engine.txt'))()
+end)
+_inarea51scripts:NewButton('survive and kill the killers 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RageRelic/Scripts/scripts/Genhub_survive_and_kill', true))()
+end)
+
+local _LumberTycoonscripts = _Games:NewSection('Lumber Tycoon scripts')
+
+_LumberTycoonscripts:NewButton('Lumber Tycoon 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Butterisgood/Butter/main/Root2.lua'))('')
+end)
+_LumberTycoonscripts:NewButton('Lumber Tycoon 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/scriptpastebin/raw/main/22'))()
+end)
+_LumberTycoonscripts:NewButton('Lumber Tycoon 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/thombomb2009/butter-hub/main/BUTTERLT2.txt'))()
+end)
+_LumberTycoonscripts:NewButton('Lumber Tycoon 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Butterisgood/butter-hub/main/Butterhub.txt'))()
+end)
+
+local _Combatwarriorsscripts = _Games:NewSection('Combat warriors scripts')
+
+_Combatwarriorsscripts:NewButton('Combat warriors 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/CheeseOnGithub/cheese-hook/main/main%20hydra%20ui.lua', true))()
+end)
+_Combatwarriorsscripts:NewButton('Combat warriors 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/frkfx/Combat-Warriors/main/Script'))()
+end)
+_Combatwarriorsscripts:NewButton('Combat warriors 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Nosssa/NossLock/main/WinterTime'))()
+end)
+_Combatwarriorsscripts:NewButton('Combat warriors 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/leakediz/top-g/main/combat%20warriors'))()
+end)
+
+local _BeeSwarmSimulatorscripts = _Games:NewSection('Bee Swarm Simulator scripts')
+
+_BeeSwarmSimulatorscripts:NewButton('Bee Swarm Simulator 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/scriptpastebin/raw/main/Histy'))()
+end)
+_BeeSwarmSimulatorscripts:NewButton('Bee Swarm Simulator 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/AltsegoD/script/master/BeeSwarmSimulator.lua'))()
+end)
+_BeeSwarmSimulatorscripts:NewButton('Bee Swarm Simulator 3', 'ButtonInfo', function()
+    loadstring(game:GetObjects('rbxassetid://4384103988')[1].Source)('Pepsi Swarm')
+end)
+
+local _AnimeFightersSimulatorscripts = _Games:NewSection('Anime Fighters Simulator scripts')
+
+_AnimeFightersSimulatorscripts:NewButton('Anime Fighters Simulator 1', 'ButtonInfo', function()
+    loadstring(game.HttpGet(game, 'https://raw.githubusercontent.com/KiJinGaming/FreeScript/main/KJHub.lua'))()
+end)
+_AnimeFightersSimulatorscripts:NewButton('Anime Fighters Simulator 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Gohan9k/ANFSnew/main/GOHANSSJ3'))()
+end)
+_AnimeFightersSimulatorscripts:NewButton('Anime Fighters Simulator 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/pspboy08/dollhouse/main/AFSGUI.lua'))()
+end)
+_AnimeFightersSimulatorscripts:NewButton('Anime Fighters Simulator 4', 'ButtonInfo', function()
+    loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/obeseinsect/roblox/main/Games/Anime%20Fighters%20Sim/AFS.lua'))()
+end)
+
+local _WorkatPizzaplacescripts = _Games:NewSection('Work at Pizza place scripts')
+
+_WorkatPizzaplacescripts:NewButton('Work at Pizza place 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/xQTtE6D9'))()
+end)
+_WorkatPizzaplacescripts:NewButton('Work at Pizza place 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://gist.githubusercontent.com/TurkOyuncu99/b19b733fb8e9e0299381653c50e21e49/raw/a0c7394ba4451c6c548979103aea600d89b70f32/xxxcccc', true))()
+end)
+_WorkatPizzaplacescripts:NewButton('Work at Pizza place 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/oShyyyyy/iris-jhub/main/WorkAtpizzaplace'))()
+end)
+_WorkatPizzaplacescripts:NewButton('Work at Pizza place 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/scriptpastebin/raw/main/16'))()
+end)
+
+local _Doorsscripts = _Games:NewSection('Doors scripts')
+
+_Doorsscripts:NewButton('Doors 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Loader.lua'))()
+end)
+_Doorsscripts:NewButton('Doors 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/scriptpastebin/raw/main/Doors'))()
+end)
+_Doorsscripts:NewButton('Doors 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Muhammad6196/Project-WD/main/Mainstring.lua'))()
+end)
+_Doorsscripts:NewButton('Doors 4', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Doors/Script.lua'))()
+end)
+_Doorsscripts:NewButton('Doors 5', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/MrNeRD0/Doors-Hack/main/DoorsV3_ByNerd.lua'))()
+end)
+
+local _Sharkbitescripts = _Games:NewSection('Shark bite scripts')
+
+_Sharkbitescripts:NewButton('Shark bite 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/JerrymiahPM/SharkRipper/main/main.lua'))('https://t.me/arceusxscripts')
+end)
+_Sharkbitescripts:NewButton('Shark bite 2', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/LOOF-sys/Roblox-Shit/main/SharkBite.lua'))()
+end)
+_Sharkbitescripts:NewButton('Shark bite 3', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://catware.vercel.app', true))()
+end)
+_Sharkbitescripts:NewButton('Shark bite 4', 'ButtonInfo', function()
+    loadstring(rawget(game:GetObjects('rbxassetid://3623753581'), 1).Source)('Pepsi Byte')
+end)
+_Games:NewSection('Roblox deathrun script'):NewButton('Roblox deathrun 1', 'ButtonInfo', function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/mjd2ngYr', true))()
+end)
+
+local _UIColorChanger = _Ghubv13:NewTab('UI Color Changer')
+
+_UIColorChanger:NewSection('UI Color Changer')
+_UIColorChanger:NewSection('Themes')
+
+local _ColorPickersUIColorChanger = _UIColorChanger:NewSection('ColorPickers UI Color Changer')
+local v145, v146, v147 = ipairs(v39)
+
+while true do
+    local u148
+
+    v147, u148 = v145(v146, v147)
+
+    if v147 == nil then
+        break
+    end
+
+    _ColorPickersUIColorChanger:NewColorPicker(u148, 'Change your ' .. u148, u2[u148], function(p149)
+        u2[u148] = p149
+    end)
+end
+
+_UIColorChanger:NewSection('UPDATE')
+_UIColorChanger:NewSection('ADDED MORE SCRIPT HUBS IN HUBS')
+_UIColorChanger:NewSection('ADDED MORE SCRIPTS IN FE SCRIPTS')
+_UIColorChanger:NewSection('ADDED MORE GAMES HUB IN GAMES SCRIPT')
+
+local _Executors = _Ghubv13:NewTab('Executors')
+
+_Executors:NewSection('Executors')
+_Executors:NewSection('Loadstring Script Executor'):NewTextBox('Script Executor', 'Execute Scripts', function(p151)
+    loadstring(p151)()
+    game:GetService('StarterGui'):SetCore('SendNotification', {
+        Title = 'Executor',
+        Text = 'Success Script Executed Loaded',
+    })
+end)
+_Executors:NewSection('Execute the script in chat'):NewButton('Execute Script in Chat ', 'E', function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/zephyr10101/chat-executor/main/chat-executor', true))()
+end)
+
+local _SHOWCASERS = _Ghubv13:NewTab('SHOWCASERS'):NewSection('SHOWCASERS')
+
+_SHOWCASERS:NewButton('JNHH Gaming', 'VISIT', function()
+    setclipboard('https://youtube.com/@JNHHGaming')
+end)
+_SHOWCASERS:NewButton('A2br', 'VISIT', function()
+    setclipboard('https://youtube.com/@AbrSvL')
+end)
+_SHOWCASERS:NewButton('Asmodeus', 'VISIT', function()
+    setclipboard('https://youtube.com/@AsmodeusIsop')
+end)
+_SHOWCASERS:NewButton('NixCripts', 'VISIT', function()
+    setclipboard('https://youtube.com/@NixCripts')
+end)
+_SHOWCASERS:NewButton('666_Oa456', 'VISIT', function()
+    setclipboard('https://youtube.com/@helloween')
+end)
+_SHOWCASERS:NewButton('DracoExploitsAndAnimates', 'VISIT', function()
+    setclipboard('https://youtube.com/@DracoExploitsAndAnimates')
+end)
+_SHOWCASERS:NewButton('Scripter_Gaming', 'VISIT', function()
+    setclipboard('https://youtube.com/@Scripter_Gaming')
+end)
+_SHOWCASERS:NewButton('He_flash', 'VISIT', function()
+    setclipboard('https://youtube.com/@Heflashh')
+end)
+_SHOWCASERS:NewButton('killerfox_yt', 'VISIT', function()
+    setclipboard('https://youtube.com/@killerfox_yt')
+end)
+_SHOWCASERS:NewButton('URFAVROBLOXSCHARMXO', 'VISIT', function()
+    setclipboard('https://youtube.com/@URFAV1234')
+end)
+_SHOWCASERS:NewButton('Rshowcaser', 'VISIT', function()
+    setclipboard('https://youtube.com/@RR-5')
+end)
+
+local _Credits = _Ghubv13:NewTab('Credits')
+
+_Credits:NewSection('Credits')
+_Credits:NewSection('CREATED BY:GHACKS SCRIPT')
+_Credits:NewSection('FEEDBACK'):NewTextBox('FEEDBACK', '', function(p154)
+    if not (is_sirhurt_closure or (pebc_execute or (syn or (secure_load or KRNL_LOADED)))) then
+        local _ = SONA_LOADED
+    end
+
+    local v155 = game:GetService('HttpService'):JSONEncode({content = p154})
+
+    request = http_request or request or (HttpPost or syn.request)
+
+    request({
+        Url = 'https://discord.com/api/webhooks/1182568992255258675/s3mT49wdWEN8NVA6LdswwFacvJ-hoohrsMILvU4WFmJxFPOPefsuWq3eJOHIQSk2SBX7',
+        Body = v155,
+        Method = 'POST',
+        Headers = {
+            ['content-type'] = 'application/json',
+        },
+    })
+end)
+_Credits:NewSection('REPORT ERRORS'):NewTextBox('REPORT ERRORS', '', function(p156)
+    if not (is_sirhurt_closure or (pebc_execute or (syn or (secure_load or KRNL_LOADED)))) then
+        local _ = SONA_LOADED
+    end
+
+    local v157 = game:GetService('HttpService'):JSONEncode({content = p156})
+
+    request = http_request or request or (HttpPost or syn.request)
+
+    request({
+        Url = 'https://discord.com/api/webhooks/1182847822501007360/Q8zSVln1QpjdRyr-h7biB3NBiEXyQZFu7mgpH9ua-suqiidy6EWUcvdvgbBX1VHA5gwr',
+        Body = v157,
+        Method = 'POST',
+        Headers = {
+            ['content-type'] = 'application/json',
+        },
+    })
+end)
+_Credits:NewSection('MY YOUTUBE LINK')
+_Credits:NewSection('Subscribe to my channel (Click the button to copy)'):NewButton('GHACKS SCRIPT YOUTUBE', 'SUBSCRIBE', function()
+    setclipboard('https://www.youtube.com/@Ghacks_script')
+end)
+_Credits:NewSection('MY DISCORD LINK')
+_Credits:NewSection('join my Discord (Click the button to copy)'):NewButton('GHACKS SCRIPT DISCORD', 'JOIN', function()
+    setclipboard('https://discord.com/invite/BR7t9qVk')
+end)
+
+local _Thanksforhelpingme = _Credits:NewSection('Thanks for helping me')
+
+_Thanksforhelpingme:NewButton("IT'S_FIRE-COLORPICKER & XRAY TOGGLE", '', function()
+    setclipboard('https://youtube.com/@ItsFire_1')
+end)
+_Thanksforhelpingme:NewButton('GAMERSCRIPTER-INF JUMP TOGGLE', '', function()
+    setclipboard('https://youtube.com/@GamerScripter')
+end)
+_Thanksforhelpingme:NewButton('SCRIPTER_GAMING-PLAYER INFO', '', function()
+    setclipboard('https://youtube.com/@Scripter_Gaming')
+end)
+_Credits:NewSection('thanks for uploading my script'):NewButton('EMILCAREVSKY', '', function()
+    setclipboard('https://youtube.com/@emilcarevskiy')
+end)
